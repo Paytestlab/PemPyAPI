@@ -19,9 +19,9 @@ class PinRobot(object):
 
     def __ResponseEvaluate(self, response):
         Result = False
-        if(response is 'OK'):
+        if("OK" is response):
            Result = True
-        elif(response is 'Smoothie'):
+        elif(response is "Smoothie"):
            Result = self.__ResponseEvaluate(self.socket.receiveWithTimeout(2))
         else:
            return False
@@ -31,7 +31,7 @@ class PinRobot(object):
     def SendCommand(self, action):
         try:
            self.socket.send(self.terminalList[action].Value)
-           if(self.terminalList[action].isButton is '1'):
+           if(self.terminalList[action].IsButton is "1"):
                isButton = True
         except  (ValueError,IndexError):
             return False
