@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Settings>
+  <Position>
+    <CanonicalName>0</CanonicalName>
+    <Value>G0 X19.5 Y14.5</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>1</CanonicalName>
+    <Value>G0 X4 Y47.5</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>2</CanonicalName>
+    <Value>G0 X19.5 Y47.5</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>3</CanonicalName>
+    <Value>G0 X35 Y47.5</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>4</CanonicalName>
+    <Value>G0 X4 Y36.5</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>5</CanonicalName>
+    <Value>G0 X19.5 Y36.5</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>6</CanonicalName>
+    <Value>G0 X35 Y36.5</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>7</CanonicalName>
+    <Value>G0 X4 Y25.5</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>8</CanonicalName>
+    <Value>G0 X19.5 Y25.5</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>9</CanonicalName>
+    <Value>G0 X35 Y25.5</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>Menu</CanonicalName>
+    <Value>G0 X4 Y14.5</Value>
+      <isButton>1</isButton>
+    </Position>
+  <Position>
+    <CanonicalName>.</CanonicalName>
+    <Value>G0 X35 Y14.5</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>Stop</CanonicalName>
+    <Value>G0 X4 Y3</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>Clear</CanonicalName>
+    <Value>G0 X19.5 Y3</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>Ok</CanonicalName>
+    <Value>G0 X35 Y3</Value>
+    <isButton>1</isButton>
+  </Position>
+  <!-- Card Insert -->
+  <Position>
+    <CanonicalName>Insert</CanonicalName>
+    <Value>G0 Z0</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <!-- Card Eject -->
+  <Position>
+    <CanonicalName>Eject</CanonicalName>
+    <Value>G0 Z50</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <Position>
+    <CanonicalName>Sleep</CanonicalName>
+    <Value>M18</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <Position>
+    <CanonicalName>Reset</CanonicalName>
+    <Value>M999</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <Position>
+    <CanonicalName>Home</CanonicalName>
+    <Value>G28</Value>
+    <isButton>0</isButton>
+  </Position>
+</Settings>
+
+
+
+

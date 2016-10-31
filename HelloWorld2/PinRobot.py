@@ -47,7 +47,8 @@ class PinRobot(object):
 
     def SendString(self, command):
         self.socket.send(command)
-        return self.__ResponseEvaluate(self.socket.receive())
+        return True
+    #self.__ResponseEvaluate(self.socket.receive())
 
 
     def __pressButton(self):
@@ -58,7 +59,8 @@ class PinRobot(object):
             return False
         if(self.SendString("M43\r\n") is False):
             return False
-        return self.SendString("G4 S0.2\r\n")
+        #return True
+        return self.SendString("G4 S1.1\r\n")
             
             
         
