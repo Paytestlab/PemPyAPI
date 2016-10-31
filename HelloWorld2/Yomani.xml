@@ -72,7 +72,7 @@
     <isButton>1</isButton>
   </Position>
   <Position>
-    <CanonicalName>Ok</CanonicalName>
+    <CanonicalName>OK</CanonicalName>
     <Value>G0 X38.8 Y1</Value>
     <isButton>1</isButton>
   </Position>

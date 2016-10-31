@@ -26,7 +26,8 @@ class PEMSocket(object):
          return False
 
      def send(self, Message):
-         data = bytes(Message, 'utf-8')
+         EndMessage = Message + "\r\n"
+         data = bytes(EndMessage, 'utf-8')
          try:
             self.Connection.send(data)
          except SocketError as e:

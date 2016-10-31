@@ -4,7 +4,7 @@ def main():
     global robot
     robot = PinRobot()
     robot.InitializeTerminal("Yomani.xml")
-    robot.InitializeConnection("localhost", 3000)
+    robot.InitializeConnection("192.168.1.102", 23)
     robot.SendCommand("0")
     robot.SendCommand("1")
     robot.SendCommand("2")
@@ -15,7 +15,15 @@ def main():
     robot.SendCommand("7")
     robot.SendCommand("8")
     robot.SendCommand("9")
- 
+    robot.SendCommand(".")
+    robot.SendCommand("Menu")
+    robot.SendCommand("Stop")
+    robot.SendCommand("OK")
+
+    for index in range(1000):
+        robot.SendCommand("9")
+
+
 
 def sendSequence():
     robot.sendCommand("2")
