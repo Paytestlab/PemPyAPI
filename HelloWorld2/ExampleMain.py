@@ -3,33 +3,27 @@ from PinRobot import PinRobot
 def main():
     global robot
     robot = PinRobot()
-    robot.InitializeTerminal("Yoximo.xml")
-    robot.InitializeConnection("192.168.1.102", 23)
-    #robot.SendCommand("Stop")
-    #robot.SendCommand("Sleep")
-    robot.SendCommand("Sleep")
-    robot.SendCommand("Home")
-    robot.SendCommand("Stop")
-    robot.SendCommand("Sleep")
-    robot.SendCommand("0")
-    robot.SendCommand("1")
-    robot.SendCommand("2")
-    robot.SendCommand("3")
-    robot.SendCommand("4")
-    #robot.SendCommand("5")
-    #robot.SendCommand("6")
-    #robot.SendCommand("7")
-    #robot.SendCommand("8")
-    #robot.SendCommand("9")
-    #robot.SendCommand(".")
-    #robot.SendCommand("Menu")
-    #robot.SendCommand("Stop")
-    #robot.SendCommand("OK")
+    #robot.InitializeTerminal("Yoximo.xml")
+    #robot.InitializeConnection("192.168.1.102", 23)
+    try:
+        name = input("Enter path to XML: ")
+        if(False is robot.InitializeTerminal(name)):
+            raise ParseError("InitializeTerminal", "Parsing Error")
 
-    for index in range(1000):
-        robot.SendCommand("9")
-    #robot.CloseConnection()
+        IP = input("Enter IP: ")
+        Port = input("Enter Port: ")
+        if(False is robot.InitializeConnection(IP, int(Port))):
+            raise ConnectionError("InitializeConnection", "Could not connect")
 
+
+        Keypress = input("Enter key:")
+        while('x' not in Keypress):
+            if(False is robot.SendCommand(Keypress)):
+                raise InputError(Keypress, "No command found")
+            Keypress = input("Enter key: ") 
+    except (InputError,ConnectionError,ParseError):
+        pass
+    
 
 def sendSequence():
     robot.sendCommand("2")
@@ -37,5 +31,23 @@ def sendSequence():
     robot.sendCommand("6")
     robot.sendCommand("Menu")
 
+class Error(Exception):
+    pass
+
+class InputError(Error):
+    def __init__(self, expression, message):
+        self.expression = expression
+        self.message = message
+
+class ParseError(Error):
+      def __init__(self, expression, message):
+        self.expression = expression
+        self.message = message
+
+
+class ConnectionError(Error):
+      def __init__(self, expression, message):
+        self.expression = expression
+        self.message = message
 
 main()
