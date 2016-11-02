@@ -35,9 +35,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Test.xml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Yomani.xml">
       <SubType>Code</SubType>
     </Content>
