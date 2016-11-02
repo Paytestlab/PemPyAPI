@@ -24,13 +24,6 @@ def main():
     except (InputError,ConnectionError,ParseError):
         pass
     
-
-def sendSequence():
-    robot.sendCommand("2")
-    robot.sendCommand("2")
-    robot.sendCommand("6")
-    robot.sendCommand("Menu")
-
 class Error(Exception):
     pass
 
