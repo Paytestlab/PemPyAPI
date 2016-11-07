@@ -23,6 +23,9 @@ class PinRobot(object):
            Result = True
         elif(response in "Smoothie"):
            Result = self.__ResponseEvaluate(self.socket.receiveWithTimeout(2))
+        elif("!!" in response):
+            Result = self.SendCommand("Reset")
+            Result |= self.SendCommand("Home")
         else:
            return False
 
