@@ -52,7 +52,11 @@ class PinRobot(object):
 
 
     def __pressButton(self):
-        """press button"""
+        """press button function"""
+        #There are 2 possibilities to control the speed of the button press:
+        #1. Remove the "G4 S1.1" and listen to Smoothie responses in the function SendString.
+        #2. Try to reduce the value in the comman S1.1. The value 1.1 is in seconds. The less seconds set, the faster the button will be pressed.
+
         if(self.SendString("M42\r\n") is False):
             return False
         if(self.SendString("G4 P30\r\n") is False):

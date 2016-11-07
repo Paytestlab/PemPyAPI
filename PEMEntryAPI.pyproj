@@ -35,12 +35,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Yomani.xml">
+    <Content Include="Configuration\Ingenico-IWL250.xml" />
+    <Content Include="Configuration\VeriFone-MX915.xml" />
+    <Content Include="Configuration\VeriFone-MX925.xml" />
+    <Content Include="Configuration\VeriFone-VX820.xml" />
+    <Content Include="Configuration\Yomani.xml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="Yoximo.xml">
+    <Content Include="Configuration\Yoximo.xml">
       <SubType>Code</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configuration\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
