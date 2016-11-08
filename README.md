@@ -1,12 +1,16 @@
 # PemPyAPI
 
-A little help to control the Pin entry robot. See below:
+A little help to control the Pin entry robot. 
 
-example usage:
+###example usage
 
 *python3 ExampleMain.py*
 
-##Terminal Zero point configuration:
+Please select the apropriate XML file from the folder Configuration.
+
+##Hardware settings
+
+###Terminal Zero point configuration:
 
 |Terminal         | X-axis | Y-axis |
 | --------------- |:------:|:------:|
