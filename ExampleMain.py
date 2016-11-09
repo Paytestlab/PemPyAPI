@@ -16,7 +16,7 @@ def main():
             raise ConnectionError("InitializeConnection", "Could not connect")
 
 
-        Keypress = input("Enter key: ")
+        Keypress = input("Enter key[0-9][Ok][Menu][Stop][.]: ")
         while('x' not in Keypress):
             if(False is robot.SendCommand(Keypress)):
                 raise InputError(Keypress, "No command found")
