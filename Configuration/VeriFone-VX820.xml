@@ -53,12 +53,12 @@
     <isButton>1</isButton>
   </Position>
   <Position>
-    <CanonicalName>Menu</CanonicalName>
+    <CanonicalName>*</CanonicalName>
     <Value>G0 X0 Y12.6</Value>
     <isButton>1</isButton>
   </Position>
   <Position>
-    <CanonicalName>.</CanonicalName>
+    <CanonicalName>#</CanonicalName>
     <Value>G0 X36.8 Y12.1</Value>
     <isButton>1</isButton>
   </Position>

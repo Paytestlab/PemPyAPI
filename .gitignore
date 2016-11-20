@@ -243,3 +243,7 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/__pycache__/PinRobot.cpython-35.pyc
+/__pycache__/ParseXml.cpython-35.pyc
+/__pycache__/Communication.cpython-35.pyc
+/ExampleMain_Lee17112016_Matija.py
