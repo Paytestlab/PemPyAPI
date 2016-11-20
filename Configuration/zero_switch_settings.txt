@@ -1,0 +1,15 @@
+
+Yoximo Switch Measure new Robots:
+Y 3.3cm X 3.2cm
+
+Ingenico-IWL250 Switch Measure: 
+Y 3.4cm X 2.8cm
+
+VeriFone-VX820 Switch Measure: 
+Y 1.7cm X 3.2cm
+
+VeriFone-MX925 Switch Measure: 
+Y 1.2cm X 2.9cm
+
+VeriFone-MX915 Switch Measure: 
+Y 1.8cm X 3.1cm
