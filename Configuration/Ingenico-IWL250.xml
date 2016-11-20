@@ -109,5 +109,11 @@
     <Value>G28</Value>
     <isButton>0</isButton>
   </Position>
+
+  <Position>
+    <CanonicalName>HomeP</CanonicalName>
+    <Value>G28 X0 Y0</Value>
+    <isButton>0</isButton>
+  </Position>
   
 </Settings>
