@@ -6,7 +6,7 @@
     <ProjectGuid>fa1a5650-e0b3-47ed-815f-f820d3ccea67</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>ExampleMain_Lee17112016_Matija.py</StartupFile>
+    <StartupFile>ExampleMain2.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -30,6 +30,7 @@
     <Compile Include="ExampleMain.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExampleMain2.py" />
     <Compile Include="ParseXml.py">
       <SubType>Code</SubType>
     </Compile>
