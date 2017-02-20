@@ -34,7 +34,8 @@ class PinRobot(object):
     def SendCommand(self, action):
         try:
            isButton = False
-           self.socket.send(self.terminalList[action].Value)
+           value = self.terminalList[action].Value
+           self.socket.send(value)
            if(self.terminalList[action].IsButton is "1"):
                isButton = True
         except  (ValueError,IndexError):

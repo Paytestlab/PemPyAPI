@@ -52,6 +52,7 @@
     <Content Include="Configuration\Yomani.xml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Configuration\YoximoRest.xml" />
     <Content Include="Configuration\Yoximo.xml">
       <SubType>Code</SubType>
     </Content>
