@@ -34,12 +34,21 @@ class HandleRestRequest(http.server.BaseHTTPRequestHandler):
         a = str(field_data, 'utf-8')
         
         j = json.loads(a)
+        try:
+            if(s.Robot.SendCommand(j["command"]) is True):
+                s.send_response(200)
+                s.send_header("Content-type", "application/json")
+                s.end_headers()
+            else:
+                s.send_response(405)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+        except:
+            s.send_response(405)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
         
-
-        s.Robot.SendCommand(j["command"])  
-        s.send_response(0, j["command"])
-        s.send_header("Content-type", "application/text")
-        s.end_headers()
+        #s.send_response(0, j["command"])
 
 
 class RESTfulServer:
