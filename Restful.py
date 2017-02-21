@@ -6,7 +6,6 @@ class HandleRestRequest(http.server.BaseHTTPRequestHandler):
 
     def __init__(self, robot, * args):
         self.Robot = robot
-        self.Robot.SendCommand("Home")
         http.server.BaseHTTPRequestHandler.__init__(self, *args)
 
     def do_HEAD(s):
@@ -17,10 +16,10 @@ class HandleRestRequest(http.server.BaseHTTPRequestHandler):
 
     def do_GET(s):
         """Respond to a GET request."""
-        s.send_response(200)
+        s.send_response(501, "Not implemented")
         s.send_header("Content-type", "text/html")
         s.end_headers()
-        s.send_response(501, "Not implemented")
+        
 
     def do_POST(s):
         """Receive a POST request."""
@@ -28,6 +27,7 @@ class HandleRestRequest(http.server.BaseHTTPRequestHandler):
         ctype=s.headers["Content-Type"]
 
         if(ctype != "application/json"):
+            s.send_response(405)
             return
 
         field_data = s.rfile.read(length)
@@ -41,12 +41,12 @@ class HandleRestRequest(http.server.BaseHTTPRequestHandler):
                 s.end_headers()
             else:
                 s.send_response(405)
-                self.send_header('Content-Type', 'application/json')
-                self.end_headers()
+                s.send_header('Content-Type', 'application/json')
+                s.end_headers()
         except:
             s.send_response(405)
-            self.send_header('Content-Type', 'application/json')
-            self.end_headers()
+            s.send_header('Content-Type', 'application/json')
+            s.end_headers()
         
         #s.send_response(0, j["command"])
 
