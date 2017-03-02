@@ -7,7 +7,7 @@ class HandleRestRequest(http.server.BaseHTTPRequestHandler):
     def __init__(self, robot, * args):
         self.Robot = robot
         http.server.BaseHTTPRequestHandler.__init__(self, *args)
-
+        
     def do_HEAD(s):
         s.send_response(200)
         s.send_header("Content-type", "application/json")
@@ -59,6 +59,7 @@ class RESTfulServer:
         
         server_address = ('', port)
         httpd = http.server.HTTPServer(server_address, handler)
+        print("Listening at port 8000")
         httpd.serve_forever()
         
     

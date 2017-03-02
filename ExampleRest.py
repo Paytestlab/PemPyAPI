@@ -1,24 +1,18 @@
 from PinRobot import PinRobot
 from Restful import RESTfulServer
+import os
 
 def main():
     global robot
     robot = PinRobot()
-    robot.InitializeTerminal(".\Configuration\YoximoRest.xml")
+    robot.InitializeTerminal(os.path.join("Configuration", "YoximoRest.xml"))
     robot.InitializeConnection("172.20.50.177", 23)
     try:
-        #name = input("Enter path to XML: ")
-        #if(False is robot.InitializeTerminal(name)):
-        #    raise ParseError("InitializeTerminal", "Parsing Error")
-
-        #IP = input("Enter IP: ")
-        #Port = input("Enter Port: ")
-        #if(False is robot.InitializeConnection(IP, int(Port))):
-        #    raise ConnectionError("InitializeConnection", "Could not connect")
-
         server = RESTfulServer(robot)
     except (InputError,ConnectionError,ParseError):
         pass
+
+    
     
 class Error(Exception):
     pass

@@ -52,27 +52,27 @@
     <isButton>1</isButton>
   </Position>
   <Position>
-    <CanonicalName>Menu</CanonicalName>
+    <CanonicalName>PRESS MENU</CanonicalName>
     <Value>G0 X4 Y14.5</Value>
       <isButton>1</isButton>
     </Position>
   <Position>
-    <CanonicalName>.</CanonicalName>
+    <CanonicalName>PRESS DOT</CanonicalName>
     <Value>G0 X35 Y14.5</Value>
     <isButton>1</isButton>
   </Position>
   <Position>
-    <CanonicalName>Stop</CanonicalName>
+    <CanonicalName>PRESS STOP</CanonicalName>
     <Value>G0 X4 Y3</Value>
     <isButton>1</isButton>
   </Position>
   <Position>
-    <CanonicalName>Clear</CanonicalName>
+    <CanonicalName>PRESS CLEAR</CanonicalName>
     <Value>G0 X19.5 Y3</Value>
     <isButton>1</isButton>
   </Position>
   <Position>
-    <CanonicalName>Ok</CanonicalName>
+    <CanonicalName>PRESS OK</CanonicalName>
     <Value>G0 X35 Y3</Value>
     <isButton>1</isButton>
   </Position>
@@ -91,26 +91,26 @@
   </Position>
 
   <Position>
-    <CanonicalName>Sleep</CanonicalName>
+    <CanonicalName>SLEEP</CanonicalName>
     <Value>M18</Value>
     <isButton>0</isButton>
   </Position>
 
   <Position>
-    <CanonicalName>Reset</CanonicalName>
+    <CanonicalName>RESET</CanonicalName>
     <Value>M999</Value>
     <isButton>0</isButton>
   </Position>
 
   <Position>
-    <CanonicalName>Home</CanonicalName>
+    <CanonicalName>HOME</CanonicalName>
     <Value>G28</Value>
     <isButton>0</isButton>
   </Position>
 
 
   <Position>
-    <CanonicalName>HomeP</CanonicalName>
+    <CanonicalName>HOME PARTIAL</CanonicalName>
     <Value>G28 X0 Y0</Value>
     <isButton>0</isButton>
   </Position>

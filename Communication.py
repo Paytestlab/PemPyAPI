@@ -19,8 +19,6 @@ class PEMSocket(object):
             print("could not connect("+ str(e.errno) + ")...")
             return False
 
-         print("recieved:" + receive.decode("utf-8"))
-
          if("Smoothie" in receive.decode("utf-8")):
             return True
          return False
