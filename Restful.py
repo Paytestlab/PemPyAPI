@@ -34,19 +34,23 @@ class HandleRestRequest(http.server.BaseHTTPRequestHandler):
         a = str(field_data, 'utf-8')
         
         j = json.loads(a)
-        try:
-            if(s.Robot.SendCommand(j["command"]) is True):
-                s.send_response(200)
-                s.send_header("Content-type", "application/json")
-                s.end_headers()
-            else:
+        for command in j["commands"]:
+            try:
+                if(s.Robot.SendCommand(command) is True):
+                    print("execution of " + command + " was succesful")
+                else:
+                    s.send_response(405)
+                    s.send_header('Content-Type', 'application/json')
+                    s.end_headers()
+                    raise
+            except:
                 s.send_response(405)
                 s.send_header('Content-Type', 'application/json')
                 s.end_headers()
-        except:
-            s.send_response(405)
-            s.send_header('Content-Type', 'application/json')
-            s.end_headers()
+
+        s.send_response(200)
+        s.send_header("Content-type", "application/json")
+        s.end_headers()
         
         #s.send_response(0, j["command"])
 

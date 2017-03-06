@@ -6,7 +6,7 @@ def main():
     global robot
     robot = PinRobot()
     robot.InitializeTerminal(os.path.join("Configuration", "Miura-010.xml"))
-    robot.InitializeConnection("172.20.50.177", 23)
+    robot.InitializeConnection("192.168.10.5", 23)
     try:
         server = RESTfulServer(robot)
     except (InputError,ConnectionError,ParseError):
