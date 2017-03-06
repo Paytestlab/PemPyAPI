@@ -15,9 +15,10 @@ Please select the apropriate XML file from the folder Configuration.
 |Terminal         | X-axis | Y-axis | Finger Length |
 | --------------- |:------:|:------:|:--------------|
 | Ingenico IWL250 | 2.8 cm | 3.4 cm | 60 mm         |
-| Verifone-VX820  | 3.2 cm | 1.7 cm | 100 mm        |
-| Verifone-MX915  | 2.9 cm | 1.2 cm | 100 mm        |
-| Verifone-MX925  | 3.1 cm | 1.8 cm | 100 mm        |
+| Verifone-VX820  | 3.2 cm | 1.7 cm | 60/100 mm        |
+| Verifone-MX915  | 2.9 cm | 1.2 cm | 60/100 mm        |
+| Verifone-MX925  | 3.1 cm | 1.8 cm | 60/100 mm        |
+| Miura-010       | 3.2 cm | 1.9 cm | 60/100 mm        |
 
 
 ##Presentation
