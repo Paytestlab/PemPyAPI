@@ -2,15 +2,15 @@
 
 A little help to control the Pin entry robot. 
 
-###example usage
+### example usage
 
 *python3 ExampleMain.py*
 
 Please select the apropriate XML file from the folder Configuration.
 
-##Hardware settings
+## Hardware settings
 
-###Terminal Zero point configuration:
+### Terminal Zero point configuration:
 
 |Terminal         | X-axis | Y-axis | Finger Length |
 | --------------- |:------:|:------:|:--------------|
@@ -21,7 +21,7 @@ Please select the apropriate XML file from the folder Configuration.
 | Miura-010       | 3.2 cm | 1.9 cm | 60/100 mm        |
 
 
-##Presentation
+## Presentation
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=SAwMnx8Vdb8
 " target="_blank"><img src="http://img.youtube.com/vi/SAwMnx8Vdb8/0.jpg" 
