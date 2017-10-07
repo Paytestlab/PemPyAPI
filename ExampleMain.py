@@ -1,15 +1,30 @@
 from PinRobot import PinRobot
+from Utilities import Utilities
 
 def main():
     global robot
     robot = PinRobot()
+    _path = "Configuration"
+    result = False
     #robot.InitializeTerminal("Yoximo.xml")
     #robot.InitializeConnection("192.168.1.102", 23)
     try:
-        name = input("Enter path to XML: ")
-        if(False is robot.InitializeTerminal(name)):
-            raise ParseError("InitializeTerminal", "Parsing Error")
+        while result is False:
+            files = Utilities.get_and_print_conf_list(_path)
 
+            index = int(input())
+            if(index > len(files) or index <= 0):
+                print("Wrong input, retry")
+                continue
+
+            config = Utilities.select_conf(_path, index);
+
+            result = robot.InitializeTerminal(config)
+            
+            if(False is result):
+                print("Could not initialize the terminal, please try again")
+
+      
         IP = input("Enter IP: ")
         Port = input("Enter Port: ")
         if(False is robot.InitializeConnection(IP, int(Port))):

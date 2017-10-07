@@ -1,5 +1,6 @@
 from PinRobot import PinRobot
 from Restful import RESTfulServer
+import Utilities
 import os
 from os import listdir
 from os.path import isfile, join
