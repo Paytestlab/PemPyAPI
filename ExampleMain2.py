@@ -1,8 +1,10 @@
 from PinRobot import PinRobot
+from Utilities import Utilities
 import socket
 import argparse
 import sys
 import time
+
 
 def main():
     parser = argparse.ArgumentParser(description='PIN Robot API')
@@ -28,12 +30,23 @@ def main():
     
     global robot
     robot = PinRobot()
-
+    result = False
+    _path = "Configuration"
     if (mode == 'manual'):
         try:
-            name = input("Enter path to XML: ")
-            if(False is robot.InitializeTerminal(name)):
-                raise ParseError("InitializeTerminal", "Parsing Error")
+            files = Utilities.get_and_print_conf_list(_path)
+            while result is False:
+                index = int(input())
+                if(index > len(files) or index <= 0):
+                    print("Wrong input, retry")
+                    continue
+
+                config = Utilities.select_conf(_path, index);
+
+                result = robot.InitializeTerminal(config)
+            
+                if(False is result):
+                    print("Could not initialize the terminal, please try again")
 
             IP = input("Enter IP: ")
             Port = input("Enter Port: ")

@@ -1,6 +1,6 @@
 from PinRobot import PinRobot
 from Restful import RESTfulServer
-import Utilities
+from Utilities import Utilities
 import os
 from os import listdir
 from os.path import isfile, join
@@ -9,20 +9,23 @@ from os.path import isfile, join
 def main():
     global robot
     robot = PinRobot()
+    _path = "ConfigRest"
+    result = False
 
     try:
-        onlyfiles = [f for f in listdir("ConfigRest") if isfile(join("ConfigRest", f))]
-        print("Select the terminal Layout and press Enter:")
-        i = 0;
-        for files in onlyfiles:
-            i += 1
-            print(str(i) + ": " + files[:-4])
-            
+        files = Utilities.get_and_print_conf_list(_path)
+        while result is False:
+            index = int(input())
+            if(index > len(files) or index <= 0):
+                print("Wrong input, retry")
+                continue
 
-        name = int(input())
-       
-        if(False is robot.InitializeTerminal(join("ConfigRest", onlyfiles[name - 1]))):
-            raise ParseError("InitializeTerminal", "Parsing Error")
+            config = Utilities.select_conf(_path, index);
+
+            result = robot.InitializeTerminal(config)
+            
+            if(False is result):
+                print("Could not initialize the terminal, please try again")
 
         IP = input("Enter Robot IP: ")
 

@@ -6,7 +6,7 @@
     <ProjectGuid>fa1a5650-e0b3-47ed-815f-f820d3ccea67</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>ExampleMain.py</StartupFile>
+    <StartupFile>ExampleRest.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -14,7 +14,8 @@
     <Name>PEMEntryAPI</Name>
     <RootNamespace>HelloWorld2</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>--auto -config Configuration/Yoximo.xml -ip localhost -port 23</CommandLineArguments>
+    <CommandLineArguments>
+    </CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

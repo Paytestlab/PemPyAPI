@@ -9,9 +9,8 @@ def main():
     #robot.InitializeTerminal("Yoximo.xml")
     #robot.InitializeConnection("192.168.1.102", 23)
     try:
+        files = Utilities.get_and_print_conf_list(_path)
         while result is False:
-            files = Utilities.get_and_print_conf_list(_path)
-
             index = int(input())
             if(index > len(files) or index <= 0):
                 print("Wrong input, retry")
