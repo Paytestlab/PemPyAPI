@@ -4,6 +4,7 @@ from Utilities import Utilities
 import os
 from os import listdir
 from os.path import isfile, join
+import json
 
 
 def main():
@@ -32,9 +33,18 @@ def main():
         if(False is robot.InitializeConnection(IP, 23)):
             raise ConnectionError("InitializeConnection", "Could not connect")
 
-        server = RESTfulServer(robot)
+        server = RESTfulServer(doPostWork, robot)
     except (InputError,ConnectionError,ParseError):
         pass
+
+def doPostWork(jsonString, Robot):
+    j = json.loads(jsonString)
+        
+    for command in j["commands"]:
+        if(True is Robot.SendCommand(command)):
+            print("post : execution of " + command + " was succesful")
+        else:
+            raise         
 
     
     

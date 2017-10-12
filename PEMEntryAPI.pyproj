@@ -32,10 +32,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExampleMain2.py" />
-    <Compile Include="ExampleRest.py">
+    <Compile Include="ExampleMultiRobotRest.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExampleRest.py" />
     <Compile Include="ParseXml.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParseXmlRobotConfiguration.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PinRobot.py">
@@ -44,11 +48,20 @@
     <Compile Include="Restful.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RestfulThreaded.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RestHandler.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utilities.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\EntryConfiguration.xml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="ConfigRest\Ingenico-IWL250.xml" />
     <Content Include="ConfigRest\Miura-010.xml">
       <SubType>Code</SubType>
@@ -73,6 +86,7 @@
   <ItemGroup>
     <Folder Include="Configuration\" />
     <Folder Include="ConfigRest\" />
+    <Folder Include="Assets\" />
     <Folder Include="README\" />
   </ItemGroup>
   <PropertyGroup>

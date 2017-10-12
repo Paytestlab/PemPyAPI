@@ -1,9 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 from xml.dom.minidom import parse
 import xml.dom.minidom
-
-from Communication import PEMSocket
 
 class Terminal(object):
     """description of class"""
@@ -29,14 +27,13 @@ class XmlParser(object):
         #create the dictionary
         terminalList = {}
 
-        # Print detail of each movie.
+        # Save detail of each button.
         for position in positions:
            Canonical = position.getElementsByTagName('CanonicalName')[0]
            Value = position.getElementsByTagName('Value')[0]
            IsButton = position.getElementsByTagName('isButton')[0]
            terminal = Terminal(Canonical.childNodes[0].data, Value.childNodes[0].data, IsButton.childNodes[0].data)
            terminalList.update({Canonical.childNodes[0].data:terminal})
-           #TerminalList[Canonical.childNodes[0].data] = terminal
 
         return terminalList
 
