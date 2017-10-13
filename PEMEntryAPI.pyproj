@@ -17,6 +17,7 @@
     <CommandLineArguments>
     </CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +37,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExampleRest.py" />
+    <Compile Include="Exception.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ParseXml.py">
       <SubType>Code</SubType>
     </Compile>
@@ -54,6 +58,7 @@
     <Compile Include="RestHandler.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Test.py" />
     <Compile Include="Utilities.py">
       <SubType>Code</SubType>
     </Compile>

@@ -13,9 +13,9 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 class RESTfulThreadedServer():
     allow_reuse_address = True
-    def __init__(s, function, argument, port=8000):
+    def __init__(s, functionPost, functionGet, argument, port=8000):
         def handler(*args):
-           HandleRestRequest(function, argument, *args)
+           HandleRestRequest(functionPost, functionGet, argument, *args)
         server_address = ('', port)
         s.server =  ThreadedHTTPServer(server_address, handler)
         s.port = port

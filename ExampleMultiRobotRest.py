@@ -2,7 +2,9 @@ from PinRobot import PinRobot
 from RestfulThreaded import RESTfulThreadedServer
 from os.path import join
 from ParseXmlRobotConfiguration import ParseXmlRobotConfiguration, RobotConfiguration
+from Exception import Error, ConnectionError, InputError, ParseError
 import json
+import argparse
 
 
 def main():
@@ -11,27 +13,41 @@ def main():
     _path = "ConfigRest"
     result = False
 
+    parser = argparse.ArgumentParser(description='PIN Robot Rest API')
+    parser.add_argument('-config','-configfile", help="path to entry configuration xml',required=False)
+    args = (parser.parse_args())
 
-
+    if(None is args.config):
+        config = join("Assets", "EntryConfiguration.xml")
+    else:
+        config = args.config
 
     try:
-        ConfigurationList = ParseXmlRobotConfiguration.parseXml(join("Assets", "EntryConfiguration.xml"))
+        ConfigurationList = ParseXmlRobotConfiguration.parseXml(config)
         RobotList = {}
 
         for key, value in ConfigurationList.items():
              robot = PinRobot()
              if(False is robot.InitializeTerminal(join(_path, value.Layout))):
-                raise
+                print(value.Layout + ": Initialization failed, skip...")
+                continue
 
              if(False is robot.InitializeConnection(value.IP, int(value.Port))):
-                raise
+                print(value.Layout + ": robot not reachable, skip...")
+                continue
 
              RobotList.update({key:robot})
 
-        server = RESTfulThreadedServer(doPostWork, RobotList)
+        if(not RobotList):
+            print(" Fatal error, robot list is empty...")
+            raise
+
+        server = RESTfulThreadedServer(doPostWork, doGetWork, RobotList)
         server.start()
         server.waitForThread()
-    except (InputError,ConnectionError,ParseError):
+    except (Error):
+        pass
+    except:
         pass
 
 def doPostWork(jsonString, robotList):
@@ -41,28 +57,11 @@ def doPostWork(jsonString, robotList):
         if(True is robotList[j['id']].SendCommand(command)):
             print(j['id'] + ": execution of " + command + " was succesful")
         else:
-            raise         
-    
-
-    
-    
-class Error(Exception):
-    pass
-
-class InputError(Error):
-    def __init__(self, expression, message):
-        self.expression = expression
-        self.message = message
-
-class ParseError(Error):
-      def __init__(self, expression, message):
-        self.expression = expression
-        self.message = message
-
-
-class ConnectionError(Error):
-      def __init__(self, expression, message):
-        self.expression = expression
-        self.message = message
+            raise InputError
+        
+def doGetWork(robotList):
+    l = list(robotList.keys())
+    robot_object = {'id' : l}
+    return json.dumps(robot_object)
 
 main()

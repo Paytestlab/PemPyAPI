@@ -1,6 +1,7 @@
 from PinRobot import PinRobot
 from Restful import RESTfulServer
 from Utilities import Utilities
+from Exception import Error, ConnectionError, InputError, ParseError, NotImplementedError
 import os
 from os import listdir
 from os.path import isfile, join
@@ -33,8 +34,8 @@ def main():
         if(False is robot.InitializeConnection(IP, 23)):
             raise ConnectionError("InitializeConnection", "Could not connect")
 
-        server = RESTfulServer(doPostWork, robot)
-    except (InputError,ConnectionError,ParseError):
+        server = RESTfulServer(doPostWork, doGetWork, robot)
+    except (Error):
         pass
 
 def doPostWork(jsonString, Robot):
@@ -44,27 +45,10 @@ def doPostWork(jsonString, Robot):
         if(True is Robot.SendCommand(command)):
             print("post : execution of " + command + " was succesful")
         else:
-            raise         
+            raise    
+        
+def doGetWork(Robot):
+    raise NotImplementedError
 
-    
-    
-class Error(Exception):
-    pass
-
-class InputError(Error):
-    def __init__(self, expression, message):
-        self.expression = expression
-        self.message = message
-
-class ParseError(Error):
-      def __init__(self, expression, message):
-        self.expression = expression
-        self.message = message
-
-
-class ConnectionError(Error):
-      def __init__(self, expression, message):
-        self.expression = expression
-        self.message = message
 
 main()
