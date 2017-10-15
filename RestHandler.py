@@ -26,12 +26,12 @@ class HandleRestRequest(BaseHTTPRequestHandler):
         ctype = s.headers["Content-Type"]
 
         try:
-            if(ctype != "application/json"):
-                raise
+            if("application/json" not in ctype):
+                raise ParseError
 
             jsonText = str(s.rfile.read(length), 'utf-8')
             if(False is s.postProcess(jsonText, s.processArg)):
-                raise
+                raise InputError
 
             s.__sendResponse(200)
         except NotImplementedError:

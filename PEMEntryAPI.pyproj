@@ -6,7 +6,7 @@
     <ProjectGuid>fa1a5650-e0b3-47ed-815f-f820d3ccea67</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>ExampleRest.py</StartupFile>
+    <StartupFile>ExampleMultiRobotRest.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
