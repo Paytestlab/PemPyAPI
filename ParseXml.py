@@ -12,6 +12,13 @@ class Terminal(object):
 
 
 class XmlParser(object):
+
+    def str_to_bool(isButton):
+        if (isButton is '1'):
+            return True;
+        else:
+            return False;
+
     def parseXml(XmlFilename):
         try:
 
@@ -31,11 +38,15 @@ class XmlParser(object):
         for position in positions:
            Canonical = position.getElementsByTagName('CanonicalName')[0]
            Value = position.getElementsByTagName('Value')[0]
-           IsButton = position.getElementsByTagName('isButton')[0]
-           terminal = Terminal(Canonical.childNodes[0].data, Value.childNodes[0].data, IsButton.childNodes[0].data)
+           IsButtonNode = position.getElementsByTagName('isButton')[0]
+           isButton = XmlParser.str_to_bool(IsButtonNode.childNodes[0].data)
+           terminal = Terminal(Canonical.childNodes[0].data, Value.childNodes[0].data, isButton)
            terminalList.update({Canonical.childNodes[0].data:terminal})
 
         return terminalList
+
+   
+
 
    
 

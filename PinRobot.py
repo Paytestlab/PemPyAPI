@@ -1,5 +1,6 @@
 from ParseXml import XmlParser
 from Communication import PEMSocket
+import threading
 
 class PinRobot(object):
     """Initializes the robot class"""
@@ -13,6 +14,10 @@ class PinRobot(object):
         self.socket = PEMSocket(IP, Port)
    
         return self.socket.connect()
+
+    def InitializeLock(self):
+        self.mutex = threading.Lock()
+
 
     def CloseConnection(self):
         self.socket.close() 
@@ -32,22 +37,23 @@ class PinRobot(object):
         return Result
 
     def SendCommand(self, action):
+        Result = False
+        self.mutex.acquire()
+      
         try:
-           isButton = False
-           value = self.terminalList[action].Value
-           self.socket.send(value)
-           if(self.terminalList[action].IsButton is "1"):
-               isButton = True
-        except  (ValueError,IndexError):
-            return False
-        
-        Result = self.__ResponseEvaluate(self.socket.receive())
-        if(isButton is False):
-            return Result
-        elif(Result):
-            return self.__pressButton()
-        else:
-            return False
+           actionValue = self.terminalList[action].Value
+           self.socket.send(actionValue)
+                         
+           Result = self.__ResponseEvaluate(self.socket.receive())
+           shouldPress = Result and self.terminalList[action].IsButton
+
+           if(shouldPress):
+              Result = self.__pressButton()
+        except:
+            pass
+        finally:
+            self.mutex.release()
+        return Result
 
     def SendString(self, command):
         self.socket.send(command)
