@@ -1,0 +1,44 @@
+{
+  "$schema": "http://j.com/schema",
+  "title": "Robot Request",
+  "description": "Payload for the AX integration Layer.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique robot identifier",
+      "type": "string"
+    },
+    "command": {
+      "description": "list of commands",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "PRESS 0",
+          "PRESS 1",
+          "PRESS 2",
+          "PRESS 3",
+          "PRESS 4",
+          "PRESS 5",
+          "PRESS 6",
+          "PRESS 7",
+          "PRESS 8",
+          "PRESS 9",
+          "PRESS MENU",
+          "PRESS DOT",
+          "PRESS STOP",
+          "PRESS CLEAR",
+          "PRESS OK",
+          "INSERT CARD",
+          "REMOVE CARD",
+          "SLEEP",
+          "RESET",
+          "HOME"
+        ]
+      }
+    }
+  },
+  "required": [ "id", "command" ]
+}
+
+

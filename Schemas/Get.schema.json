@@ -1,0 +1,16 @@
+{
+  "$schema": "http://j.com/schema",
+  "title": "robot ID's",
+  "description": "ID's of all the initialized robots",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type" : "array",
+      "description": "array of all initialized robots",
+      "items" : {
+        "type": "string"
+      }
+    }
+  },
+  "required": [ "id" ]
+}
