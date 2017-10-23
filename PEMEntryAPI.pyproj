@@ -58,7 +58,6 @@
     <Compile Include="RestHandler.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Test.py" />
     <Compile Include="Utilities.py">
       <SubType>Code</SubType>
     </Compile>
@@ -73,6 +72,7 @@
     </Content>
     <Content Include="ConfigRest\Verifone-VX820.xml" />
     <Content Include="ConfigRest\Ingenico-IPP350.xml" />
+    <Content Include="ConfigRest\Yomani.xml" />
     <Content Include="Configuration\Ingenico-IPP350.xml" />
     <Content Include="Configuration\Ingenico-IWL250.xml" />
     <Content Include="Configuration\Miura-010.xml" />
