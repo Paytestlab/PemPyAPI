@@ -4,6 +4,9 @@ import threading
 
 class PinRobot(object):
     """Initializes the robot class"""
+    def __init__(self):
+        self.mutex = threading.Lock()
+
     def InitializeTerminal(self, Filename):
         self.terminalList = XmlParser.parseXml(Filename)
         if(self.terminalList is None):
@@ -14,10 +17,6 @@ class PinRobot(object):
         self.socket = PEMSocket(IP, Port)
    
         return self.socket.connect()
-
-    def InitializeLock(self):
-        self.mutex = threading.Lock()
-
 
     def CloseConnection(self):
         self.socket.close() 

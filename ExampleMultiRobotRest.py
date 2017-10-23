@@ -32,10 +32,6 @@ def main():
                 print(value.Layout + ": Initialization failed, skip...")
                 continue
 
-             if(False is robot.InitializeLock()):
-                print(value.Layout + ": could not start the mutex, skip...")
-                continue
-
              if(False is robot.InitializeConnection(value.IP, int(value.Port))):
                 print(value.Layout + ": robot not reachable, skip...")
                 continue
