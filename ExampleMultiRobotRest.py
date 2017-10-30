@@ -5,29 +5,34 @@ from ParseXmlRobotConfiguration import ParseXmlRobotConfiguration, RobotConfigur
 from Exception import Error, ConnectionError, InputError, ParseError
 import json
 import argparse
+from Statistics import Statistics
 
 
 def main():
-    global robot
-    robot = PinRobot()
     _path = "ConfigRest"
-    result = False
 
     parser = argparse.ArgumentParser(description='PIN Robot Rest API')
     parser.add_argument('-config','-configfile", help="path to entry configuration xml',required=False)
+    parser.add_argument('-port','-port", help="port for the http listener',required=False)
+    parser.add_argument('-enable_statistics', nargs='?', const=True, default=False, help="enable tracking of the button press.", required=False)
     args = (parser.parse_args())
 
     if(None is args.config):
         config = join("Assets", "EntryConfiguration.xml")
+        port = 8000
+
     else:
         config = args.config
+        port = args.port
+        
+    enable_statistics=args.enable_statistics
 
     try:
         ConfigurationList = ParseXmlRobotConfiguration.parseXml(config)
         RobotList = {}
 
         for key, value in ConfigurationList.items():
-             robot = PinRobot()
+             robot = PinRobot(enable_statistics)
              if(False is robot.InitializeTerminal(join(_path, value.Layout))):
                 print(value.Layout + ": Initialization failed, skip...")
                 continue
@@ -42,13 +47,21 @@ def main():
             print(" Fatal error, robot list is empty...")
             raise
 
-        server = RESTfulThreadedServer(doPostWork, doGetWork, RobotList)
+        server = RESTfulThreadedServer(doPostWork, doGetWork, RobotList, port)
         server.start()
         server.waitForThread()
     except (Error):
         pass
     except:
         pass
+
+def str2bool(v):
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
    
 
 def doPostWork(jsonString, robotList):
@@ -57,6 +70,7 @@ def doPostWork(jsonString, robotList):
     for command in j["commands"]:
         if(True is robotList[j['id']].SendCommand(command)):
             print(j['id'] + ": execution of " + command + " was succesful")
+            robotList[j['id']].UpdateTable(j['id'], command)
         else:
             raise InputError
         

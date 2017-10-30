@@ -14,10 +14,11 @@
     <Name>PEMEntryAPI</Name>
     <RootNamespace>HelloWorld2</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>
-    </CommandLineArguments>
+    <CommandLineArguments>-enable_statistics</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
+    <InterpreterArguments>
+    </InterpreterArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,6 +59,18 @@
     <Compile Include="RestHandler.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SqlWorker.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="sqWorkerTest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Statistics.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StatisticsTest.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utilities.py">
       <SubType>Code</SubType>
     </Compile>
@@ -92,6 +105,7 @@
     <Folder Include="Configuration\" />
     <Folder Include="ConfigRest\" />
     <Folder Include="Assets\" />
+    <Folder Include="UnitTests\" />
     <Folder Include="README\" />
   </ItemGroup>
   <PropertyGroup>
