@@ -21,3 +21,8 @@ class NotImplementedError(Error):
     def __init__(self, expression, message):
         self.expression = expression
         self.message = message
+
+class DestinationNotFoundError(Error):
+    def __init__(self, expression, message):
+        self.expression = expression
+        self.message = message

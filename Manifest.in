@@ -1,0 +1,14 @@
+include Communication.py
+include Exception.py
+include MultiRobotRest.py
+include ParseXml*.py
+include PinRobot.py
+include RestfulThreaded.py
+include RestHandler.py
+include SqlWorker.py
+include Statistics.py
+include Utilities.py
+include setup.py
+include setup.cfg
+include README.md
+include ConfigRest/*.xml

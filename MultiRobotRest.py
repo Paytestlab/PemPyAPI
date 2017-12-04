@@ -2,7 +2,7 @@ from PinRobot import PinRobot
 from RestfulThreaded import RESTfulThreadedServer
 from os.path import join
 from ParseXmlRobotConfiguration import ParseXmlRobotConfiguration, RobotConfiguration
-from Exception import Error, ConnectionError, InputError, ParseError
+from Exception import Error, ConnectionError, InputError, ParseError, DestinationNotFoundError
 import json
 import argparse
 from Statistics import Statistics
@@ -41,6 +41,13 @@ def main():
                 print(value.Layout + ": robot not reachable, skip...")
                 continue
 
+
+             if (False is robot.SendCommand("HOME")):
+                 print(value.Layout + ": robot command could not be executed");
+
+             robot.CloseConnection();
+
+
              RobotList.update({key:robot})
 
         if(not RobotList):
@@ -50,8 +57,6 @@ def main():
         server = RESTfulThreadedServer(doPostWork, doGetWork, RobotList, port)
         server.start()
         server.waitForThread()
-    except (Error):
-        pass
     except:
         pass
 
@@ -65,14 +70,28 @@ def str2bool(v):
    
 
 def doPostWork(jsonString, robotList):
-    j = json.loads(jsonString)
-        
+    try:
+        j = json.loads(jsonString)
+    except json.JSONDecodeError:
+        raise ParseError("", "json could not be parsed");
+
+    key = j['id'];
+    if(key not in robotList):
+        raise DestinationNotFoundError("", key + ": robot not found");
+    
+    if(False is robotList[key].Connect()):
+        raise ConnectionError("", "could not connect to the robot" + key);
+
     for command in j["commands"]:
-        if(True is robotList[j['id']].SendCommand(command)):
-            print(j['id'] + ": execution of " + command + " was succesful")
-            robotList[j['id']].UpdateTable(j['id'], command)
+        if(True is robotList[key].SendCommand(command)):
+            print(key + ": execution of " + command + " was succesful")
+            robotList[key].UpdateTable(key, command)
         else:
-            raise InputError
+            raise InputError("", key + ": could not execute " + command); 
+
+    robotList[key].CloseConnection();
+    
+    return True
         
 def doGetWork(robotList):
     l = list(robotList.keys())

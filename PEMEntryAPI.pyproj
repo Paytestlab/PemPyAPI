@@ -6,7 +6,7 @@
     <ProjectGuid>fa1a5650-e0b3-47ed-815f-f820d3ccea67</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>ExampleMultiRobotRest.py</StartupFile>
+    <StartupFile>MultiRobotRest.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -34,7 +34,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExampleMain2.py" />
-    <Compile Include="ExampleMultiRobotRest.py">
+    <Compile Include="MultiRobotRest.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExampleRest.py" />
@@ -57,6 +57,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RestHandler.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="setup.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SqlWorker.py">
@@ -99,7 +102,16 @@
     <Content Include="Configuration\Yoximo.xml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Manifest.in">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="README.md" />
+    <Content Include="Readme.rst">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="setup.cfg">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />

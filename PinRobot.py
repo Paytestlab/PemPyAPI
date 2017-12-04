@@ -23,6 +23,9 @@ class PinRobot(object):
    
         return self.socket.connect()
 
+    def Connect(self):
+        self.socket.connect();
+
     def CloseConnection(self):
         self.socket.close() 
 

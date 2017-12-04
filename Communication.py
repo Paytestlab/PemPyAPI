@@ -54,7 +54,6 @@ class PEMSocket(object):
 
      def close(self):
         self.Connection.close()
-        print("socket closed")
 
      BUFFER_SIZE = 1024
 
