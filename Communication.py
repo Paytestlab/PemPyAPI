@@ -53,6 +53,7 @@ class PEMSocket(object):
         
 
      def close(self):
+        self.Connection.shutdown(socket.SHUT_RDWR);
         self.Connection.close()
 
      BUFFER_SIZE = 1024

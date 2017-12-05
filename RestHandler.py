@@ -43,7 +43,7 @@ class HandleRestRequest(BaseHTTPRequestHandler):
             s.__sendResponse(400, error);
             pass
         except InputError as error:
-            s__sendResponse(404, error);
+            s.__sendResponse(404, error);
             pass;
         except:
             s.__sendResponse(405);

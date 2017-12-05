@@ -27,7 +27,10 @@ class PinRobot(object):
         self.socket.connect();
 
     def CloseConnection(self):
-        self.socket.close() 
+        try:
+            self.socket.close() 
+        except OSError:
+            pass;
 
     def __ResponseEvaluate(self, response):
         Result = False

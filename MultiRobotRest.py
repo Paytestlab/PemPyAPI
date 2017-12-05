@@ -83,8 +83,8 @@ def main():
         server = RESTfulThreadedServer(doPostWork, doGetWork, RobotList, port)
         server.start()
         server.waitForThread()
-    except:
-        pass
+    except Error as e:
+        print(e);
 
 def str2bool(v):
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
@@ -96,26 +96,32 @@ def str2bool(v):
    
 
 def doPostWork(jsonString, robotList):
+
     try:
-        j = json.loads(jsonString)
-    except json.JSONDecodeError:
-        raise ParseError("", "json could not be parsed");
+        try:
+            j = json.loads(jsonString)
+        except json.JSONDecodeError:
+            raise ParseError("", "json could not be parsed");
 
-    key = j['id'];
-    if(key not in robotList):
-        raise DestinationNotFoundError("", key + ": robot not found");
+        key = j['id'];
+        if(key not in robotList):
+            raise DestinationNotFoundError("", key + ": robot not found");
     
-    if(False is robotList[key].Connect()):
-        raise ConnectionError("", "could not connect to the robot" + key);
+        if(False is robotList[key].Connect()):
+            raise ConnectionError("", "could not connect to the robot" + key);
 
-    for command in j["commands"]:
-        if(True is robotList[key].SendCommand(command)):
-            print(key + ": execution of " + command + " was succesful")
-            robotList[key].UpdateTable(key, command)
-        else:
-            raise InputError("", key + ": could not execute " + command); 
+        for command in j["commands"]:
+            if(True is robotList[key].SendCommand(command)):
+                print(key + ": execution of " + command + " was succesful")
+                robotList[key].UpdateTable(key, command)
+            else:
+                print(key + ": execution of was not succesful (" + command + ")");
+                raise InputError("", key + ": could not execute " + command); 
+    
+    finally:
+         robotList[key].CloseConnection();
+        
 
-    robotList[key].CloseConnection();
     
     return True
         
