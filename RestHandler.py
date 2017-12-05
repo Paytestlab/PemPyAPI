@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler
-from Exception import NotImplementedError, ParseError, InputError
+from Exception import NotImplementedError, ParseError, InputError, ConnectionError, DestinationNotFoundError
 
 class HandleRestRequest(BaseHTTPRequestHandler):
     def __sendResponse(s, code, message=None):
@@ -29,19 +29,24 @@ class HandleRestRequest(BaseHTTPRequestHandler):
             if("application/json" not in ctype):
                 raise ParseError
 
-            jsonText = str(s.rfile.read(length), 'utf-8')
-            if(False is s.postProcess(jsonText, s.processArg)):
-                raise InputError
-
+            payload = str(s.rfile.read(length), 'utf-8')
+            s.postProcess(payload, s.processArg)
+                
             s.__sendResponse(200)
         except NotImplementedError:
             s.__sendResponse(501, "not implemented")
             pass
-        except (ParseError, InputError):
-            s.__sendResponse(400)
+        except ConnectionError as error:
+            s.__sendResponse(503, error);
             pass
+        except (ParseError, DestinationNotFoundError) as error:
+            s.__sendResponse(400, error);
+            pass
+        except InputError as error:
+            s__sendResponse(404, error);
+            pass;
         except:
-            s.__sendResponse(405)
+            s.__sendResponse(405);
             pass
 
     def __init__(s, functionPost, functionGet, argument, * args):

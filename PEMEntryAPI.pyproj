@@ -6,7 +6,7 @@
     <ProjectGuid>fa1a5650-e0b3-47ed-815f-f820d3ccea67</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>ExampleMultiRobotRest.py</StartupFile>
+    <StartupFile>MultiRobotRest.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -14,10 +14,11 @@
     <Name>PEMEntryAPI</Name>
     <RootNamespace>HelloWorld2</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>
-    </CommandLineArguments>
+    <CommandLineArguments>-enable_statistics</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
+    <InterpreterArguments>
+    </InterpreterArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,7 +34,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExampleMain2.py" />
-    <Compile Include="ExampleMultiRobotRest.py">
+    <Compile Include="MultiRobotRest.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExampleRest.py" />
@@ -56,6 +57,21 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RestHandler.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="setup.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlWorker.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="sqWorkerTest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Statistics.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StatisticsTest.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities.py">
@@ -86,7 +102,16 @@
     <Content Include="Configuration\Yoximo.xml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Manifest.in">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="README.md" />
+    <Content Include="Readme.rst">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="setup.cfg">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Schemas\Get.schema.json" />
     <Content Include="Schemas\Post.schema.json">
       <SubType>Code</SubType>
@@ -97,6 +122,7 @@
     <Folder Include="ConfigRest\" />
     <Folder Include="Assets\" />
     <Folder Include="Schemas\" />
+    <Folder Include="UnitTests\" />
     <Folder Include="README\" />
   </ItemGroup>
   <PropertyGroup>

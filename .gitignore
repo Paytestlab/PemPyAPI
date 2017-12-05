@@ -249,3 +249,10 @@ ModelManifest.xml
 /ExampleMain_Lee17112016_Matija.py
 *.pyc
 /Test.py
+/statistics.db
+/Ax_Robot_Integration_layer.egg-info/top_level.txt
+/Ax_Robot_Integration_layer.egg-info/SOURCES.txt
+/Ax_Robot_Integration_layer.egg-info/PKG-INFO
+/Ax_Robot_Integration_layer.egg-info/entry_points.txt
+/Ax_Robot_Integration_layer.egg-info/dependency_links.txt
+/dist/Ax Robot Integration layer-1.3.25.zip
