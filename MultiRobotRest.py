@@ -24,6 +24,19 @@ __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
+__major = 1
+__minor = 1
+__service = 0
+__build = 32
+
+__intro__= (
+    "AX Robot Integration Layer\n"
+    "Version {}.{}.{}.{}\n" 
+    "Copyright (C) {} - {} Abrantix AX\n"
+    "####################################################".format(__major, __minor, __service, __build, 2015, 2017)
+    )
+         
+
 from PinRobot import PinRobot
 from RestfulThreaded import RESTfulThreadedServer
 from os.path import join
@@ -61,21 +74,30 @@ def main():
     else:
         logging.basicConfig(format=FORMAT, level=logging.WARNING);
 
+
+    print(__intro__);
+
     try:
         ConfigurationList = ParseXmlRobotConfiguration.parseXml(config)
         RobotList = {}
+        error = 0;
+
+        print("Initialiasing...");
 
         for key, value in ConfigurationList.items():
              robot = PinRobot(enable_statistics)
              if(False is robot.InitializeTerminal(join(_path, value.Layout))):
+                error += 1;
                 logging.warning(value.Layout + ": Initialization failed, skip...")
                 continue
 
              if(False is robot.InitializeConnection(value.IP, int(value.Port))):
+                error += 1;
                 logging.warning(value.Layout + ": robot not reachable, skip...")
                 continue
 
              if (False is robot.SendCommand("HOME")):
+                 error += 1;
                  logging.warning(value.Layout + ": robot calibration could not be executed");
 
              robot.CloseConnection();
@@ -86,6 +108,8 @@ def main():
         if(not RobotList):
             logging.critical(" Fatal error, robot list is empty...")
             raise
+
+        print("Initialization success! warrnings:{}".format(error));
 
         server = RESTfulThreadedServer(doPostWork, doGetWork, RobotList, port)
         server.start()
