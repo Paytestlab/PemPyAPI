@@ -3,6 +3,7 @@
 import socket
 from socket import error as SocketError
 import errno
+import logging
 
 class PEMSocket(object):
      def __init__(self, IP, Port):
@@ -16,9 +17,11 @@ class PEMSocket(object):
             receive = self.Connection.recv(self.BUFFER_SIZE)
             self.Connection.settimeout(10)
          except SocketError as e:
-            print("could not connect("+ str(e.errno) + ")...")
+            logging.error("could not connect({}) to {}:{}. Socket already in use".format(str(e.errno), self.IP, self.Port))
             return False
-
+         except Exception as e:
+            logging.error("could not connect({}) to {}:{}".format(str(e.errno), self.IP, self.Port))
+            return False;
          if("Smoothie" in receive.decode("utf-8")):
             return True
          return False
@@ -29,15 +32,16 @@ class PEMSocket(object):
          try:
             self.Connection.send(data)
          except SocketError as e:
-             print("sending of "+ str(len(Message)) + "bytes was not succesful")
+             logging.warning("sending of "+ str(len(Message)) + "bytes was not succesful")
              return False
+
          return True
 
      def receive(self):
          try:
              response = self.Connection.recv(self.BUFFER_SIZE).decode("utf-8")
          except SocketError as e:
-             print("could not receive any data(" + str(e.errno) + ")")
+             logging.warning("could not receive any data(" + str(e.errno) + ")")
              return ''
          return response
 
@@ -47,7 +51,7 @@ class PEMSocket(object):
               response = self.Connection.recv(self.BUFFER_SIZE).decode("utf-8")
               self.Connection.settimeout(10)
           except SocketError as e:
-             print("could not receive any data(" + str(e.errno) + ")")
+             logging.warning("could not receive any data(" + str(e.errno) + ")")
              return ''
           return response
         

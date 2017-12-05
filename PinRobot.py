@@ -24,7 +24,7 @@ class PinRobot(object):
         return self.socket.connect()
 
     def Connect(self):
-        self.socket.connect();
+        return self.socket.connect();
 
     def CloseConnection(self):
         try:
@@ -52,22 +52,19 @@ class PinRobot(object):
 
     def SendCommand(self, action):
         Result = False
-        self.mutex.acquire()
-      
         try:
-           actionValue = self.terminalList[action].Value
-           self.socket.send(actionValue)
+           actionValue = self.terminalList[action].Value;
+           self.socket.send(actionValue);
                          
-           Result = self.__ResponseEvaluate(self.socket.receive())
-           shouldPress = Result and self.terminalList[action].IsButton
+           Result = self.__ResponseEvaluate(self.socket.receive());
+           shouldPress = Result and self.terminalList[action].IsButton;
 
            if(shouldPress):
-              Result = self.__pressButton()
+              Result = self.__pressButton();
         except:
             pass
-        finally:
-            self.mutex.release()
-        return Result
+
+        return Result;
 
     def SendString(self, command):
         self.socket.send(command)
@@ -87,7 +84,7 @@ class PinRobot(object):
             "M42", 
             "G4 P30", 
             "M43", 
-            "G4 P1000"
+            "G4 P900"
             ]
 
         fullCommand =  "\r\n".join(pressButtonCommands) + "\r\n";

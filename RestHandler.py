@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 from Exception import NotImplementedError, ParseError, InputError, ConnectionError, DestinationNotFoundError, Error
+import logging
 
 class HandleRestRequest(BaseHTTPRequestHandler):
     def __sendResponse(s, code, message=None):
@@ -48,6 +49,10 @@ class HandleRestRequest(BaseHTTPRequestHandler):
         except Error as e:
             s.__sendResponse(405, e);
             pass
+
+    def log_message(self, format, *args):
+        logging.info(format, * args);
+        return 
 
     def __init__(s, functionPost, functionGet, argument, * args):
         s.postProcess = functionPost

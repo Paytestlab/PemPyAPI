@@ -32,26 +32,34 @@ from Exception import Error, ConnectionError, InputError, ParseError, Destinatio
 import json
 import argparse
 from Statistics import Statistics
+import logging
 
 
 def main():
+
+    FORMAT = "%(asctime)-15s %(levelname)s: %(message)s"
     _path = "ConfigRest"
 
     parser = argparse.ArgumentParser(description='PIN Robot Rest API')
-    parser.add_argument('-config','-configfile", help="path to entry configuration xml',required=False)
-    parser.add_argument('-port','-port", help="port for the http listener',required=False)
-    parser.add_argument('-enable_statistics', nargs='?', const=True, default=False, help="enable tracking of the button press.", required=False)
+    parser.add_argument("-c", "--config", default=join("Assets", "EntryConfiguration.xml"),help="path to entry configuration xml", required=False)
+    parser.add_argument("-p", "--port", default='8000', help="port for the http listener", required=False)
+    parser.add_argument("--enable-statistics", nargs='?', const=True, default=False, help="enable tracking of the button press", required=False)
+    parser.add_argument("-v", "--verbose", nargs='?', const=True, default=False, help="increase verbosity to the INFO level", required=False)
+    parser.add_argument("-d", "--debug", nargs='?', const=True, default=False, help="increase verbosity to the DEBUG level", required=False)
     args = (parser.parse_args())
 
-    if(None is args.config):
-        config = join("Assets", "EntryConfiguration.xml")
-        port = 8000
-
-    else:
-        config = args.config
-        port = args.port
+  
+    config = args.config
+    port = int(args.port);
         
     enable_statistics=args.enable_statistics
+
+    if(args.debug):
+        logging.basicConfig(format=FORMAT, level=logging.DEBUG);
+    elif(args.verbose):
+        logging.basicConfig(format=FORMAT, level=logging.INFO);
+    else:
+        logging.basicConfig(format=FORMAT, level=logging.WARNING);
 
     try:
         ConfigurationList = ParseXmlRobotConfiguration.parseXml(config)
@@ -60,16 +68,15 @@ def main():
         for key, value in ConfigurationList.items():
              robot = PinRobot(enable_statistics)
              if(False is robot.InitializeTerminal(join(_path, value.Layout))):
-                print(value.Layout + ": Initialization failed, skip...")
+                logging.warning(value.Layout + ": Initialization failed, skip...")
                 continue
 
              if(False is robot.InitializeConnection(value.IP, int(value.Port))):
-                print(value.Layout + ": robot not reachable, skip...")
+                logging.warning(value.Layout + ": robot not reachable, skip...")
                 continue
 
-
              if (False is robot.SendCommand("HOME")):
-                 print(value.Layout + ": robot command could not be executed");
+                 logging.warning(value.Layout + ": robot calibration could not be executed");
 
              robot.CloseConnection();
 
@@ -77,7 +84,7 @@ def main():
              RobotList.update({key:robot})
 
         if(not RobotList):
-            print(" Fatal error, robot list is empty...")
+            logging.critical(" Fatal error, robot list is empty...")
             raise
 
         server = RESTfulThreadedServer(doPostWork, doGetWork, RobotList, port)
@@ -93,37 +100,57 @@ def str2bool(v):
         return False
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
-   
 
-def doPostWork(jsonString, robotList):
+#------------------------------------------------------------------------------------------------------------------------#
+
+def executeCommands(robot, commands, key):
 
     try:
-        try:
-            j = json.loads(jsonString)
-        except json.JSONDecodeError:
-            raise ParseError("", "json could not be parsed");
-
-        key = j['id'];
-        if(key not in robotList):
-            raise DestinationNotFoundError("", key + ": robot not found");
-    
-        if(False is robotList[key].Connect()):
+        robot.mutex.acquire();
+        if(False is robot.Connect()):
+            logging.error("robot '{}' is unreachable".format(key));
             raise ConnectionError("", "could not connect to the robot" + key);
 
-        for command in j["commands"]:
-            if(True is robotList[key].SendCommand(command)):
-                print(key + ": execution of " + command + " was succesful")
-                robotList[key].UpdateTable(key, command)
+        for command in commands:
+            if(True is robot.SendCommand(command)):
+                logging.info("{} execution of {} was succesful".format(key, command));
+                robot.UpdateTable(key, command)
             else:
-                print(key + ": execution of was not succesful (" + command + ")");
+                logging.warning("could not execute '{}' on {}. Abort further execution".format(command, key));
                 raise InputError("", key + ": could not execute " + command); 
-    
     finally:
-         robotList[key].CloseConnection();
-        
+        robot.CloseConnection();
+        robot.mutex.release()
 
+
+#------------------------------------------------------------------------------------------------------------------------#
+
+def getRequest(jsonString):
+    try:
+        request = json.loads(jsonString)
+    except json.JSONDecodeError:
+        logging.error("json could not be loaded:\n" + jsonString)
+        raise ParseError("", "json could not be parsed");
+
+    return request
+
+#------------------------------------------------------------------------------------------------------------------------#   
+
+def doPostWork(jsonString, robotList):
     
+    request = getRequest(jsonString);
+
+    key = request['id'];
+    if(key not in robotList):
+        logging.error("robot {} not in list".format(key))
+        raise DestinationNotFoundError("" , key + ": robot not found");
+
+    executeCommands(robotList[key], request['commands'], key);
+        
     return True
+
+
+#------------------------------------------------------------------------------------------------------------------------#
         
 def doGetWork(robotList):
     l = list(robotList.keys())
