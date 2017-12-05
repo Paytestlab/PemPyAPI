@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler
-from Exception import NotImplementedError, ParseError, InputError, ConnectionError, DestinationNotFoundError
+from Exception import NotImplementedError, ParseError, InputError, ConnectionError, DestinationNotFoundError, Error
 
 class HandleRestRequest(BaseHTTPRequestHandler):
     def __sendResponse(s, code, message=None):
@@ -45,8 +45,8 @@ class HandleRestRequest(BaseHTTPRequestHandler):
         except InputError as error:
             s.__sendResponse(404, error);
             pass;
-        except:
-            s.__sendResponse(405);
+        except Error as e:
+            s.__sendResponse(405, e);
             pass
 
     def __init__(s, functionPost, functionGet, argument, * args):

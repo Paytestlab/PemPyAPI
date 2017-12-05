@@ -71,27 +71,30 @@ class PinRobot(object):
 
     def SendString(self, command):
         self.socket.send(command)
-        return True
-        #self.__ResponseEvaluate(self.socket.receive())
+        #return True
+        return self.__ResponseEvaluate(self.socket.receive())
 
+    def ReceiveResponse(self):
+        self.__ResponseEvaluate(self.socket.receive())
 
     def __pressButton(self):
         """press button function"""
-        try:
        
-            #There are 2 possibilities to control the speed of the button press:
-            #1. Remove the "G4 S1.1" and listen to Smoothie responses in the function SendString.
-            #2. Try to reduce the value in the command S1.1. The value 1.1 is in seconds. The lower the value (in seconds), the faster the button will be pressed.
-            pressButtonCommands = ["M42", "G4 P30", "M43", "G4 S1.0"]
+        #There are 2 possibilities to control the speed of the button press:
+        #1. Remove the "G4 S1.1" and listen to Smoothie responses in the function SendString.
+        #2. Try to reduce the value in the command S1.1. The value 1.1 is in seconds. The lower the value (in seconds), the faster the button will be pressed.
+        pressButtonCommands = [
+            "M42", 
+            "G4 P30", 
+            "M43", 
+            "G4 P1000"
+            ]
 
-            for command in pressButtonCommands:
-                fullCommand = command + "\r\n"
-                if(self.SendString(fullCommand) is False):
-                    raise
-            return True
+        fullCommand =  "\r\n".join(pressButtonCommands) + "\r\n";
+           
+        return self.SendString(fullCommand)
 
-        except:
-            return False
+       
             
             
         
