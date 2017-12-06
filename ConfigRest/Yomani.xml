@@ -80,7 +80,7 @@
   <!-- Card Insert -->
   <Position>
     <CanonicalName>INSERT CARD</CanonicalName>
-    <Value>G0 Z0</Value>
+    <Value>G28 Z0</Value>
     <isButton>0</isButton>
   </Position>
 

@@ -2,6 +2,7 @@ from ParseXml import XmlParser
 from Communication import PEMSocket
 import threading
 import Statistics
+import logging
 
 class PinRobot(object):
     """Initializes the robot class"""
@@ -33,6 +34,7 @@ class PinRobot(object):
             pass;
 
     def __ResponseEvaluate(self, response):
+        logging.debug("received from robot {}".format(response.replace('\r\n', '')))
         Result = False
         if("ok" in response):
            Result = True
@@ -53,7 +55,12 @@ class PinRobot(object):
     def SendCommand(self, action):
         Result = False
         try:
+
+           if(not self.terminalList[action].IsButton):
+               self.__increaseZCurrent();
+                             
            actionValue = self.terminalList[action].Value;
+           logging.debug("send to robot({}):".format(actionValue.replace('\r\n', '')))
            self.socket.send(actionValue);
                          
            Result = self.__ResponseEvaluate(self.socket.receive());
@@ -61,14 +68,17 @@ class PinRobot(object):
 
            if(shouldPress):
               Result = self.__pressButton();
+           else:
+              self.__reduceZCurrent();
         except:
             pass
 
         return Result;
 
     def SendString(self, command):
+        logging.debug("send to robot({}):".format(command.replace('\r\n', '')))
         self.socket.send(command)
-        #return True
+
         return self.__ResponseEvaluate(self.socket.receive())
 
     def ReceiveResponse(self):
@@ -92,7 +102,13 @@ class PinRobot(object):
         return self.SendString(fullCommand)
 
        
-            
+    def __increaseZCurrent(self):
+        increaseCurrent = "M907 Z1.5\r\n"
+        return self.SendString(increaseCurrent)
+
+    def __reduceZCurrent(self):
+        reduceCurrent = "M907 Z0.5\r\n"
+        return self.SendString(reduceCurrent)
             
         
 

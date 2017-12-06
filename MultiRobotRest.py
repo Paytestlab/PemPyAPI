@@ -34,7 +34,6 @@ import argparse
 from Statistics import Statistics
 import logging
 
-
 __major__ = 1
 __minor__ = 1
 __service__ = 0
