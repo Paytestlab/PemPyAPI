@@ -24,19 +24,6 @@ __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
-__major = 1
-__minor = 1
-__service = 0
-__build = 32
-
-__intro__= (
-    "AX Robot Integration Layer\n"
-    "Version {}.{}.{}.{}\n" 
-    "Copyright (C) {} - {} Abrantix AX\n"
-    "####################################################".format(__major, __minor, __service, __build, 2015, 2017)
-    )
-         
-
 from PinRobot import PinRobot
 from RestfulThreaded import RESTfulThreadedServer
 from os.path import join
@@ -48,19 +35,25 @@ from Statistics import Statistics
 import logging
 
 
+__major__ = 1
+__minor__ = 1
+__service__ = 0
+__build__ = 32
+__path = "ConfigRest"
+
+__intro__= (
+    "AX Robot Integration Layer\n"
+    "Version {}.{}.{}.{}\n" 
+    "Copyright (C) {} - {} Abrantix AG\n"
+    "####################################################".format(__major__, __minor__, __service__, __build__, 2015, 2017)
+    )
+         
+
 def main():
 
     FORMAT = "%(asctime)-15s %(levelname)s: %(message)s"
-    _path = "ConfigRest"
 
-    parser = argparse.ArgumentParser(description='PIN Robot Rest API')
-    parser.add_argument("-c", "--config", default=join("Assets", "EntryConfiguration.xml"),help="path to entry configuration xml", required=False)
-    parser.add_argument("-p", "--port", default='8000', help="port for the http listener", required=False)
-    parser.add_argument("--enable-statistics", nargs='?', const=True, default=False, help="enable tracking of the button press", required=False)
-    parser.add_argument("-v", "--verbose", nargs='?', const=True, default=False, help="increase verbosity to the INFO level", required=False)
-    parser.add_argument("-d", "--debug", nargs='?', const=True, default=False, help="increase verbosity to the DEBUG level", required=False)
-    args = (parser.parse_args())
-
+    args = EnableAndParseArguments();
   
     config = args.config
     port = int(args.port);
@@ -86,22 +79,10 @@ def main():
 
         for key, value in ConfigurationList.items():
              robot = PinRobot(enable_statistics)
-             if(False is robot.InitializeTerminal(join(_path, value.Layout))):
-                error += 1;
-                logging.warning(value.Layout + ": Initialization failed, skip...")
+
+             if(False is RobotInitialisation(robot, value)):
+                error +=1;
                 continue
-
-             if(False is robot.InitializeConnection(value.IP, int(value.Port))):
-                error += 1;
-                logging.warning(value.Layout + ": robot not reachable, skip...")
-                continue
-
-             if (False is robot.SendCommand("HOME")):
-                 error += 1;
-                 logging.warning(value.Layout + ": robot calibration could not be executed");
-
-             robot.CloseConnection();
-
 
              RobotList.update({key:robot})
 
@@ -109,26 +90,56 @@ def main():
             logging.critical(" Fatal error, robot list is empty...")
             raise
 
-        print("Initialization success! warrnings:{}".format(error));
+        print("Initialization success! Warnings:{}".format(error));
 
-        server = RESTfulThreadedServer(doPostWork, doGetWork, RobotList, port)
-        server.start()
-        server.waitForThread()
+        StartRestServer(doPostWork, doGetWork, RobotList, port);
     except Error as e:
         print(e);
 
-def str2bool(v):
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
-        return False
-    else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
+#------------------------------------------------------------------------------------------------------------------------#
+
+def EnableAndParseArguments():
+    parser = argparse.ArgumentParser(description="AX Robot Integration Layer v{}.{}.{}".format(__major__, __minor__, __service__))
+    parser.add_argument("-c", "--config", default=join("Assets", "EntryConfiguration.xml"),help="path to entry configuration xml", required=False)
+    parser.add_argument("-p", "--port", default='8000', help="port for the http listener", required=False)
+    parser.add_argument("--enable-statistics", nargs='?', const=True, default=False, help="enable tracking of the button press", required=False)
+    parser.add_argument("-v", "--verbose", nargs='?', const=True, default=False, help="increase verbosity to the INFO level", required=False)
+    parser.add_argument("-d", "--debug", nargs='?', const=True, default=False, help="increase verbosity to the DEBUG level", required=False)
+
+    return parser.parse_args();
+
+#------------------------------------------------------------------------------------------------------------------------#
+
+def RobotInitialisation(robot, value):
+    """Initializes the robot, perfoms home"""
+    if(False is robot.InitializeTerminal(join(__path, value.Layout))):
+        logging.warning(value.Layout + ": Initialization failed, skip...")
+        return False;
+
+    if(False is robot.InitializeConnection(value.IP, int(value.Port))):
+        logging.warning(value.Layout + ": robot not reachable, skip...")
+        return False;
+
+    if (False is robot.SendCommand("HOME")):
+        logging.warning(value.Layout + ": robot calibration could not be executed, ignore...");
+
+    robot.CloseConnection();
+
+    return True
+
+#------------------------------------------------------------------------------------------------------------------------#
+
+def StartRestServer(postWork, getWork, robotList, port):
+    server = RESTfulThreadedServer(postWork, getWork, robotList, port)
+    server.start()
+    server.waitForThread()
 
 #------------------------------------------------------------------------------------------------------------------------#
 
 def executeCommands(robot, commands, key):
-
+    """Execute a request, protected by a lock. Every request on a single robot 
+    must be processed till the end before the next may be processed
+    """
     try:
         robot.mutex.acquire();
         if(False is robot.Connect()):
