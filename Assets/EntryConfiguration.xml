@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <RobotConfiguration>
-  <Robot id="miura">
-    <IpAddress>127.0.0.1</IpAddress>
-    <IpPort>8005</IpPort>
-    <Layout>Miura-010.xml</Layout>
+ 
+  <Robot id="Ingenico Desk3500">
+    <IpAddress>10.30.10.99</IpAddress>
+    <IpPort>23</IpPort>
+    <Layout>Ingenico-Desk3500.xml</Layout>
   </Robot>
-  <Robot id="yoximo">
-    <IpAddress>127.0.0.1</IpAddress>
-    <IpPort>8006</IpPort>
-    <Layout>Yoximo.xml</Layout>
-  </Robot>
-  <Robot id="verifone_VX820">
-    <IpAddress>127.0.0.1</IpAddress>
-    <IpPort>8007</IpPort>
-    <Layout>Verifone-VX820.xml</Layout>
-  </Robot>
-  <Robot id="ingenico_IPP350.xml">
+ 
+  <!--<Robot id="Ingenico">
+    <IpAddress>10.30.10.142</IpAddress>
+    <IpPort>23</IpPort>
+    <Layout>Yomani.xml</Layout>
+  </Robot>-->
+  
+  <!--<Robot id="ingenico_IPP350.xml">
     <IpAddress>127.0.0.1</IpAddress>
     <IpPort>8008</IpPort>
     <Layout>Ingenico-IPP350.xml</Layout>
-  </Robot>
+  </Robot>-->
 </RobotConfiguration>
 
 

@@ -6,8 +6,9 @@ import logging
 
 class PinRobot(object):
     """Initializes the robot class"""
-    def __init__(self, enable_statistics=False):
+    def __init__(self, enable_statistics=False, empower_card=False):
         self.mutex = threading.Lock()
+        self.empower_card = empower_card;
         if(enable_statistics is True):
             self.statistics = Statistics.Statistics() 
         else:
@@ -94,7 +95,7 @@ class PinRobot(object):
             "M42", 
             "G4 P30", 
             "M43", 
-            "G4 P900"
+            "G4 P500"
             ]
 
         fullCommand =  "\r\n".join(pressButtonCommands) + "\r\n";
@@ -103,13 +104,21 @@ class PinRobot(object):
 
        
     def __increaseZCurrent(self):
-        increaseCurrent = "M907 Z1.5\r\n"
-        return self.SendString(increaseCurrent)
+        """Increases the current for Z Axis if enabled"""
+        if(self.empower_card is True):
+            increaseCurrent = "M907 Z1.3\r\n"
+            return self.SendString(increaseCurrent)
+        else:
+            return True;
+
 
     def __reduceZCurrent(self):
-        reduceCurrent = "M907 Z0.5\r\n"
-        return self.SendString(reduceCurrent)
-            
+        """Decreases the current for Z Axis"""
+        if(self.empower_card is True):
+            reduceCurrent = "M907 Z0.5\r\n"
+            return self.SendString(reduceCurrent)
+        else:
+            return True;
         
 
 

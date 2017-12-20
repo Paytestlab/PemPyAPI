@@ -35,9 +35,9 @@ from Statistics import Statistics
 import logging
 
 __major__ = 1
-__minor__ = 1
+__minor__ = 2
 __service__ = 0
-__build__ = 32
+__build__ = 33
 __path = "ConfigRest"
 
 __intro__= (
@@ -54,10 +54,11 @@ def main():
 
     args = EnableAndParseArguments();
   
-    config = args.config
+    config = args.config;
     port = int(args.port);
         
-    enable_statistics=args.enable_statistics
+    enable_statistics=args.enable_statistics;
+    empower = args.empower_card;
 
     if(args.debug):
         logging.basicConfig(format=FORMAT, level=logging.DEBUG);
@@ -70,23 +71,23 @@ def main():
     print(__intro__);
 
     try:
-        ConfigurationList = ParseXmlRobotConfiguration.parseXml(config)
-        RobotList = {}
+        ConfigurationList = ParseXmlRobotConfiguration.parseXml(config);
+        RobotList = {};
         error = 0;
 
         print("Initialiasing...");
 
         for key, value in ConfigurationList.items():
-             robot = PinRobot(enable_statistics)
+             robot = PinRobot(enable_statistics, empower);
 
              if(False is RobotInitialisation(robot, value)):
                 error +=1;
                 continue
 
-             RobotList.update({key:robot})
+             RobotList.update({key:robot});
 
         if(not RobotList):
-            logging.critical(" Fatal error, robot list is empty...")
+            logging.critical(" Fatal error, robot list is empty...");
             raise
 
         print("Initialization success! Warnings:{}".format(error));
@@ -100,10 +101,11 @@ def main():
 def EnableAndParseArguments():
     parser = argparse.ArgumentParser(description="AX Robot Integration Layer v{}.{}.{}".format(__major__, __minor__, __service__))
     parser.add_argument("-c", "--config", default=join("Assets", "EntryConfiguration.xml"),help="path to entry configuration xml", required=False)
-    parser.add_argument("-p", "--port", default='8000', help="port for the http listener", required=False)
-    parser.add_argument("--enable-statistics", nargs='?', const=True, default=False, help="enable tracking of the button press", required=False)
-    parser.add_argument("-v", "--verbose", nargs='?', const=True, default=False, help="increase verbosity to the INFO level", required=False)
-    parser.add_argument("-d", "--debug", nargs='?', const=True, default=False, help="increase verbosity to the DEBUG level", required=False)
+    parser.add_argument("-p", "--port", default='8000', help="port for the http listener, default is 8000", required=False)
+    parser.add_argument("--enable-statistics", nargs='?', const=True, default=False, help="enable tracking of the button press to the local DB", required=False)
+    parser.add_argument("-v", "--verbose", nargs='?', const=True, default=False, help="increase trace verbosity to the INFO level", required=False)
+    parser.add_argument("-d", "--debug", nargs='?', const=True, default=False, help="increase trace verbosity to the DEBUG level", required=False)
+    parser.add_argument("--empower-card", nargs='?', const=True, default=False, help="increase the current on the card for the terminals with tighter card reader", required=False)
 
     return parser.parse_args();
 

@@ -82,6 +82,7 @@
     <Content Include="Assets\EntryConfiguration.xml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="ConfigRest\Ingenico-Desk3500.xml" />
     <Content Include="ConfigRest\Ingenico-IWL250.xml" />
     <Content Include="ConfigRest\Miura-010.xml">
       <SubType>Code</SubType>
