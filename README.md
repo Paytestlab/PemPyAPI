@@ -8,7 +8,7 @@ A little help to control the Pin entry robot.
 
 Please select the apropriate XML file from the folder Configuration.
 
-For the use of the Rest API please use the *ExampleRest.py*
+For the use of the Rest API please use the *MultiRobotRest.py*
 
 ## Hardware settings
 
@@ -16,6 +16,7 @@ For the use of the Rest API please use the *ExampleRest.py*
 
 |Terminal         | X-axis | Y-axis | Finger Length |
 | --------------- |:------:|:------:|:--------------|
+| Ingenico Desk3500 | 2.5 cm | 4.0 cm | 60 mm        |
 | Ingenico IWL250 | 2.8 cm | 3.4 cm | 60 mm         |
 | Ingenico IPP350 | 2.8 cm | 3.4 cm | 60/100 mm        |
 | Verifone-VX820  | 3.2 cm | 1.7 cm | 60/100 mm        |

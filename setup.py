@@ -92,6 +92,7 @@ setup(
     package_data={
         'config': ['ConfigRest/Ingenico-IPP350',
                    'ConfigRest/Ingenico-IWL250',
+                   'ConfigRest/Ingenico-Desk3500',
                    'ConfigRest/Miura-010',
                    'ConfigRest/Verifone-VX820',
                    'ConfigRest/Yomani',
@@ -105,6 +106,7 @@ setup(
     # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
     data_files=[('ConfigRest', ['ConfigRest/Ingenico-IPP350']),
                 ('ConfigRest', ['ConfigRest/Ingenico-IWL250']),
+                ('ConfigRest', ['ConfigRest/Ingenico-Desk3500']),
                 ('ConfigRest', ['ConfigRest/Miura-010']),
                 ('ConfigRest', ['ConfigRest/Verifone-VX820']),
                 ('ConfigRest', ['ConfigRest/Yomani']),
