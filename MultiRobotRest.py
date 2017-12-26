@@ -50,8 +50,6 @@ __intro__= (
 
 def main():
 
-    FORMAT = "%(asctime)-15s %(levelname)s: %(message)s"
-
     args = EnableAndParseArguments();
   
     config = args.config;
@@ -60,13 +58,7 @@ def main():
     enable_statistics=args.enable_statistics;
     empower = args.empower_card;
 
-    if(args.debug):
-        logging.basicConfig(format=FORMAT, level=logging.DEBUG);
-    elif(args.verbose):
-        logging.basicConfig(format=FORMAT, level=logging.INFO);
-    else:
-        logging.basicConfig(format=FORMAT, level=logging.WARNING);
-
+    SetLoggingLevel(args);
 
     print(__intro__);
 
@@ -97,6 +89,19 @@ def main():
         print(e);
 
 #------------------------------------------------------------------------------------------------------------------------#
+def SetLoggingLevel(args):
+    FORMAT = "%(asctime)-15s %(levelname)s: %(message)s";
+
+    if(args.debug):
+        logging.basicConfig(format=FORMAT, level=logging.DEBUG);
+    elif(args.verbose):
+        logging.basicConfig(format=FORMAT, level=logging.INFO);
+    else:
+        logging.basicConfig(format=FORMAT, level=logging.WARNING);
+
+
+
+#------------------------------------------------------------------------------------------------------------------------#
 
 def EnableAndParseArguments():
     parser = argparse.ArgumentParser(description="AX Robot Integration Layer v{}.{}.{}".format(__major__, __minor__, __service__))
@@ -113,18 +118,19 @@ def EnableAndParseArguments():
 
 def RobotInitialisation(robot, value):
     """Initializes the robot, perfoms home"""
-    if(False is robot.InitializeTerminal(join(__path, value.Layout))):
-        logging.warning(value.Layout + ": Initialization failed, skip...")
-        return False;
+    try:
+        if(False is robot.InitializeTerminal(join(__path, value.Layout))):
+            logging.warning(value.Layout + ": Initialization failed, skip...")
+            return False;
 
-    if(False is robot.InitializeConnection(value.IP, int(value.Port))):
-        logging.warning(value.Layout + ": robot not reachable, skip...")
-        return False;
+        if(False is robot.InitializeConnection(value.IP, int(value.Port))):
+            logging.warning(value.Layout + ": robot not reachable, skip...")
+            return False;
 
-    if (False is robot.SendCommand("HOME")):
-        logging.warning(value.Layout + ": robot calibration could not be executed, ignore...");
-
-    robot.CloseConnection();
+        if (False is robot.SendCommand("HOME")):
+            logging.warning(value.Layout + ": robot calibration could not be executed, ignore...");
+    finally:
+        robot.CloseConnection();
 
     return True
 

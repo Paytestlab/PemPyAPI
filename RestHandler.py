@@ -46,8 +46,8 @@ class HandleRestRequest(BaseHTTPRequestHandler):
         except InputError as error:
             s.__sendResponse(404, error);
             pass;
-        except Error as e:
-            s.__sendResponse(405, e);
+        except Error as error:
+            s.__sendResponse(405, error);
             pass
 
     def log_message(self, format, *args):
