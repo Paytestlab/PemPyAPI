@@ -95,7 +95,7 @@ class PinRobot(object):
             "M42", 
             "G4 P30", 
             "M43", 
-            "G4 P500"
+            "G4 P800"
             ]
 
         fullCommand =  "\r\n".join(pressButtonCommands) + "\r\n";
