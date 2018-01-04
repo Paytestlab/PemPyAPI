@@ -37,14 +37,14 @@ import logging
 __major__ = 1
 __minor__ = 2
 __service__ = 0
-__build__ = 33
+__build__ = 34
 __path = "ConfigRest"
 
 __intro__= (
     "AX Robot Integration Layer\n"
     "Version {}.{}.{}.{}\n" 
     "Copyright (C) {} - {} Abrantix AG\n"
-    "####################################################".format(__major__, __minor__, __service__, __build__, 2015, 2017)
+    "{}".format(__major__, __minor__, __service__, __build__, 2015, 2018, "#" * 50)
     )
          
 
@@ -67,7 +67,7 @@ def main():
         RobotList = {};
         error = 0;
 
-        print("Initialiasing...");
+        print("Initialising...");
 
         for key, value in ConfigurationList.items():
              robot = PinRobot(enable_statistics, empower);
@@ -80,9 +80,9 @@ def main():
 
         if(not RobotList):
             logging.critical(" Fatal error, robot list is empty...");
-            raise
+            raise Error;
 
-        print("Initialization success! Warnings:{}".format(error));
+        print("Initialization success! Warnings: {}".format(error));
 
         StartRestServer(doPostWork, doGetWork, RobotList, port);
     except Error as e:
