@@ -69,10 +69,10 @@ def main():
 
         print("Initialising...");
 
-        for key, value in ConfigurationList.items():
+        for key, robotConfiguration in ConfigurationList.items():
              robot = PinRobot(enable_statistics, empower);
 
-             if(False is RobotInitialisation(robot, value)):
+             if(False is RobotInitialisation(robot, robotConfiguration)):
                 error +=1;
                 continue
 
