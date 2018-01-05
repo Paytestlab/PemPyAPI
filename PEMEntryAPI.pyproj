@@ -30,10 +30,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Communication.py" />
-    <Compile Include="ExampleMain.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ExampleMain2.py" />
     <Compile Include="MultiRobotRest.py">
       <SubType>Code</SubType>
     </Compile>
