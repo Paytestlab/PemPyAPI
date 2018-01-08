@@ -4,9 +4,9 @@ A little help to control the Pin entry robot.
 
 ### example usage
 
-*python3 ExampleMain.py*
+*python3 MultiRobotRest.py*
 
-Please select the apropriate XML file from the folder Configuration.
+Please select the apropriate XML file from the folder ConfigurationRest.
 
 For the use of the Rest API please use the *MultiRobotRest.py*
 
