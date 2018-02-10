@@ -6,6 +6,7 @@ import os
 from os import listdir
 from os.path import isfile, join
 import json
+import logging
 
 
 def main():
@@ -13,6 +14,10 @@ def main():
     robot = PinRobot()
     _path = "ConfigRest"
     result = False
+
+    FORMAT = "%(asctime)-15s %(levelname)s: %(message)s";
+
+    logging.basicConfig(format=FORMAT, level=logging.WARNING);
 
     try:
         files = Utilities.get_and_print_conf_list(_path)
@@ -35,7 +40,8 @@ def main():
             raise ConnectionError("InitializeConnection", "Could not connect")
 
         server = RESTfulServer(doPostWork, doGetWork, robot)
-    except (Error):
+    except Error as e:    
+        logging.critical(e)
         pass
 
 def doPostWork(jsonString, Robot):
@@ -43,7 +49,7 @@ def doPostWork(jsonString, Robot):
         
     for command in j["commands"]:
         if(True is Robot.SendCommand(command)):
-            print("post : execution of " + command + " was succesful")
+            logging.INFO("post : execution of " + command + " was succesful")
         else:
             raise    
         

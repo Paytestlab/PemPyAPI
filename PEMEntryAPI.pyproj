@@ -33,7 +33,6 @@
     <Compile Include="MultiRobotRest.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExampleRest.py" />
     <Compile Include="Exception.py">
       <SubType>Code</SubType>
     </Compile>
