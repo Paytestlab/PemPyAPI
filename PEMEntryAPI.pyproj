@@ -91,19 +91,7 @@
     <Content Include="ConfigRest\Verifone-VX820.xml" />
     <Content Include="ConfigRest\Ingenico-IPP350.xml" />
     <Content Include="ConfigRest\Yomani.xml" />
-    <Content Include="Configuration\Ingenico-IPP350.xml" />
-    <Content Include="Configuration\Ingenico-IWL250.xml" />
-    <Content Include="Configuration\Miura-010.xml" />
-    <Content Include="Configuration\VeriFone-MX915.xml" />
-    <Content Include="Configuration\VeriFone-MX925.xml" />
-    <Content Include="Configuration\VeriFone-VX820.xml" />
-    <Content Include="Configuration\Yomani.xml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="ConfigRest\Yoximo.xml" />
-    <Content Include="Configuration\Yoximo.xml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Manifest.in">
       <SubType>Code</SubType>
     </Content>
@@ -120,7 +108,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Configuration\" />
     <Folder Include="ConfigRest\" />
     <Folder Include="Assets\" />
     <Folder Include="Schemas\" />
