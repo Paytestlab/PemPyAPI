@@ -31,7 +31,7 @@ For the use of the Rest API please use the *MultiRobotRest.py*
 | Worldline Yomani| 1.3 cm | 2.8 cm | 100 mm        |
 | Worldline Yoximo| 3.2 cm | 3.3 cm | 60/100 mm     |
 
-* Second edition, the base plate with magstripe swipe ability.
+\* Second edition, the base plate with magstripe swipe ability.
 
 ## Presentation
 
