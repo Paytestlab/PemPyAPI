@@ -77,6 +77,11 @@
     <Content Include="Assets\EntryConfiguration.xml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="ConfigRest\VeriFone-MX915.xml" />
+    <Content Include="ConfigRest\VeriFone-MX925.xml" />
+    <Content Include="ConfigRest\Verifone-P400.xml" />
+    <Content Include="ConfigRest\Ingenico-IPP320.xml" />
+    <Content Include="ConfigRest\Ingenico-Move5000.xml" />
     <Content Include="ConfigRest\Ingenico-Desk3500.xml" />
     <Content Include="ConfigRest\Ingenico-IWL250.xml" />
     <Content Include="ConfigRest\Miura-020.xml" />
