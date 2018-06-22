@@ -33,11 +33,13 @@ import json
 import argparse
 from Statistics import Statistics
 import logging
+from Mux.CardMultiplexer import CardMultiplexer;
+
 
 __major__ = 1
-__minor__ = 3
+__minor__ = 4
 __service__ = 0
-__build__ = 35
+__build__ = 36
 __path = "ConfigRest"
 
 __intro__= (
@@ -63,28 +65,37 @@ def main():
     print(__intro__);
 
     try:
-        ConfigurationList = ParseXmlRobotConfiguration.parseXml(config);
-        RobotList = {};
+        (robot_conf_list, mux_conf_list) = ParseXmlRobotConfiguration.parseXml(config);
+        device_list = {};
         error = 0;
 
         print("Initialising...");
 
-        for key, robotConfiguration in ConfigurationList.items():
+        for key, robotConfiguration in robot_conf_list.items():
              robot = PinRobot(enable_statistics, empower);
 
              if(False is RobotInitialisation(robot, robotConfiguration)):
                 error +=1;
                 continue
 
-             RobotList.update({key:robot});
+             device_list.update({key:robot});
 
-        if(not RobotList):
-            logging.critical(" Fatal error, robot list is empty...");
+        for key, mux_configuration in mux_conf_list.items():
+            mux = CardMultiplexer(mux_configuration.mac_address, enable_statistics);
+
+            if(False is mux_initialization(mux)):
+                error +=1
+                continue;
+
+            device_list.update({key:mux});
+
+        if(not device_list):
+            logging.critical(" Fatal error, device list is empty...");
             raise Error;
 
         print("Initialization success! Warnings: {}".format(error));
 
-        StartRestServer(doPostWork, doGetWork, RobotList, port);
+        StartRestServer(doPostWork, doGetWork, device_list, port);
     except Error as e:
         print(e);
 
@@ -118,7 +129,21 @@ def EnableAndParseArguments():
 
 #------------------------------------------------------------------------------------------------------------------------#
 
-def RobotInitialisation(robot, value):
+def mux_initialization(mux : CardMultiplexer):
+    if(False is mux.device_lookup()):
+        logging.warning("Multiplexer not present");
+        return False;
+
+    if(False is mux.initialize_device(join(__path, "CardMultiplexer.xml"))):
+        logging.warning(value.Layout + ": Initialization of multiplexer failed, skip...");
+        return False;
+    return True;
+
+#------------------------------------------------------------------------------------------------------------------------#
+
+
+
+def RobotInitialisation(robot : PinRobot, value):
     """Initializes the robot, perfoms home"""
     try:
         if(False is robot.InitializeTerminal(join(__path, value.Layout))):

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<RobotConfiguration>
+<DeviceConfiguration>
  
   <Robot id="Miura 020">
-    <IpAddress>10.30.10.56</IpAddress>
+    <IpAddress>10.30.10.61</IpAddress>
     <IpPort>23</IpPort>
-    <Layout>Miura-020.xml</Layout>
+    <Layout>Yoximo.xml</Layout>
   </Robot>
+
+  <CardMultiplexer id="Toaster 1">
+    <MacAddress>1407E000033F</MacAddress>
+  </CardMultiplexer>
  
   <!--<Robot id="Ingenico">
     <IpAddress>10.30.10.142</IpAddress>
@@ -18,6 +22,6 @@
     <IpPort>8008</IpPort>
     <Layout>Ingenico-IPP350.xml</Layout>
   </Robot>-->
-</RobotConfiguration>
+</DeviceConfiguration>
 
 

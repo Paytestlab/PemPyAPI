@@ -1,18 +1,14 @@
-from ParseXml import XmlParser
-from Communication import PEMSocket
-import threading
-import Statistics
+from ParseXml import XmlParser;
+from Communication import PEMSocket;
+from DeviceBase import DeviceBase;
 import logging
 
-class PinRobot(object):
+class PinRobot(DeviceBase):
     """Initializes the robot class"""
     def __init__(self, enable_statistics=False, empower_card=False):
-        self.mutex = threading.Lock()
+        DeviceBase.__init__(self, enable_statistics);
         self.empower_card = empower_card;
-        if(enable_statistics is True):
-            self.statistics = Statistics.Statistics() 
-        else:
-            self.statistics = None
+        
 
     def InitializeTerminal(self, Filename):
         self.terminalList = XmlParser.parseXml(Filename)
@@ -49,9 +45,7 @@ class PinRobot(object):
 
         return Result
 
-    def UpdateTable(self, id, action):
-        if(self.statistics is not None):
-            self.statistics.insert(id, action, self.terminalList[action].Value)
+
 
     def SendCommand(self, action):
         Result = False

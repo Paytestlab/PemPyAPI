@@ -13,6 +13,12 @@ class RobotConfiguration(object):
         self.Layout = Layout
 
 
+class MuxConfiguration(object):
+    def __init__(self, Id, mac_address):
+        self.Id = Id;
+        self.mac_address = mac_address;
+
+
 class ParseXmlRobotConfiguration(object):
     def parseXml(XmlFilename):
         try:
@@ -27,7 +33,7 @@ class ParseXmlRobotConfiguration(object):
         positions = collection.getElementsByTagName("Robot")
 
         #create the dictionary
-        RobotList = {}
+        robot_list = {}
 
         # Save detail of each button.
         for position in positions:
@@ -36,9 +42,18 @@ class ParseXmlRobotConfiguration(object):
            IpPort = position.getElementsByTagName('IpPort')[0]
            Layout = position.getElementsByTagName('Layout')[0]
            robot = RobotConfiguration(Id, Ip.childNodes[0].data, IpPort.childNodes[0].data, Layout.childNodes[0].data)
-           RobotList.update({Id:robot})
+           robot_list.update({Id:robot})
 
-        return RobotList
+
+        muxs = collection.getElementsByTagName("CardMultiplexer");
+        mux_list = {};
+        for mux in muxs:
+            id = mux.getAttribute('id');
+            mac_address = mux.getElementsByTagName('MacAddress')[0];
+            mux_configuration = MuxConfiguration(Id, mac_address.childNodes[0].data);
+            mux_list.update({id:mux_configuration});
+
+        return (robot_list, mux_list);
 
    
 

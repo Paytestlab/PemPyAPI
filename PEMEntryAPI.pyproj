@@ -30,10 +30,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Communication.py" />
+    <Compile Include="DeviceBase.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MultiRobotRest.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Exception.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mux\AxUDPCommand.py" />
+    <Compile Include="Mux\AxUDPCommandError.py" />
+    <Compile Include="Mux\AxUDPCommandSender.py" />
+    <Compile Include="Mux\AxUDPCommandSenderManager.py" />
+    <Compile Include="Mux\AxUDPMessage.py" />
+    <Compile Include="Mux\CardMultiplexer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mux\InfoMessage.py" />
+    <Compile Include="Mux\Interfaces.py" />
+    <Compile Include="Mux\Test.py" />
+    <Compile Include="Mux\UDPHelper.py" />
+    <Compile Include="Mux\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ParseXml.py">
@@ -91,6 +109,7 @@
     <Content Include="ConfigRest\Verifone-VX820.xml" />
     <Content Include="ConfigRest\Ingenico-IPP350.xml" />
     <Content Include="ConfigRest\Yomani.xml" />
+    <Content Include="ConfigRest\CardMultiplexer.xml" />
     <Content Include="ConfigRest\Yoximo.xml" />
     <Content Include="Manifest.in">
       <SubType>Code</SubType>
@@ -110,6 +129,7 @@
   <ItemGroup>
     <Folder Include="ConfigRest\" />
     <Folder Include="Assets\" />
+    <Folder Include="Mux\" />
     <Folder Include="Schemas\" />
     <Folder Include="UnitTests\" />
     <Folder Include="README\" />
