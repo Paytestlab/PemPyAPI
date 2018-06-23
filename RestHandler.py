@@ -37,10 +37,10 @@ class HandleRestRequest(BaseHTTPRequestHandler):
         except NotImplementedError:
             s.__sendResponse(501, "not implemented")
             pass
-        except ConnectionError as error:
+        except (ConnectionError, DestinationNotFoundError) as error:
             s.__sendResponse(503, error);
             pass
-        except (ParseError, DestinationNotFoundError) as error:
+        except (ParseError) as error:
             s.__sendResponse(400, error);
             pass
         except InputError as error:
