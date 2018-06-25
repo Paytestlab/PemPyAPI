@@ -51,12 +51,12 @@ class CardMultiplexer(DeviceBase):
             return False
         return True
 
-    def SendCommand(self, action):
+    def send_command(self, action):
         Result = False
         try:
-           actionValue = int(self.mux_layout[action].Value);
+           action_value = int(self.mux_layout[action].Value);
            send_to = self.device.get_sender_for_device(self.mac_address);
-           Result = send_to.set_port(actionValue);
+           Result = send_to.set_port(action_value);
         except KeyError as e:
             pass;
         except AssertionError as e:

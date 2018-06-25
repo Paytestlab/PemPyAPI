@@ -154,10 +154,10 @@ def RobotInitialisation(robot : PinRobot, value):
             logging.warning(value.Layout + ": robot not reachable, skip...")
             return False;
 
-        if (False is robot.SendCommand("HOME")):
+        if (False is robot.send_command("HOME")):
             logging.warning(value.Layout + ": robot calibration could not be executed, ignore...");
     finally:
-        robot.CloseConnection();
+        robot.close_connection();
 
     return True
 
@@ -170,26 +170,26 @@ def StartRestServer(postWork, getWork, robotList, port):
 
 #---------------------------------------------------------------------------------------------------------------#
 
-def executeCommands(robot, commands, key):
+def executeCommands(device, commands, key):
     """Execute a request, protected by a lock. Every request on a single robot 
     must be processed till the end before the next may be processed
     """
     try:
-        robot.mutex.acquire();
-        if(False is robot.Connect()):
+        device.mutex.acquire();
+        if(False is device.connect()):
             logging.error("robot '{}' is unreachable".format(key));
             raise ConnectionError("", "could not connect to the robot" + key);
 
         for command in commands:
-            if(True is robot.SendCommand(command)):
+            if(True is device.send_command(command)):
                 logging.info("{}: execution of {} was succesful".format(key, command));
-                robot.UpdateTable(key, command)
+                device.UpdateTable(key, command)
             else:
                 logging.warning("could not execute '{}' on {}. Abort further execution".format(command, key));
                 raise InputError("", key + ": could not execute " + command); 
     finally:
-        robot.CloseConnection();
-        robot.mutex.release()
+        device.close_connection();
+        device.mutex.release()
 
 
 #-----------------------------------------------------------------------------------------------------------------#

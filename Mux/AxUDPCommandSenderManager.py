@@ -4,6 +4,7 @@ from Mux.UDPHelper import UDPHelper;
 class AxUDPCommandSenderManager(object):
     """Manages all \ref AxUDPCommandSender"""
 
+    #Always just one
     AxUDPCommandSenders = {};
 
     def __init__(self):

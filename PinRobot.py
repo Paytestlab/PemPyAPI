@@ -21,10 +21,10 @@ class PinRobot(DeviceBase):
    
         return self.socket.connect()
 
-    def Connect(self):
+    def connect(self):
         return self.socket.connect();
 
-    def CloseConnection(self):
+    def close_connection(self):
         try:
             self.socket.close() 
         except OSError:
@@ -38,8 +38,8 @@ class PinRobot(DeviceBase):
         elif(response in "Smoothie"):
            Result = self.__ResponseEvaluate(self.socket.receiveWithTimeout(2))
         elif("!!" in response):
-            Result = self.SendCommand("Reset")
-            Result |= self.SendCommand("Home")
+            Result = self.send_command("Reset")
+            Result |= self.send_command("Home")
         else:
            return False
 
@@ -47,7 +47,7 @@ class PinRobot(DeviceBase):
 
 
 
-    def SendCommand(self, action):
+    def send_command(self, action):
         Result = False
         try:
 

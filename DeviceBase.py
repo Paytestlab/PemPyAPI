@@ -14,8 +14,8 @@ class DeviceBase(object):
         if(self.statistics is not None):
             self.statistics.insert(id, action, self.terminalList[action].Value);
     
-    def Connect(self):
+    def connect(self):
         pass;
 
-    def CloseConnection(self):
+    def close_connection(self):
         pass;
