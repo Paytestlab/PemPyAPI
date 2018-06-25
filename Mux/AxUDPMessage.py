@@ -8,6 +8,10 @@ class AxUDPMessage(object):
     command = 0;
     data = [];
 
+    def __init__(self):
+        del self.data[:]
+        self.command = 0;
+
     @staticmethod
     def parse(payload):
 
@@ -23,7 +27,7 @@ class AxUDPMessage(object):
             raise BufferError("Length must be at least 12 bytes");
 
         command_type = (payload[9] << 8) + payload[8]; 
-        #data_length = (payload[11] << 8) + payload[10];
+        data_length = (payload[11] << 8) + payload[10];
 
        
         if((payload[:8] == bytearray(AxUDPMessage.header_magic)) is False):

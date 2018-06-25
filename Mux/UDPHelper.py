@@ -41,6 +41,10 @@ class UDPHelper(object):
 
 
     @staticmethod
+    def fill_devices():
+        return UDPHelper.send_broadcast();
+
+    @staticmethod
     def get_info_message_by_broadcast(mac_address):
         info_messages = UDPHelper.send_broadcast();
 
@@ -68,18 +72,21 @@ class UDPHelper(object):
                     s.sendto(bytes_array, dest);
 
                     s.settimeout(UDPHelper.TIMEOUT);
-                    (buf, addr) = s.recvfrom(10100)
-            
-                if(len(buf)):
-                    msg = AxUDPMessage.parse(buf);
-                    info = InfoMessage();
-                    info.MacAddress = msg.data[2:8];
-                    info.RemoteIpAddress = addr;
-                    info.Major = msg.data[0];
-                    info.Minor = msg.data[1];
-                    info.iface = iface;
-                    #print('[{}]'.format(', '.join(hex(x) for x in info.MacAddress)));
-                    responses.append(info);
+                    while True:
+                        (buf, addr) = s.recvfrom(10100)
+                        if(len(buf)):
+                            msg = AxUDPMessage.parse(buf);
+                            info = InfoMessage();
+                            info.MacAddress = msg.data[2:8];
+                            info.RemoteIpAddress = addr;
+                            info.Major = msg.data[0];
+                            info.Minor = msg.data[1];
+                            info.iface = iface;
+                            #print('[{}]'.format(', '.join(hex(x) for x in info.MacAddress)));
+                            responses.append(info);
+
+        except TimeoutError:
+            pass;
         except:
             pass;
             

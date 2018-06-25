@@ -131,7 +131,7 @@ def EnableAndParseArguments():
 
 def mux_initialization(mux : CardMultiplexer):
     if(False is mux.device_lookup()):
-        logging.warning("Multiplexer not present");
+        logging.warning("Multiplexer ({}) not present".format(mux.mac_address));
         return False;
 
     if(False is mux.initialize_device(join(__path, "CardMultiplexer.xml"))):

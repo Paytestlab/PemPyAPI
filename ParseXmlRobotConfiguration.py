@@ -50,7 +50,7 @@ class ParseXmlRobotConfiguration(object):
         for mux in muxs:
             id = mux.getAttribute('id');
             mac_address = mux.getElementsByTagName('MacAddress')[0];
-            mux_configuration = MuxConfiguration(Id, mac_address.childNodes[0].data);
+            mux_configuration = MuxConfiguration(id, mac_address.childNodes[0].data);
             mux_list.update({id:mux_configuration});
 
         return (robot_list, mux_list);
