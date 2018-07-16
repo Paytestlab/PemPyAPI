@@ -108,6 +108,7 @@
     </Content>
     <Content Include="ConfigRest\Verifone-VX820.xml" />
     <Content Include="ConfigRest\Ingenico-IPP350.xml" />
+    <Content Include="ConfigRest\Verifone-E355.xml" />
     <Content Include="ConfigRest\Yomani.xml" />
     <Content Include="ConfigRest\CardMultiplexer.xml" />
     <Content Include="ConfigRest\Yoximo.xml" />
