@@ -14,7 +14,7 @@
     <Name>PEMEntryAPI</Name>
     <RootNamespace>HelloWorld2</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-d -p 8001 </CommandLineArguments>
+    <CommandLineArguments>-d --empower-card</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
     <InterpreterArguments>
@@ -95,6 +95,8 @@
     <Content Include="Assets\EntryConfiguration.xml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="ConfigRest\MagstripeSimulator.xml" />
+    <Content Include="ConfigRest\ICP.xml" />
     <Content Include="ConfigRest\VeriFone-MX915.xml" />
     <Content Include="ConfigRest\VeriFone-MX925.xml" />
     <Content Include="ConfigRest\Verifone-P400.xml" />
