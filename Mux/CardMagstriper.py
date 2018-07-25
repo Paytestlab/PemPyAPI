@@ -58,9 +58,11 @@ class CardMagstriper(DeviceBase):
         Result = False;
 
         try:
-           action_value = int(self.mag_layout[action].Value);
+           action_value = self.mag_layout[action].Track2;
            send_to = self.device.get_sender_for_device(self.mac_address);
-           Result = send_to.set_port(action_value);
+           if(send_to.set_card_magstripe(action_value)):
+               Result = send_to.send_tracks();
+
         except KeyError as e:
             Result = False;
         except AssertionError as e:

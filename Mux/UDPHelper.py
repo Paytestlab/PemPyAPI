@@ -29,7 +29,7 @@ class UDPHelper(object):
         #return so;
         pass;
 
-    def send_message(self, message):
+    def send_message(self, message, magic):
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
             target_address = self.target_ip;
             sock.bind((Interfaces.get_local_ip_from_interface(self.iface), 0));
@@ -39,7 +39,7 @@ class UDPHelper(object):
             sock.settimeout(UDPHelper.TIMEOUT);
             (data, server) = sock.recvfrom(10100);
 
-        return AxUDPMessage.parse(headerMagic, data);
+        return AxUDPMessage.parse(magic, data);
 
     def receive(self):
         #TODO

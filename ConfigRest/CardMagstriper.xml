@@ -14,4 +14,14 @@
     <Track2>;723414938540019=1905=7560000330000004?</Track2>
     <Track3></Track3>
   </Command>
+
+  <Command>
+    <CanonicalName>SELECT CARD 2</CanonicalName>
+    <Brand>Mastercard</Brand>
+    <Track1></Track1>
+    <Track2>;5208710000000003=4912101000000666?</Track2>
+    <Track3></Track3>
+  </Command>
+  
+  
 </Settings>
