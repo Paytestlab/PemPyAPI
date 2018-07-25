@@ -1,4 +1,7 @@
-"""A setuptools based setup module.
+#!/usr/bin/python3
+
+"""
+Setup module based on setuptools.
 """
 
 # Always prefer setuptools over distutils
@@ -14,7 +17,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='Ax Robot Integration layer',
+    name='Ax Robot Integration Layer',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see

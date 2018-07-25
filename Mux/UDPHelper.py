@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from Mux.AxUDPCommand import AxUDPCommand;
 import socket;
 import sys;
@@ -13,10 +15,13 @@ class UDPHelper(object):
 
     target_ip = "";
     iface = "";
+    magic = None;
     sock = None;
-    def __init__(self, target, iface):
-        self.target_ip = target;
-        self.iface = iface;
+
+    def __init__(self, target, iface, magic):
+        self.target_ip = target
+        self.iface = iface
+        self.magic = magic
 
     def create_udp_client(self, ip_address):
         #so = socket.socket(socket.AF_INET, socket.SOCK_DGRAM);
@@ -33,33 +38,32 @@ class UDPHelper(object):
 
             sock.settimeout(UDPHelper.TIMEOUT);
             (data, server) = sock.recvfrom(10100);
-        return AxUDPMessage.parse(data);
+
+        return AxUDPMessage.parse(headerMagic, data);
 
     def receive(self):
         #TODO
         data, server = sock.recvfrom(UDPHelper.TIMEOUT);
 
+    @staticmethod
+    def fill_devices(magic):
+        return UDPHelper.send_broadcast(magic);
 
     @staticmethod
-    def fill_devices():
-        return UDPHelper.send_broadcast();
-
-    @staticmethod
-    def get_info_message_by_broadcast(mac_address):
-        info_messages = UDPHelper.send_broadcast();
+    def get_info_message_by_broadcast(mac_address, magic):
+        info_messages = UDPHelper.send_broadcast(magic);
 
         for message in info_messages:
             if(bytearray(message.MacAddress) == mac_address):
                 return message;
         return None;
 
-                
     @staticmethod
-    def send_broadcast():
+    def send_broadcast(magic):
         responses = [];
         udp_message = AxUDPMessage();
         udp_message.command = int(AxUDPCommand.INFO);
-        bytes_array = udp_message.get_bytes();
+        bytes_array = udp_message.get_bytes(magic);
         
         try:
             for iface in Interfaces.get_all_network_interfaces_with_broadcast():
@@ -75,13 +79,14 @@ class UDPHelper(object):
                     while True:
                         (buf, addr) = s.recvfrom(10100)
                         if(len(buf)):
-                            msg = AxUDPMessage.parse(buf);
+                            msg = AxUDPMessage.parse(magic, buf);
                             info = InfoMessage();
                             info.MacAddress = msg.data[2:8];
                             info.RemoteIpAddress = addr;
                             info.Major = msg.data[0];
                             info.Minor = msg.data[1];
                             info.iface = iface;
+                            info.magic = magic;
                             #print('[{}]'.format(', '.join(hex(x) for x in info.MacAddress)));
                             responses.append(info);
 
@@ -92,12 +97,5 @@ class UDPHelper(object):
             
         return responses;
 
-
 #a = UDPHelper("10.30.10.88");
 #UDPHelper.send_broadcast();
-
-
-
-
-
-

@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # Copyright (c) 2017 Matija Mazalin
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-"""Thread safe card multiplexer interface."""
+"""Thread safe card magstripe interface."""
 __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
@@ -35,9 +37,7 @@ from Exception import Error
 from DeviceBase import DeviceBase;
 from Mux.UDPMagics import UDPMagics;
 
-
-class CardMultiplexer(DeviceBase):
-    """description of class"""
+class CardMagstriper(DeviceBase):
 
     def __init__(self, mac_address, enable_statistics=False):
         DeviceBase.__init__(self,enable_statistics);
@@ -45,32 +45,29 @@ class CardMultiplexer(DeviceBase):
 
     def device_lookup(self):
         self.device = AxUDPCommandSenderManager();
-        return self.device.device_lookup(self.mac_address, UDPMagics.CardMultiplexerMagic);
+        return self.device.device_lookup(self.mac_address, UDPMagics.CardMagstriperMagic);
 
     def initialize_device(self, file_name):
-        self.mux_layout = XmlParser.parseXml(file_name)
-        if(self.mux_layout is None):
-            return False
-        return True
+        self.mag_layout = XmlParser.parseXmlMagstriper(file_name)
+        if(self.mag_layout is None):
+            return False;
+
+        return True;
 
     def send_command(self, action):
-        Result = False
+        Result = False;
+
         try:
-           action_value = int(self.mux_layout[action].Value);
+           action_value = int(self.mag_layout[action].Value);
            send_to = self.device.get_sender_for_device(self.mac_address);
            Result = send_to.set_port(action_value);
         except KeyError as e:
-            pass;
+            Result = False;
         except AssertionError as e:
             logging.ERROR("Remote host returned an error");
+            Result = False;
         except:
             logging.ERROR("general error");
+            Result = False;
 
         return Result;
-
-        
-
-
-
-
-

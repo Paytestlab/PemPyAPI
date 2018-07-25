@@ -1,14 +1,18 @@
+#!/usr/bin/python3
+
 from Mux.UDPHelper import UDPHelper;
 from Mux.AxUDPMessage import AxUDPMessage;
 from Mux.AxUDPCommand import AxUDPCommand;
+from Mux.AxUDPCardMultiplexerCommand import AxUDPCardMultiplexerCommand;
+from Mux.AxUDPCardMagstriperCommand import AxUDPCardMagstriperCommand;
 
 class AxUDPCommandSender(object):
     """Send a specific command to the Device. The commands will be transmitted over UDP"""
 
     udp_helper  = object();
-    def __init__(self, ip_address, iface):
-        self.udp_helper = UDPHelper(ip_address, iface);
-        
+
+    def __init__(self, ip_address, iface, magic):
+        self.udp_helper = UDPHelper(ip_address, iface, magic);
 
     def set_mac_address(self, mac_address):
         if(mac_address is None):
@@ -19,7 +23,6 @@ class AxUDPCommandSender(object):
         request.data = mac_address;
         response = self.udp_helper.send_message(request);
         self.validate_response(request, response);
-
 
     def set_port(self, port_number):
         """
@@ -35,13 +38,24 @@ class AxUDPCommandSender(object):
         response = self.udp_helper.send_message(request.get_bytes());
         return self.validate_response(request, response);
 
+    def set_card_magstripe(self, card_track_2):
+        """
+        """
+
+        #if(card_number > 16):
+        #    raise OverflowError();
+
+        request = AxUDPMessage();
+        request.command = int(AxUDPCardMagstriperCommand.SET_TRACK2);
+        request.data = bytes([card_track_2]);
+        response = self.udp_helper.send_message(request.get_bytes());
+        return self.validate_response(request, response);
+
     def enable_or_disable_card_trace(self, enable):
         raise NotImplementedError();
 
     def get_port(self):
         raise NotImplementedError();
-
-
 
     def validate_response(self, request : AxUDPMessage, response : AxUDPMessage):
         if(response.command == int(AxUDPCommand.ERROR)):

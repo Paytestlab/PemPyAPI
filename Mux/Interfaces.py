@@ -1,9 +1,14 @@
+#!/usr/bin/python3
+
 from netifaces import interfaces, ifaddresses, AF_INET, AF_LINK
 
 class Interfaces(object):
 
     @staticmethod
     def remove_loopback_from_list(list, config, interface):
+        if AF_INET not in config.keys():
+            return
+
         for link in config[AF_LINK]:
             if(len(link['addr']) == 0):
                 list.remove(interface);
@@ -27,18 +32,18 @@ class Interfaces(object):
         except ImportError:
             return [] 
 
-
     @staticmethod
     def get_broadcast_address(iface_name):
         addresses = ifaddresses(iface_name);
         broadcast_list = [];
         if AF_INET in addresses.keys():
             for value in addresses[AF_INET]:
-                if('broadcast' in value):
+                if('broadcast' in value and len(value['broadcast']) > 0):
                     return value['broadcast']
                     #broadcast_list.append(value['broadcast']);
 
         #return broadcast_list;
+        return None;
 
     @staticmethod
     def get_local_ip_from_interface(iface_name):
@@ -49,7 +54,6 @@ class Interfaces(object):
                      return value['addr'];
 
          return None;
-
 
 #ifaces = Interfaces.get_all_network_interfaces_with_broadcast();
 #for iface in ifaces:

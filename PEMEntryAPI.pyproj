@@ -39,11 +39,15 @@
     <Compile Include="Exception.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mux\AxUDPCardMagstriperCommand.py" />
+    <Compile Include="Mux\AxUDPCardMultiplexerCommand.py" />
     <Compile Include="Mux\AxUDPCommand.py" />
     <Compile Include="Mux\AxUDPCommandError.py" />
     <Compile Include="Mux\AxUDPCommandSender.py" />
     <Compile Include="Mux\AxUDPCommandSenderManager.py" />
+    <Compile Include="Mux\AxUDPMagstriperTrackOption.py" />
     <Compile Include="Mux\AxUDPMessage.py" />
+    <Compile Include="Mux\CardMagstriper.py" />
     <Compile Include="Mux\CardMultiplexer.py">
       <SubType>Code</SubType>
     </Compile>
@@ -51,6 +55,7 @@
     <Compile Include="Mux\Interfaces.py" />
     <Compile Include="Mux\Test.py" />
     <Compile Include="Mux\UDPHelper.py" />
+    <Compile Include="Mux\UDPMagics.py" />
     <Compile Include="Mux\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -95,7 +100,7 @@
     <Content Include="Assets\EntryConfiguration.xml">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="ConfigRest\MagstripeSimulator.xml" />
+    <Content Include="ConfigRest\CardMagstriper.xml" />
     <Content Include="ConfigRest\ICP.xml" />
     <Content Include="ConfigRest\VeriFone-MX915.xml" />
     <Content Include="ConfigRest\VeriFone-MX925.xml" />

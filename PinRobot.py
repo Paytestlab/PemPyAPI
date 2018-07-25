@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from ParseXml import XmlParser;
 from Communication import PEMSocket;
 from DeviceBase import DeviceBase;
@@ -5,15 +7,16 @@ import logging
 
 class PinRobot(DeviceBase):
     """Initializes the robot class"""
+
     def __init__(self, enable_statistics=False, empower_card=False):
         DeviceBase.__init__(self, enable_statistics);
         self.empower_card = empower_card;
-        
 
     def InitializeTerminal(self, Filename):
-        self.terminalList = XmlParser.parseXml(Filename)
+        self.terminalList = XmlParser.parseXmlMultiplexer(Filename)
         if(self.terminalList is None):
             return False
+
         return True
 
     def InitializeConnection(self, IP, Port):
@@ -44,8 +47,6 @@ class PinRobot(DeviceBase):
            return False
 
         return Result
-
-
 
     def send_command(self, action):
         Result = False
@@ -96,7 +97,6 @@ class PinRobot(DeviceBase):
            
         return self.SendString(fullCommand)
 
-       
     def __increaseZCurrent(self):
         """Increases the current for Z Axis if enabled"""
         if(self.empower_card is True):
@@ -105,7 +105,6 @@ class PinRobot(DeviceBase):
         else:
             return True;
 
-
     def __reduceZCurrent(self):
         """Decreases the current for Z Axis"""
         if(self.empower_card is True):
@@ -113,15 +112,3 @@ class PinRobot(DeviceBase):
             return self.SendString(reduceCurrent)
         else:
             return True;
-        
-
-
-
-   
-                
-        
-
-
-
-
-

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <Command>
+    <CanonicalName>DISABLE</CanonicalName>
+    <Brand></Brand>
+    <Track1></Track1>
+    <Track2></Track2>
+    <Track3></Track3>
+  </Command>
+  <Command>
+    <CanonicalName>SELECT CARD 1</CanonicalName>
+    <Brand>Migro</Brand>
+    <Track1></Track1>
+    <Track2>;723414938540019=1905=7560000330000004?</Track2>
+    <Track3></Track3>
+  </Command>
+</Settings>

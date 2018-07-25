@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from http.server import HTTPServer
 from RestHandler import HandleRestRequest
 

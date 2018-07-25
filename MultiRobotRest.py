@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # Copyright (c) 2017 Matija Mazalin
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,13 +35,15 @@ import json
 import argparse
 from Statistics import Statistics
 import logging
-from Mux.CardMultiplexer import CardMultiplexer;
+from Mux.CardMultiplexer import CardMultiplexer
+from Mux.CardMagstriper import CardMagstriper
 
+#----------------------------------------------------------------------------------------------------------------#
 
 __major__ = 1
-__minor__ = 4
+__minor__ = 5
 __service__ = 0
-__build__ = 36
+__build__ = 0
 __path = "ConfigRest"
 
 __intro__= (
@@ -48,31 +52,32 @@ __intro__= (
     "Copyright (C) {} - {} Abrantix AG\n"
     "{}".format(__major__, __minor__, __service__, __build__, 2015, 2018, "#" * 50)
     )
-         
+
+#----------------------------------------------------------------------------------------------------------------#
 
 def main():
 
-    args = EnableAndParseArguments();
+    args = EnableAndParseArguments()
   
-    config = args.config;
-    port = int(args.port);
+    config = args.config
+    port = int(args.port)
         
-    enable_statistics=args.enable_statistics;
-    empower = args.empower_card;
+    enable_statistics=args.enable_statistics
+    empower = args.empower_card
 
-    SetLoggingLevel(args);
+    SetLoggingLevel(args)
 
-    print(__intro__);
+    print(__intro__)
 
     try:
-        (robot_conf_list, mux_conf_list) = ParseXmlRobotConfiguration.parseXml(config);
-        device_list = {};
-        error = 0;
+        (robot_conf_list, mux_conf_list, mag_conf_list) = ParseXmlRobotConfiguration.parseXml(config)
+        device_list = {}
+        error = 0
 
-        print("Initialising...");
+        print("Initialising...")
 
         for key, robotConfiguration in robot_conf_list.items():
-             robot = PinRobot(enable_statistics, empower);
+             robot = PinRobot(enable_statistics, empower)
 
              if(False is RobotInitialisation(robot, robotConfiguration)):
                 error +=1;
@@ -81,44 +86,50 @@ def main():
              device_list.update({key:robot});
 
         for key, mux_configuration in mux_conf_list.items():
-            mux = CardMultiplexer(mux_configuration.mac_address, enable_statistics);
+            mux = CardMultiplexer(mux_configuration.mac_address, enable_statistics)
 
-            if(False is mux_initialization(mux)):
+            if(False is MuxInitialization(mux, mux_configuration)):
                 error +=1
                 continue;
 
             device_list.update({key:mux});
 
+        for key, mag_configuration in mag_conf_list.items():
+            mag = CardMagstriper(mag_configuration.mac_address, enable_statistics)
+
+            if(False is MagInitialization(mag, mag_configuration)):
+                error +=1
+                continue;
+
+            device_list.update({key:mag});
+
         if(not device_list):
-            logging.critical(" Fatal error, device list is empty...");
+            logging.critical("Fatal error, device list is empty!")
             raise Error;
 
-        print("Initialization success! Warnings: {}".format(error));
+        logging.info("Initialization success! Warnings: {}".format(error))
 
-        StartRestServer(doPostWork, doGetWork, device_list, port);
+        StartRestServer(doPostWork, doGetWork, device_list, port)
     except Error as e:
         print(e);
 
 #---------------------------------------------------------------------------------------------------------------#
 
-
 def SetLoggingLevel(args):
     FORMAT = "%(asctime)-15s %(levelname)s: %(message)s";
 
     if(args.debug):
-        logging.basicConfig(format=FORMAT, level=logging.DEBUG);
+        logging.basicConfig(format=FORMAT, level=logging.DEBUG)
     elif(args.verbose):
-        logging.basicConfig(format=FORMAT, level=logging.INFO);
+        logging.basicConfig(format=FORMAT, level=logging.INFO)
     else:
-        logging.basicConfig(format=FORMAT, level=logging.WARNING);
-
-
+        logging.basicConfig(format=FORMAT, level=logging.WARNING)
 
 #------------------------------------------------------------------------------------------------------------------------#
 
 def EnableAndParseArguments():
     parser = argparse.ArgumentParser(description="AX Robot Integration Layer v{}.{}.{}".format(__major__, __minor__, __service__))
-    parser.add_argument("-c", "--config", default=join("Assets", "EntryConfiguration.xml"),help="path to entry configuration xml", required=False)
+    parser.add_argument("-c", "--config", default=join("Assets", "EntryConfiguration.xml"), help="path to entry configuration xml", required=False)
     parser.add_argument("-p", "--port", default='8000', help="port for the http listener, default is 8000", required=False)
     parser.add_argument("--enable-statistics", nargs='?', const=True, default=False, help="enable tracking of the button press to the local DB", required=False)
     parser.add_argument("-v", "--verbose", nargs='?', const=True, default=False, help="increase trace verbosity to the INFO level", required=False)
@@ -129,33 +140,46 @@ def EnableAndParseArguments():
 
 #------------------------------------------------------------------------------------------------------------------------#
 
-def mux_initialization(mux : CardMultiplexer):
+def MuxInitialization(mux : CardMultiplexer, configuration):
     if(False is mux.device_lookup()):
-        logging.warning("Multiplexer ({}) not present".format(mux.mac_address));
+        logging.warning("Multiplexer ({}) not present".format(mux.mac_address))
         return False;
 
-    if(False is mux.initialize_device(join(__path, "CardMultiplexer.xml"))):
-        logging.warning(value.Layout + ": Initialization of multiplexer failed, skip...");
+    if(False is mux.initialize_device(join(__path, configuration.Layout))):
+        logging.warning(configuration.Layout + ": Initialization of multiplexer failed, skip...")
         return False;
+
     return True;
 
 #------------------------------------------------------------------------------------------------------------------------#
 
+def MagInitialization(mag : CardMagstriper, configuration):
+    if(False is mag.device_lookup()):
+        logging.warning("Magstriper ({}) not present".format(mag.mac_address))
+        return False;
 
+    if(False is mag.initialize_device(join(__path, configuration.Layout))):
+        logging.warning(configuration.Layout + ": Initialization of magstriper failed, skip...")
+        return False;
 
-def RobotInitialisation(robot : PinRobot, value):
+    return True;
+
+#---------------------------------------------------------------------------------------------------------------#
+
+def RobotInitialisation(robot : PinRobot, configuration):
     """Initializes the robot, perfoms home"""
     try:
-        if(False is robot.InitializeTerminal(join(__path, value.Layout))):
-            logging.warning(value.Layout + ": Initialization failed, skip...")
+        if(False is robot.InitializeTerminal(join(__path, configuration.Layout))):
+            logging.warning(configuration.Layout + ": Initialization failed, skip...")
             return False;
 
-        if(False is robot.InitializeConnection(value.IP, int(value.Port))):
-            logging.warning(value.Layout + ": robot not reachable, skip...")
+        if(False is robot.InitializeConnection(configuration.IP, int(configuration.Port))):
+            logging.warning(configuration.Layout + ": robot not reachable, skip...")
             return False;
 
         if (False is robot.send_command("HOME")):
-            logging.warning(value.Layout + ": robot calibration could not be executed, ignore...");
+            logging.warning(configuration.Layout + ": robot calibration could not be executed, ignore...")
+
     finally:
         robot.close_connection();
 
@@ -175,22 +199,23 @@ def executeCommands(device, commands, key):
     must be processed till the end before the next may be processed
     """
     try:
-        device.mutex.acquire();
+        device.mutex.acquire()
+
         if(False is device.connect()):
             logging.error("robot '{}' is unreachable".format(key));
-            raise ConnectionError("", "could not connect to the robot" + key);
+            raise ConnectionError("", "could not connect to the robot: " + key)
 
         for command in commands:
             if(True is device.send_command(command)):
-                logging.info("{}: execution of {} was succesful".format(key, command));
+                logging.info("{}: execution of {} was succesful".format(key, command))
                 device.UpdateTable(key, command)
             else:
-                logging.warning("could not execute '{}' on {}. Abort further execution".format(command, key));
-                raise InputError("", key + ": could not execute " + command); 
-    finally:
-        device.close_connection();
-        device.mutex.release()
+                logging.warning("could not execute '{}' on {}. Abort further execution".format(command, key))
+                raise InputError("", key + ": could not execute: " + command)
 
+    finally:
+        device.close_connection()
+        device.mutex.release()
 
 #-----------------------------------------------------------------------------------------------------------------#
 
@@ -199,7 +224,7 @@ def getRequest(jsonString):
         request = json.loads(jsonString)
     except json.JSONDecodeError:
         logging.error("json could not be loaded:\n" + jsonString)
-        raise ParseError("", "json could not be parsed");
+        raise ParseError("", "json could not be parsed")
 
     return request
 
@@ -210,14 +235,14 @@ def doPostWork(jsonString, robotList):
     request = getRequest(jsonString);
 
     key = request['id'];
+
     if(key not in robotList):
         logging.error("robot {} not in list".format(key))
-        raise DestinationNotFoundError("" , key + ": robot not found");
+        raise DestinationNotFoundError("" , key + ": robot not found")
 
-    executeCommands(robotList[key], request['commands'], key);
-        
+    executeCommands(robotList[key], request['commands'], key)
+
     return True
-
 
 #----------------------------------------------------------------------------------------------------------------#
         
@@ -225,5 +250,7 @@ def doGetWork(robotList):
     l = list(robotList.keys())
     robot_object = {'id' : l}
     return json.dumps(robot_object)
+
+#----------------------------------------------------------------------------------------------------------------#
 
 main()

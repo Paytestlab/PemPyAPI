@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from SqlWorker import Sqlite3Worker
 from threading import Lock
 import time
@@ -19,8 +21,6 @@ class Statistics(object):
             ");"
             )
         self.sqlWorker.execute(query)
-                 
-
 
     def insert(self, robot_id, command_id, command):
         query =  (
@@ -44,9 +44,3 @@ class Statistics(object):
             pass
         finally:
             self.mutex.release()
-
-
-
-        
-
-

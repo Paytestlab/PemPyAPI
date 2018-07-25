@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <DeviceConfiguration>
- 
-  <Robot id="Miura 020">
+
+  <!--<Robot id="Robot-1">
     <IpAddress>10.30.10.61</IpAddress>
     <IpPort>23</IpPort>
     <Layout>Yoximo.xml</Layout>
-  </Robot>
-
-  <CardMultiplexer id="Toaster 1">
-    <MacAddress>1407E000033F</MacAddress>
-  </CardMultiplexer>
- 
-  <!--<Robot id="Ingenico">
+  </Robot>-->
+  <!--<Robot id="Robot-2">
     <IpAddress>10.30.10.142</IpAddress>
     <IpPort>23</IpPort>
     <Layout>Yomani.xml</Layout>
   </Robot>-->
-  
-  <!--<Robot id="ingenico_IPP350.xml">
+  <!--<Robot id="Robot-3">
     <IpAddress>127.0.0.1</IpAddress>
     <IpPort>8008</IpPort>
     <Layout>Ingenico-IPP350.xml</Layout>
   </Robot>-->
+  <CardMultiplexer id="CardMultiplexer-1">
+    <MacAddress>1407E000033F</MacAddress>
+    <Layout>CardMultiplexer.xml</Layout>
+  </CardMultiplexer>
+  <CardMagstriper id="CardMagstriper-1">
+    <MacAddress>1407E00007F6</MacAddress>
+    <Layout>CardMagstriper.xml</Layout>
+  </CardMagstriper>
+  
 </DeviceConfiguration>
 
 

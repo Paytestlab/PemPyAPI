@@ -1,10 +1,10 @@
+#!/usr/bin/python3
+
 import sys;
 
 class AxUDPMessage(object):
     """Message struct"""
 
-    """Magic bytes which precede all UDP datagrams being sent and received."""
-    header_magic = [0xD9, 0xC5, 0xAE, 0x42, 0xF8, 0x9F, 0x71, 0x8B];
     command = 0;
     data = [];
 
@@ -13,8 +13,7 @@ class AxUDPMessage(object):
         self.command = 0;
 
     @staticmethod
-    def parse(payload):
-
+    def parse(expectedMagic, payload):
         """
         Parse received UDP frame
         UDP Frame definition: MAGIC[8] MessageSequence[2] Command[2] DataLength[2] Data[0..512] 
@@ -29,11 +28,9 @@ class AxUDPMessage(object):
         command_type = (payload[9] << 8) + payload[8]; 
         data_length = (payload[11] << 8) + payload[10];
 
-       
-        if((payload[:8] == bytearray(AxUDPMessage.header_magic)) is False):
+        if((payload[:8] == bytearray(expectedMagic)) is False):
             raise RuntimeError();
 
-        
         msg = AxUDPMessage();
 
         msg.command = command_type;
@@ -43,22 +40,19 @@ class AxUDPMessage(object):
 
         return msg;
 
-    
-
-    def get_bytes(self):
+    def get_bytes(self, magic):
 
         if(self.data is None):
             #TODO
             pass;
         
         list = [];
-        for single_value in AxUDPMessage.header_magic:
+
+        for single_value in magic:
             list.append(single_value);
 
         list.append(self.command);
         list.append(self.command >> 8);
-
-
         list.append(len(self.data));
         list.append(len(self.data) >> 8);
         if(len(self.data) > 0):
@@ -66,8 +60,3 @@ class AxUDPMessage(object):
                 list.append(value);
 
         return bytearray(list);
-
-
-
-
-
