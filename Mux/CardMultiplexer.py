@@ -48,7 +48,7 @@ class CardMultiplexer(DeviceBase):
         return self.device.device_lookup(self.mac_address, UDPMagics.CardMultiplexerMagic);
 
     def initialize_device(self, file_name):
-        self.mux_layout = XmlParser.parseXml(file_name)
+        self.mux_layout = XmlParser.parseXmlMultiplexer(file_name)
         if(self.mux_layout is None):
             return False
         return True

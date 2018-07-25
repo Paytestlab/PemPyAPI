@@ -34,22 +34,16 @@ class AxUDPCommandSender(object):
             raise OverflowError();
 
         request = AxUDPMessage();
-        request.command = int(AxUDPCommand.SET_PORT);
+        request.command = int(AxUDPCardMultiplexerCommand.SET_PORT);
         request.data = bytes([port_number]);
         response = self.udp_helper.send_message(request.get_bytes(self.udp_helper.magic), self.udp_helper.magic);
         return self.validate_response(request, response);
 
-    def set_card_magstripe(self, card_track_2):
-        """
-        UDP Frame definition: MAGIC[8] MessageSequence[2] Command[2] DataLength[2] Data[0..512] 
-        """
-
-        #if(card_number > 16):
-        #    raise OverflowError();
+    def set_card_magstripe_track(self, command :  AxUDPCardMagstriperCommand, track_data : bytes):
 
         request = AxUDPMessage();
-        request.command = int(AxUDPCardMagstriperCommand.SetTrack2);
-        request.data = str.encode(card_track_2);
+        request.command = int(command);
+        request.data = track_data;
         response = self.udp_helper.send_message(request.get_bytes(self.udp_helper.magic), self.udp_helper.magic);
         return self.validate_response(request, response);
 

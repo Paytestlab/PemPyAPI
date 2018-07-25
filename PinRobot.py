@@ -12,8 +12,8 @@ class PinRobot(DeviceBase):
         DeviceBase.__init__(self, enable_statistics);
         self.empower_card = empower_card;
 
-    def InitializeTerminal(self, Filename):
-        self.terminalList = XmlParser.parseXmlMultiplexer(Filename)
+    def InitializeTerminal(self, filename):
+        self.terminalList = XmlParser.parseXmlMultiplexer(filename)
         if(self.terminalList is None):
             return False
 
