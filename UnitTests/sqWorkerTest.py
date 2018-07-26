@@ -32,7 +32,7 @@ import time
 import unittest
 import sys
 
-from SqlWorker import Sqlite3Worker
+from SQL.SqlWorker import Sqlite3Worker
 
 
 class Sqlite3WorkerTests(unittest.TestCase):  # pylint:disable=R0904

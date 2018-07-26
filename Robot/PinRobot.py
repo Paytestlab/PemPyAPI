@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-from ParseXml import XmlParser;
-from Communication import PEMSocket;
-from DeviceBase import DeviceBase;
+from Parsers.ParseXml import XmlParser;
+from Robot.Communication import PEMSocket;
+from Base.DeviceBase import DeviceBase;
 import logging
 
 class PinRobot(DeviceBase):

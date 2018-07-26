@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
-from Mux.AxUDPCommand import AxUDPCommand;
+from UDPMessage.AxUDPCommand import AxUDPCommand;
 import socket;
 import sys;
-from Mux.AxUDPMessage import AxUDPMessage;
-from Mux.Interfaces import Interfaces;
-from Mux.InfoMessage import InfoMessage;
+from UDPMessage.AxUDPMessage import AxUDPMessage;
+from AxHw.Interfaces import Interfaces;
+from AxHw.InfoMessage import InfoMessage;
 
 class UDPHelper(object):
     """udp class for sending/receiving data"""

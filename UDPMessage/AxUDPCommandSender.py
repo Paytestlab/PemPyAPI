@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
-from Mux.UDPHelper import UDPHelper;
-from Mux.AxUDPMessage import AxUDPMessage;
-from Mux.AxUDPCommand import AxUDPCommand;
-from Mux.AxUDPCardMultiplexerCommand import AxUDPCardMultiplexerCommand;
-from Mux.AxUDPCardMagstriperCommand import AxUDPCardMagstriperCommand;
-from Mux.UDPMagics import UDPMagics;
+from UDPMessage.UDPHelper import UDPHelper;
+from UDPMessage.AxUDPMessage import AxUDPMessage;
+from UDPMessage.AxUDPCommand import AxUDPCommand;
+from UDPMessage.AxUDPCardMultiplexerCommand import AxUDPCardMultiplexerCommand;
+from UDPMessage.AxUDPCardMagstriperCommand import AxUDPCardMagstriperCommand;
+from UDPMessage.UDPMagics import UDPMagics;
 
 class AxUDPCommandSender(object):
     """Send a specific command to the Device. The commands will be transmitted over UDP"""

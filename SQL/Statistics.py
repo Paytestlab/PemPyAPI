@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from SqlWorker import Sqlite3Worker
+from SQL.SqlWorker import Sqlite3Worker
 from threading import Lock
 import time
 

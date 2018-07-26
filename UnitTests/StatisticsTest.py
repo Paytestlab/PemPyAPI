@@ -1,4 +1,4 @@
-from Statistics import Statistics
+from SQL.Statistics import Statistics
 
 def main():
     statistics = Statistics()

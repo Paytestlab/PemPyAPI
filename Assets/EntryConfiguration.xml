@@ -17,7 +17,7 @@
     <Layout>Ingenico-IPP350.xml</Layout>
   </Robot>-->
   <CardMultiplexer id="CardMultiplexer-1">
-    <MacAddress>1407E000033F</MacAddress>
+    <MacAddress>1407E0000395</MacAddress>
     <Layout>CardMultiplexer.xml</Layout>
   </CardMultiplexer>
   <CardMagstriper id="CardMagstriper-1">

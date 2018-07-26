@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from Mux.AxUDPCommandSender import AxUDPCommandSender;
-from Mux.AxUDPCommandSenderManager import AxUDPCommandSenderManager;
+from AxHw.AxUDPCommandSender import AxUDPCommandSender;
+from AxHw.AxUDPCommandSenderManager import AxUDPCommandSenderManager;
 import time;
 
 device = bytearray((0x14, 0x07, 0xe0, 0x00, 0x03, 0x3f));

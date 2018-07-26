@@ -21,17 +21,16 @@
 # THE SOFTWARE.
 
 """Thread safe card magstripe interface."""
-from Mux.AxUDPCardMagstriperCommand import AxUDPCardMagstriperCommand
-from ParseXml import XmlParser
+from UDPMessage.AxUDPCardMagstriperCommand import AxUDPCardMagstriperCommand
+from Parsers.ParseXml import XmlParser
 import threading
-import Statistics
+import SQL.Statistics
 import logging
-from Mux.AxUDPCommandSender import AxUDPCommandSender;
-from Mux.AxUDPCommandSenderManager import AxUDPCommandSenderManager;
-from ParseXml import XmlParser;
-from Exception import Error
-from DeviceBase import DeviceBase;
-from Mux.UDPMagics import UDPMagics;
+from UDPMessage.AxUDPCommandSender import AxUDPCommandSender;
+from UDPMessage.AxUDPCommandSenderManager import AxUDPCommandSenderManager;
+from Exception.Exception import Error
+from Base.DeviceBase import DeviceBase;
+from UDPMessage.UDPMagics import UDPMagics;
 
 
 __author__ = "Matija Mazalin"

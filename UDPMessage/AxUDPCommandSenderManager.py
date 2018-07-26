@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from Mux.AxUDPCommandSender import AxUDPCommandSender;
-from Mux.UDPHelper import UDPHelper;
+from UDPMessage.AxUDPCommandSender import AxUDPCommandSender;
+from UDPMessage.UDPHelper import UDPHelper;
 
 class AxUDPCommandSenderManager(object):
     """Manages all \ref AxUDPCommandSender"""

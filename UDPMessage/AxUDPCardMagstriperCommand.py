@@ -2,7 +2,6 @@
 
 from enum import IntEnum;
 
-
 class AxUDPCardMagstriperCommand(IntEnum):
     
     """

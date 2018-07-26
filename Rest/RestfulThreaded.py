@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from http.server import HTTPServer
-from RestHandler import HandleRestRequest
+from Rest.RestHandler import HandleRestRequest
 from socketserver import ThreadingMixIn
 import threading
 

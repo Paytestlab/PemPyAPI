@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from http.server import HTTPServer
-from RestHandler import HandleRestRequest
+from Rest.RestHandler import HandleRestRequest
 
 class RESTfulServer:
     def __init__(s, functionPost, functionGet, argument, port=8000):

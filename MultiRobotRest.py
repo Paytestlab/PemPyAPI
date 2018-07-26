@@ -26,17 +26,17 @@ __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
-from PinRobot import PinRobot
-from RestfulThreaded import RESTfulThreadedServer
+from Robot.PinRobot import PinRobot
+from Rest.RestfulThreaded import RESTfulThreadedServer
 from os.path import join
-from ParseXmlRobotConfiguration import ParseXmlRobotConfiguration, RobotConfiguration
-from Exception import Error, ConnectionError, InputError, ParseError, DestinationNotFoundError
+from Parsers.ParseXmlRobotConfiguration import ParseXmlRobotConfiguration, RobotConfiguration
+from Exception.Exception import Error, ConnectionError, InputError, ParseError, DestinationNotFoundError
 import json
 import argparse
-from Statistics import Statistics
+from SQL.Statistics import Statistics
 import logging
-from Mux.CardMultiplexer import CardMultiplexer
-from Mux.CardMagstriper import CardMagstriper
+from AxHw.CardMultiplexer import CardMultiplexer
+from AxHw.CardMagstriper import CardMagstriper
 
 #----------------------------------------------------------------------------------------------------------------#
 

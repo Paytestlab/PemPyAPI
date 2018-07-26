@@ -24,16 +24,15 @@ __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
 
-from ParseXml import XmlParser
+from Parsers.ParseXml import XmlParser
 import threading
-import Statistics
+import SQL.Statistics
 import logging
-from Mux.AxUDPCommandSender import AxUDPCommandSender;
-from Mux.AxUDPCommandSenderManager import AxUDPCommandSenderManager;
-from ParseXml import XmlParser;
-from Exception import Error
-from DeviceBase import DeviceBase;
-from Mux.UDPMagics import UDPMagics;
+from UDPMessage.AxUDPCommandSender import AxUDPCommandSender;
+from UDPMessage.AxUDPCommandSenderManager import AxUDPCommandSenderManager;
+from Exception.Exception import Error
+from Base.DeviceBase import DeviceBase;
+from UDPMessage.UDPMagics import UDPMagics;
 
 
 class CardMultiplexer(DeviceBase):

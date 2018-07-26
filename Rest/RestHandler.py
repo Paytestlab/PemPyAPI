@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from http.server import BaseHTTPRequestHandler
-from Exception import NotImplementedError, ParseError, InputError, ConnectionError, DestinationNotFoundError, Error
+from Exception.Exception import NotImplementedError, ParseError, InputError, ConnectionError, DestinationNotFoundError, Error
 import logging
 
 class HandleRestRequest(BaseHTTPRequestHandler):

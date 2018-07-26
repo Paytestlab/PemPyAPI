@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import threading
-import Statistics
+import SQL.Statistics
 
 class DeviceBase(object):
     
