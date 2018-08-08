@@ -87,7 +87,7 @@ class UDPHelper(object):
                             info.Minor = msg.data[1];
                             info.iface = iface;
                             info.magic = magic;
-                            #print('[{}]'.format(', '.join(hex(x) for x in info.MacAddress)));
+                            print('[{}]'.format(', '.join(hex(x) for x in info.MacAddress)));
                             responses.append(info);
 
         except TimeoutError:
