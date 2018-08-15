@@ -1,14 +1,15 @@
 #!/usr/bin/python3
 
 import threading
-import SQL.Statistics
+from SQL.Statistics import Statistics;
 
 class DeviceBase(object):
     
     def __init__(self, enable_statistics=False):
         self.mutex = threading.Lock()
         if(enable_statistics is True):
-            self.statistics = Statistics.Statistics();
+            self.statistics = Statistics();
+            
         else:
             self.statistics = None;
 
