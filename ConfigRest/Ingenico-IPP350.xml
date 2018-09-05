@@ -3,7 +3,7 @@
 <Settings>
   <Position>
     <CanonicalName>PRESS 0</CanonicalName>
-    <Value>G0 X18 Y15</Value>
+    <Value>G0 X21 Y15</Value>
     <isButton>1</isButton>
   </Position>
   <Position>
