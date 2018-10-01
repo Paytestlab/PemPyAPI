@@ -81,7 +81,7 @@ class UDPHelper(object):
                     info.Minor = msg.data[1];
                     info.iface = iface;
                     info.magic = magic;
-                    logging.debug('received [{}]'.format(', '.join(hex(x) for x in info.MacAddress)));
+                    logging.debug('received IP:{} with Mac:[{}]'.format(info.RemoteIpAddress, ', '.join(hex(x) for x in info.MacAddress)));
                     responses.append(info);
         
         except TimeoutError:
