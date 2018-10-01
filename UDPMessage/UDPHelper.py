@@ -6,6 +6,8 @@ import sys;
 from UDPMessage.AxUDPMessage import AxUDPMessage;
 from AxHw.Interfaces import Interfaces;
 from AxHw.InfoMessage import InfoMessage;
+import logging;
+import traceback;
 
 class UDPHelper(object):
     """udp class for sending/receiving data"""
@@ -59,6 +61,40 @@ class UDPHelper(object):
         return None;
 
     @staticmethod
+    def __send_message(bytes_array, dest, iface, magic, responses):
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM);
+            s.bind((Interfaces.get_local_ip_from_interface(iface), 0));
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1);
+            logging.debug('sending discovery to {}'.format(dest));
+            s.sendto(bytes_array, dest);
+            
+            s.settimeout(UDPHelper.TIMEOUT);
+            while True:
+                (buf, addr) = s.recvfrom(10100)
+                if(len(buf)):
+                    msg = AxUDPMessage.parse(magic, buf);
+                    info = InfoMessage();
+                    info.MacAddress = msg.data[2:8];
+                    info.RemoteIpAddress = addr;
+                    info.Major = msg.data[0];
+                    info.Minor = msg.data[1];
+                    info.iface = iface;
+                    info.magic = magic;
+                    logging.debug('received [{}]'.format(', '.join(hex(x) for x in info.MacAddress)));
+                    responses.append(info);
+        
+        except TimeoutError:
+            logging.debug('No answer received');
+            pass;
+        except Exception as e :
+            logging.warning('Got an exception in the discovery mechanism...');
+            traceback.print_exc()
+            pass;
+
+        return x
+
+    @staticmethod
     def send_broadcast(magic):
         responses = [];
         udp_message = AxUDPMessage();
@@ -67,31 +103,15 @@ class UDPHelper(object):
         
         try:
             for iface in Interfaces.get_all_network_interfaces_with_broadcast():
-                dest = (Interfaces.get_broadcast_address(iface), 8005);
+                destIP = Interfaces.get_broadcast_address(iface);
 
+                if(destIP is None):
+                    continue;
+
+                dest = (destIP, 8005);
                 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-                    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM);
-                    s.bind((Interfaces.get_local_ip_from_interface(iface), 0));
-                    s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1);
-                    s.sendto(bytes_array, dest);
+                    UDPHelper.__send_message(bytes_array, dest, iface, magic, responses);
 
-                    s.settimeout(UDPHelper.TIMEOUT);
-                    while True:
-                        (buf, addr) = s.recvfrom(10100)
-                        if(len(buf)):
-                            msg = AxUDPMessage.parse(magic, buf);
-                            info = InfoMessage();
-                            info.MacAddress = msg.data[2:8];
-                            info.RemoteIpAddress = addr;
-                            info.Major = msg.data[0];
-                            info.Minor = msg.data[1];
-                            info.iface = iface;
-                            info.magic = magic;
-                            print('[{}]'.format(', '.join(hex(x) for x in info.MacAddress)));
-                            responses.append(info);
-
-        except TimeoutError:
-            pass;
         except:
             pass;
             
