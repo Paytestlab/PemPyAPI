@@ -72,9 +72,8 @@ class UDPHelper(object):
         responses.append(info);
 
     @staticmethod
-    def __transmit_message(bytes_array, dest, iface, magic, responses):
+    def __transmit_message(s, bytes_array, dest, iface, magic, responses):
         try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM);
             s.bind((Interfaces.get_local_ip_from_interface(iface), 0));
             s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1);
             logging.debug('sending discovery to {}'.format(dest));
@@ -109,7 +108,7 @@ class UDPHelper(object):
 
             dest = (destIP, UDPHelper.PORT);
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-                UDPHelper.__transmit_message(bytes_array, dest, iface, magic, responses);
+                UDPHelper.__transmit_message(s, bytes_array, dest, iface, magic, responses);
             
         return responses;
 
