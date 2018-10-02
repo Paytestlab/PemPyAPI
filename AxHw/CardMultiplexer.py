@@ -68,9 +68,9 @@ class CardMultiplexer(DeviceBase):
         except KeyError as e:
             pass;
         except AssertionError as e:
-            logging.ERROR("Remote host returned an error");
+            logging.error("Remote host returned an error");
         except:
-            logging.ERROR("general error");
+            logging.error("general error");
 
         return Result;
 

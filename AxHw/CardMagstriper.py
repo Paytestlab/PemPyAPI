@@ -73,10 +73,10 @@ class CardMagstriper(DeviceBase):
         except KeyError as e:
             Result = False;
         except AssertionError as e:
-            logging.ERROR("Remote host returned an error");
+            logging.error("Remote host returned an error");
             Result = False;
         except:
-            logging.ERROR("general error");
+            logging.error("general error");
             Result = False;
 
         return Result;
