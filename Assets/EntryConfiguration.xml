@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <DeviceConfiguration>
-
   <!--<Robot id="Robot-1">
     <IpAddress>10.30.10.61</IpAddress>
     <IpPort>23</IpPort>
@@ -24,7 +23,4 @@
     <MacAddress>1407E00007F6</MacAddress>
     <Layout>CardMagstriper.xml</Layout>
   </CardMagstriper>
-  
 </DeviceConfiguration>
-
-

@@ -36,21 +36,28 @@ from UDPMessage.UDPMagics import UDPMagics;
 
 
 class CardMultiplexer(DeviceBase):
-    """description of class"""
 
     def __init__(self, mac_address, enable_statistics=False):
-        DeviceBase.__init__(self,enable_statistics);
+        DeviceBase.__init__(self, enable_statistics);
         self.mac_address = bytearray.fromhex(mac_address);
 
     def device_lookup(self):
         self.device = AxUDPCommandSenderManager();
-        return self.device.device_lookup(self.mac_address, UDPMagics.CardMultiplexerMagic);
+        deviceIsPresent = self.device.device_lookup(self.mac_address, UDPMagics.CardMultiplexerMagic);
+        if deviceIsPresent:
+            logging.info("CardMultiplexer ({}) is present".format(self.mac_address))
+        else:
+            logging.warning("CardMultiplexer ({}) is not present".format(self.mac_address))
 
-    def initialize_device(self, file_name):
-        self.mux_layout = XmlParser.parseXmlMultiplexer(file_name)
+        return deviceIsPresent
+
+    def initialize_device(self, filename):
+        self.mux_layout = XmlParser.parseXmlMultiplexer(filename)
         if(self.mux_layout is None):
-            return False
-        return True
+            logging.warning("Initialization of multiplexer failed, skip...")
+            return False;
+
+        logging.info("Initialization of multiplexer successful...")
 
     def send_command(self, action):
         Result = False

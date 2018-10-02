@@ -6,7 +6,6 @@ from Base.DeviceBase import DeviceBase;
 import logging
 
 class PinRobot(DeviceBase):
-    """Initializes the robot class"""
 
     def __init__(self, enable_statistics=False, empower_card=False):
         DeviceBase.__init__(self, enable_statistics);
@@ -15,8 +14,10 @@ class PinRobot(DeviceBase):
     def InitializeTerminal(self, filename):
         self.terminalList = XmlParser.parseXmlMultiplexer(filename)
         if(self.terminalList is None):
+            logging.warning("Initialization failed, skip...")
             return False
-
+        
+        logging.info("Initialization successful...")
         return True
 
     def InitializeConnection(self, IP, Port):

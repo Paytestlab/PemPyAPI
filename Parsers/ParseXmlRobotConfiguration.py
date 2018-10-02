@@ -2,6 +2,7 @@
 
 from xml.dom.minidom import parse
 import xml.dom.minidom
+import logging
 
 class RobotConfiguration(object):
 
@@ -29,9 +30,10 @@ class ParseXmlRobotConfiguration(object):
 
     def parseXml(XmlFilename):
         try:
+            logging.info("Configuration: Parse: " + XmlFilename)
             DOMTree = xml.dom.minidom.parse(XmlFilename)
         except IOError as e:
-            print("Could not parse the "+ XmlFilename + "...")
+            logging.error("Configuration: Parsing Error: " + XmlFilename)
             return None
         
         collection = DOMTree.documentElement

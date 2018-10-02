@@ -69,54 +69,56 @@ def main():
 
     print(__intro__)
 
+    print("Initialising...")
+
     try:
         (robot_conf_list, mux_conf_list, mag_conf_list) = ParseXmlRobotConfiguration.parseXml(config)
+
         device_list = {}
         error = 0
-
-        print("Initialising...")
 
         for key, robotConfiguration in robot_conf_list.items():
              robot = PinRobot(enable_statistics, empower)
 
              if(False is RobotInitialisation(robot, robotConfiguration)):
-                error +=1;
+                error += 1
                 continue
 
-             device_list.update({key:robot});
+             device_list.update({key: robot})
 
         for key, mux_configuration in mux_conf_list.items():
             mux = CardMultiplexer(mux_configuration.mac_address, enable_statistics)
 
             if(False is MuxInitialization(mux, mux_configuration)):
-                error +=1
-                continue;
+                error += 1
+                continue
 
-            device_list.update({key:mux});
+            device_list.update({key: mux})
 
         for key, mag_configuration in mag_conf_list.items():
             mag = CardMagstriper(mag_configuration.mac_address, enable_statistics)
 
             if(False is MagInitialization(mag, mag_configuration)):
-                error +=1
-                continue;
+                error += 1
+                continue
 
-            device_list.update({key:mag});
+            device_list.update({key: mag})
 
         if(not device_list):
             logging.critical("Fatal error, device list is empty!")
-            raise Error;
+            raise Error
 
         logging.info("Initialization success! Warnings: {}".format(error))
 
         StartRestServer(doPostWork, doGetWork, device_list, port)
+
     except Error as e:
-        print(e);
+        print(e)
 
 #---------------------------------------------------------------------------------------------------------------#
 
 def SetLoggingLevel(args):
-    FORMAT = "%(asctime)-15s %(levelname)s: %(message)s";
+    FORMAT = "%(asctime)-15s %(levelname)s: %(message)s"
 
     if(args.debug):
         logging.basicConfig(format=FORMAT, level=logging.DEBUG)
@@ -136,52 +138,48 @@ def EnableAndParseArguments():
     parser.add_argument("-d", "--debug", nargs='?', const=True, default=False, help="increase trace verbosity to the DEBUG level", required=False)
     parser.add_argument("--empower-card", nargs='?', const=True, default=False, help="increase the current on the card for the terminals with tighter card reader", required=False)
 
-    return parser.parse_args();
+    return parser.parse_args()
 
 #------------------------------------------------------------------------------------------------------------------------#
 
 def MuxInitialization(mux : CardMultiplexer, configuration):
     if(False is mux.device_lookup()):
-        logging.warning("Multiplexer ({}) not present".format(mux.mac_address))
-        return False;
+        return False
 
     if(False is mux.initialize_device(join(__path, configuration.Layout))):
-        logging.warning(configuration.Layout + ": Initialization of multiplexer failed, skip...")
-        return False;
+        return False
 
-    return True;
+    return True
 
 #------------------------------------------------------------------------------------------------------------------------#
 
 def MagInitialization(mag : CardMagstriper, configuration):
     if(False is mag.device_lookup()):
-        logging.warning("Magstriper ({}) not present".format(mag.mac_address))
-        return False;
+        return False
 
     if(False is mag.initialize_device(join(__path, configuration.Layout))):
-        logging.warning(configuration.Layout + ": Initialization of magstriper failed, skip...")
-        return False;
+        return False
 
-    return True;
+    return True
 
 #---------------------------------------------------------------------------------------------------------------#
 
 def RobotInitialisation(robot : PinRobot, configuration):
-    """Initializes the robot, perfoms home"""
+    """Initializes the robot, and perfoms home"""
     try:
         if(False is robot.InitializeTerminal(join(__path, configuration.Layout))):
-            logging.warning(configuration.Layout + ": Initialization failed, skip...")
-            return False;
+            logging.warning(configuration.Layout + ": Initialization of robot failed, skip...")
+            return False
 
         if(False is robot.InitializeConnection(configuration.IP, int(configuration.Port))):
             logging.warning(configuration.Layout + ": robot not reachable, skip...")
-            return False;
+            return False
 
         if (False is robot.send_command("HOME")):
             logging.warning(configuration.Layout + ": robot calibration could not be executed, ignore...")
 
     finally:
-        robot.close_connection();
+        robot.close_connection()
 
     return True
 
@@ -202,7 +200,7 @@ def executeCommands(device, commands, key):
         device.mutex.acquire()
 
         if(False is device.connect()):
-            logging.error("robot '{}' is unreachable".format(key));
+            logging.error("robot '{}' is unreachable".format(key))
             raise ConnectionError("", "could not connect to the robot: " + key)
 
         for command in commands:
@@ -232,9 +230,9 @@ def getRequest(jsonString):
 
 def doPostWork(jsonString, robotList):
     
-    request = getRequest(jsonString);
+    request = getRequest(jsonString)
 
-    key = request['id'];
+    key = request['id']
 
     if(key not in robotList):
         logging.error("robot {} not in list".format(key))

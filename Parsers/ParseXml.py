@@ -2,6 +2,7 @@
 
 from xml.dom.minidom import parse
 import xml.dom.minidom
+import logging
 
 class Terminal(object):
 
@@ -9,6 +10,12 @@ class Terminal(object):
         self.CanonicalName = CanonicalName
         self.Value = Value
         self.IsButton = IsButton
+
+class MultiplexerComand(object):
+
+    def __init__(self, CanonicalName, Value):
+        self.CanonicalName = CanonicalName
+        self.Value = Value
 
 class MagstripeComand(object):
 
@@ -23,15 +30,41 @@ class XmlParser(object):
 
     def str_to_bool(isButton):
         if (isButton is '1'):
-            return True;
+            return True
         else:
-            return False;
+            return False
 
-    def parseXmlMultiplexer(XmlFilename):
+    def parseXmlRobot(filename):
         try:
-            DOMTree = xml.dom.minidom.parse(XmlFilename)
+            logging.info("Robot: Parse: " + filename)
+            DOMTree = xml.dom.minidom.parse(filename)
         except IOError as e:
-            print("Could not parse the "+ XmlFilename +"...")
+            logging.error("Robot: Parsing Error: " + filename)
+            return None
+        
+        collection = DOMTree.documentElement
+        
+        positions = collection.getElementsByTagName("Position")
+        terminalList = {}
+        for position in positions:
+           Canonical = position.getElementsByTagName('CanonicalName')[0]
+           Value = position.getElementsByTagName('Value')[0]
+           isButton = False;
+           if(0 < len(position.getElementsByTagName('isButton'))):
+               IsButtonNode = position.getElementsByTagName('isButton')[0]
+               isButton = XmlParser.str_to_bool(IsButtonNode.childNodes[0].data)
+    
+           terminal = Terminal(Canonical.childNodes[0].data, Value.childNodes[0].data, isButton)
+           terminalList.update({Canonical.childNodes[0].data:terminal})
+
+        return terminalList
+
+    def parseXmlMultiplexer(filename):
+        try:
+            logging.info("Multiplexer: Parse: " + filename)
+            DOMTree = xml.dom.minidom.parse(filename)
+        except IOError as e:
+            logging.error("Multiplexer: Parsing Error: " + filename)
             return None
         
         collection = DOMTree.documentElement
@@ -53,13 +86,14 @@ class XmlParser(object):
 
     def parseXmlMagstriper(XmlFilename):
         try:
+            logging.info("Magstriper: Parse: " + XmlFilename)
             DOMTree = xml.dom.minidom.parse(XmlFilename)
         except IOError as e:
-            print("Could not parse the "+ XmlFilename +"...")
+            logging.error("Magstriper: Parsing Error: " + XmlFilename)
             return None
-        
+
         collection = DOMTree.documentElement
-        
+
         comands = collection.getElementsByTagName("Command")
         comandList = {}
         for comand in comands:
@@ -90,7 +124,7 @@ class XmlParser(object):
                track3_data = Track3.childNodes[0].data;
 
            magComand = MagstripeComand(canonical_data, brand_data, track1_data, track2_data, track3_data)
-           comandList.update({Canonical.childNodes[0].data:magComand})
+           comandList.update({Canonical.childNodes[0].data: magComand})
 
         return comandList
         

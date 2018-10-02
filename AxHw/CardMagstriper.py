@@ -32,13 +32,9 @@ from Exception.Exception import Error
 from Base.DeviceBase import DeviceBase;
 from UDPMessage.UDPMagics import UDPMagics;
 
-
 __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
-
-
-
 
 class CardMagstriper(DeviceBase):
 
@@ -48,13 +44,21 @@ class CardMagstriper(DeviceBase):
 
     def device_lookup(self):
         self.device = AxUDPCommandSenderManager();
-        return self.device.device_lookup(self.mac_address, UDPMagics.CardMagstriperMagic);
+        deviceIsPresent = self.device.device_lookup(self.mac_address, UDPMagics.CardMagstriperMagic)
+        if deviceIsPresent:
+            logging.info("CardMagstriper ({}) is present".format(self.mac_address))
+        else:
+            logging.warning("CardMagstriper ({}) is not present".format(self.mac_address))
 
-    def initialize_device(self, file_name):
-        self.mag_layout = XmlParser.parseXmlMagstriper(file_name)
+        return deviceIsPresent
+
+    def initialize_device(self, filename):
+        self.mag_layout = XmlParser.parseXmlMagstriper(filename)
         if(self.mag_layout is None):
+            logging.warning("Initialization of magstriper failed, skip...")
             return False;
 
+        logging.info("Initialization of magstriper successful...")
         return True;
 
     def send_command(self, action):
