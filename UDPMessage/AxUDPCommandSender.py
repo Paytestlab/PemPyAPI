@@ -11,18 +11,19 @@ class AxUDPCommandSender(object):
     """Send a specific command to the Device. The commands will be transmitted over UDP"""
 
     udp_helper  = object();
-
+    
     def __init__(self, ip_address, iface, magic):
         self.udp_helper = UDPHelper(ip_address, iface, magic);
+        self.magic = magic;
 
     def set_mac_address(self, mac_address):
         if(mac_address is None):
             raise AttributeError();
 
-        request = AxUDPMessage();
+        request = AxUDPMessage(self.magic);
         request.command = int(AxUDPCommand.SET_MAC_ADDRESS);
         request.data = mac_address;
-        response = self.udp_helper.send_message(request, self.udp_helper.magic);
+        response = self.udp_helper.send_message(request.get_bytes());
         self.validate_response(request, response);
 
     def set_port(self, port_number):
@@ -33,25 +34,25 @@ class AxUDPCommandSender(object):
         if(port_number > 16):
             raise OverflowError();
 
-        request = AxUDPMessage();
+        request = AxUDPMessage(self.magic);
         request.command = int(AxUDPCardMultiplexerCommand.SET_PORT);
         request.data = bytes([port_number]);
-        response = self.udp_helper.send_message(request.get_bytes(self.udp_helper.magic), self.udp_helper.magic);
+        response = self.udp_helper.send_message(request.get_bytes());
         return self.validate_response(request, response);
 
     def set_card_magstripe_track(self, command :  AxUDPCardMagstriperCommand, track_data : bytes):
 
-        request = AxUDPMessage();
+        request = AxUDPMessage(self.magic);
         request.command = int(command);
         request.data = track_data;
-        response = self.udp_helper.send_message(request.get_bytes(self.udp_helper.magic), self.udp_helper.magic);
+        response = self.udp_helper.send_message(request.get_bytes());
         return self.validate_response(request, response);
 
 
     def send_tracks(self):
-        request = AxUDPMessage();
+        request = AxUDPMessage(self.magic);
         request.command = int(AxUDPCardMagstriperCommand.SendTracks);
-        response = self.udp_helper.send_message(request.get_bytes(self.udp_helper.magic), self.udp_helper.magic);
+        response = self.udp_helper.send_message(request.get_bytes());
         return self.validate_response(request, response);
 
 

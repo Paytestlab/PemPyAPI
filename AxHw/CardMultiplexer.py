@@ -33,6 +33,7 @@ from UDPMessage.AxUDPCommandSenderManager import AxUDPCommandSenderManager;
 from Exception.Exception import Error
 from Base.DeviceBase import DeviceBase;
 from UDPMessage.UDPMagics import UDPMagics;
+import traceback;
 
 
 class CardMultiplexer(DeviceBase):
@@ -70,6 +71,7 @@ class CardMultiplexer(DeviceBase):
         except AssertionError as e:
             logging.error("Remote host returned an error");
         except:
+            traceback.print_exc()
             logging.error("general error");
 
         return Result;

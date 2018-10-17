@@ -8,9 +8,10 @@ class AxUDPMessage(object):
     command = 0;
     data = [];
 
-    def __init__(self):
+    def __init__(self, magic):
         del self.data[:]
         self.command = 0;
+        self.magic = magic;
 
     @staticmethod
     def parse(expectedMagic, payload):
@@ -31,7 +32,7 @@ class AxUDPMessage(object):
         if((payload[:8] == bytearray(expectedMagic)) is False):
             raise RuntimeError();
 
-        msg = AxUDPMessage();
+        msg = AxUDPMessage(expectedMagic);
 
         msg.command = command_type;
 
@@ -40,7 +41,7 @@ class AxUDPMessage(object):
 
         return msg;
 
-    def get_bytes(self, magic):
+    def get_bytes(self):
 
         if(self.data is None):
             #TODO
@@ -48,7 +49,7 @@ class AxUDPMessage(object):
         
         list = [];
 
-        for single_value in magic:
+        for single_value in self.magic:
             list.append(single_value);
 
         list.append(self.command);

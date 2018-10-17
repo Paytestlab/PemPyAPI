@@ -22,6 +22,7 @@ class UDPHelper(object):
     def __init__(self, target, iface, magic):
         self.target_ip = target
         self.iface = iface
+        self.magic = magic
 
     def create_udp_client(self, ip_address):
         #so = socket.socket(socket.AF_INET, socket.SOCK_DGRAM);
@@ -29,7 +30,7 @@ class UDPHelper(object):
         #return so;
         pass;
 
-    def send_message(self, message, magic):
+    def send_message(self, message):
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
             target_address = self.target_ip;
             sock.bind((Interfaces.get_local_ip_from_interface(self.iface), 0));
@@ -39,7 +40,7 @@ class UDPHelper(object):
             sock.settimeout(UDPHelper.TIMEOUT);
             (data, server) = sock.recvfrom(10100);
 
-        return AxUDPMessage.parse(magic, data);
+        return AxUDPMessage.parse(self.magic, data);
 
     def receive(self):
         #TODO
@@ -59,11 +60,11 @@ class UDPHelper(object):
         return None;
 
     @staticmethod
-    def __parse_message(iface, magic, responses):
-        msg = AxUDPMessage.parse(magic, buf);
+    def __parse_message(iface, magic, responses, buffer, address):
+        msg = AxUDPMessage.parse(magic, buffer);
         info = InfoMessage();
         info.MacAddress = msg.data[2:8];
-        info.RemoteIpAddress = addr;
+        info.RemoteIpAddress = address;
         info.Major = msg.data[0];
         info.Minor = msg.data[1];
         info.iface = iface;
@@ -83,7 +84,7 @@ class UDPHelper(object):
             while True:
                 (buf, addr) = s.recvfrom(10100)
                 if(len(buf)):
-                    UDPHelper.__parse_message(iface, magic, responses);
+                    UDPHelper.__parse_message(iface, magic, responses, buf, addr);
         
         except TimeoutError:
             logging.debug('no answer received');
@@ -96,9 +97,9 @@ class UDPHelper(object):
     @staticmethod
     def send_broadcast(magic):
         responses = [];
-        udp_message = AxUDPMessage();
+        udp_message = AxUDPMessage(magic);
         udp_message.command = int(AxUDPCommand.INFO);
-        bytes_array = udp_message.get_bytes(magic);
+        bytes_array = udp_message.get_bytes();
         
         for iface in Interfaces.get_all_network_interfaces_with_broadcast():
             destIP = Interfaces.get_broadcast_address(iface);
