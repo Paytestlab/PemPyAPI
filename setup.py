@@ -13,7 +13,7 @@ from os import path
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -22,11 +22,11 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.3.35',
+    version='1.5.51',
 
-    description='Integration layer for the AX robot',
+    description='Integration layer for the AX robot, Ax Mux and Ax Magstripe probe',
     long_description=long_description,
-
+    long_description_content_type='text/markdown',
     # The project's main homepage.
     url='https://github.com/plutonij/PemPyAPI',
 
@@ -66,17 +66,17 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    # packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    packages=find_packages(),
 
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
-    py_modules=['MultiRobotRest', 'Communication', 'Exception', 'ParseXml', 'ParseXmlRobotConfiguration', 'PinRobot', 'RestfulThreaded', 'SqlWorker', 'Statistics', 'Utilities'],
+    py_modules=['MultiRobotRest'],
 
     # List run-time dependencies here.  These will be installed by pip when
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    # install_requires=['peppercorn'],
+    install_requires=['netifaces'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
@@ -88,36 +88,51 @@ setup(
     #},
 
     python_requires='>=3',
-
-    # If there are data files included in your packages that need to be
-    # installed, specify them here.  If using Python 2.6 or less, then these
-    # have to be included in MANIFEST.in as well.
+    
     package_data={
-        'config': ['ConfigRest/Ingenico-IPP350.xml',
-                   'ConfigRest/Ingenico-IWL250.xml',
-                   'ConfigRest/Ingenico-Desk3500.xml',
-                   'ConfigRest/Miura-010.xml',
-                   'ConfigRest/Verifone-VX820.xml',
-                   'ConfigRest/Yomani.xml',
-                   'ConfigRest/Yoximo.xml'
-                   ],
+        'ConfigRest': [
+            'CardMagstriper.xml',
+            'CardMultiplexer.xml',
+            'ICP.xml'
+            'Ingenico-IPP350.xml',
+            'Ingenico-IPP320.xml',
+            'Ingenico-IWL250.xml',
+            'Ingenico-Move5000.xml',
+            'Miura-010.xml',
+            'Miura-020.xml',
+            'Pax-S920.xml'
+            'Verifone-E355.xml'
+            'Verifone-MX915.xml'
+            'Verifone-MX925.xml'
+            'Verifone-P400.xml'
+            'Verifone-VX820.xml',
+            'Yomani.xml',
+            'Yoximo.xml'
+            ],
+        'Assets' : ['EntryConfiguration.xml']
     },
-
-    # Although 'package_data' is the preferred approach, in some case you may
-    # need to place data files outside of your packages. See:
-    # http://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files # noqa
-    # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
-    data_files=[('ConfigRest', ['ConfigRest/Ingenico-IPP350.xml']),
-                ('ConfigRest', ['ConfigRest/Ingenico-IWL250.xml']),
-                ('ConfigRest', ['ConfigRest/Ingenico-Desk3500.xml']),
-                ('ConfigRest', ['ConfigRest/Miura-010.xml']),
-                ('ConfigRest', ['ConfigRest/Verifone-VX820.xml']),
-                ('ConfigRest', ['ConfigRest/Yomani.xml']),
-                ('ConfigRest', ['ConfigRest/Yoximo.xml'])
-                
-                ],
-
     include_package_data=True,
+   
+    data_files=[
+        ('ConfigRest', [ 'ConfigRest/CardMagstriper.xml']),
+        ('ConfigRest', [ 'ConfigRest/CardMultiplexer.xml']),
+        ('ConfigRest', [ 'ConfigRest/ICP.xml']),
+        ('ConfigRest', [ 'ConfigRest/Ingenico-IPP350.xml']),
+        ('ConfigRest', [ 'ConfigRest/Ingenico-IPP320.xml']),
+        ('ConfigRest', [ 'ConfigRest/Ingenico-IWL250.xml']),
+        ('ConfigRest', [ 'ConfigRest/Ingenico-Move5000.xml']),
+        ('ConfigRest', [ 'ConfigRest/Miura-010.xml']),
+        ('ConfigRest', [ 'ConfigRest/Miura-020.xml']),
+        ('ConfigRest', [ 'ConfigRest/Pax-S920.xml']),
+        ('ConfigRest', [ 'ConfigRest/Verifone-E355.xml']),
+        ('ConfigRest', [ 'ConfigRest/Verifone-MX915.xml']),
+        ('ConfigRest', [ 'ConfigRest/Verifone-MX925.xml']),
+        ('ConfigRest', [ 'ConfigRest/Verifone-P400.xml']),
+        ('ConfigRest', [ 'ConfigRest/Verifone-VX820.xml']),
+        ('ConfigRest', [ 'ConfigRest/Yomani.xml']),
+        ('ConfigRest', [ 'ConfigRest/Yoximo.xml']),
+        ( 'Assets',    [ 'Assets/EntryConfiguration.xml'])
+    ],
 
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow

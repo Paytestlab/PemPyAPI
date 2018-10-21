@@ -43,7 +43,7 @@ from AxHw.CardMagstriper import CardMagstriper
 __major__ = 1
 __minor__ = 5
 __service__ = 0
-__build__ = 0
+__build__ = 51
 __path = "ConfigRest"
 
 __intro__= (

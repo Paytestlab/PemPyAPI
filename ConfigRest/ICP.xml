@@ -99,7 +99,7 @@
   <!-- Card Eject -->
   <Position>
     <CanonicalName>REMOVE CARD</CanonicalName>
-    <Value>G0 Z50</Value>
+    <Value>G0 Z100</Value>
     <isButton>0</isButton>
   </Position>
 
