@@ -31,14 +31,20 @@ class UDPHelper(object):
         pass;
 
     def send_message(self, message):
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-            target_address = self.target_ip;
-            sock.bind((Interfaces.get_local_ip_from_interface(self.iface), 0));
-            
-            sock.sendto(message, target_address);
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+                sock.bind((Interfaces.get_local_ip_from_interface(self.iface), 0));
+                sock.sendto(message, self.target_ip);
+                sock.settimeout(UDPHelper.TIMEOUT);
+                (data, server) = sock.recvfrom(10100);
 
-            sock.settimeout(UDPHelper.TIMEOUT);
-            (data, server) = sock.recvfrom(10100);
+        except socket.timeout:
+            logging.warning('no answer received from the endpoint {}'.format(self.target_ip));
+            pass;
+        except Exception as e :
+            logging.warning('got an exception in the discovery mechanism...');
+            traceback.print_exc()
+            pass;
 
         return AxUDPMessage.parse(self.magic, data);
 
@@ -85,7 +91,9 @@ class UDPHelper(object):
                 (buf, addr) = s.recvfrom(10100)
                 if(len(buf)):
                     UDPHelper.__parse_message(iface, magic, responses, buf, addr);
-        
+
+        except socket.timeout:
+            logging.info('no answer received from any endpoint');
         except TimeoutError:
             logging.debug('no answer received');
             pass;
