@@ -1,21 +1,25 @@
 #!/usr/bin/python3
 
 from netifaces import interfaces, ifaddresses, AF_INET, AF_LINK
+import logging;
 
 class Interfaces(object):
 
     @staticmethod
     def remove_loopback_from_list(list, config, interface):
-        if AF_INET not in config.keys():
-            return
+        try:
+            if AF_LINK in config.keys():
+                for link in config[AF_LINK]:
+                    if(len(link['addr']) == 0):
+                        list.remove(interface);
 
-        for link in config[AF_LINK]:
-            if(len(link['addr']) == 0):
-                list.remove(interface);
-
-        for link in config[AF_INET]:
-            if 'broadcast' not in link.keys() and 'peer' in link.keys():
-                list.remove(interface);
+            if AF_INET in config.keys():
+                for link in config[AF_INET]:
+                    if 'broadcast' not in link.keys() and 'peer' in link.keys():
+                        list.remove(interface);
+        except KeyError:
+            logging.debug("received key error during loopback removal {}".format(config));
+            pass;
 
     @staticmethod
     def get_all_network_interfaces_with_broadcast():
