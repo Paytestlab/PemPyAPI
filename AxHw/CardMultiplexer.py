@@ -43,8 +43,8 @@ class CardMultiplexer(DeviceBase):
         self.mac_address = bytearray.fromhex(mac_address);
 
     def device_lookup(self):
-        self.device = AxUDPCommandSenderManager();
-        deviceIsPresent = self.device.device_lookup(self.mac_address, UDPMagics.CardMultiplexerMagic);
+        self.device = AxUDPCommandSenderManager(UDPMagics.CardMultiplexerMagic);
+        deviceIsPresent = self.device.device_lookup(self.mac_address);
         if deviceIsPresent:
             logging.info("CardMultiplexer ({}) is present".format(self.mac_address))
         else:
@@ -66,6 +66,10 @@ class CardMultiplexer(DeviceBase):
            action_value = int(self.mux_layout[action].Value);
            send_to = self.device.get_sender_for_device(self.mac_address);
            Result = send_to.set_port(action_value);
+        
+        except TimeoutError as e:
+            logging.error("The remote host did not respond in time");
+            Result = False;
         except KeyError as e:
             pass;
         except AssertionError as e:

@@ -43,12 +43,12 @@ class CardMagstriper(DeviceBase):
         self.mac_address = bytearray.fromhex(mac_address);
 
     def device_lookup(self):
-        self.device = AxUDPCommandSenderManager();
-        deviceIsPresent = self.device.device_lookup(self.mac_address, UDPMagics.CardMagstriperMagic)
+        self.device = AxUDPCommandSenderManager(UDPMagics.CardMagstriperMagic);
+        deviceIsPresent = self.device.device_lookup(self.mac_address)
         if deviceIsPresent:
-            logging.info("CardMagstriper ({}) is present".format(self.mac_address))
+            logging.info("CardMagstriper ({}) is present".format(', '.join(hex(x) for x in self.mac_address)))
         else:
-            logging.warning("CardMagstriper ({}) is not present".format(self.mac_address))
+            logging.warning("CardMagstriper ({}) is not present".format(', '.join(hex(x) for x in self.mac_address)))
 
         return deviceIsPresent
 
@@ -70,6 +70,10 @@ class CardMagstriper(DeviceBase):
                 Result = send_to.send_tracks();
            
 
+        except TimeoutError as e:
+            logging.error("The remote host did not respond in time");
+            Result = False;
+            pass;
         except KeyError as e:
             Result = False;
         except AssertionError as e:
