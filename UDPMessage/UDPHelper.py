@@ -40,11 +40,12 @@ class UDPHelper(object):
 
         except socket.timeout:
             logging.warning('no answer received from the endpoint {}'.format(self.target_ip));
+            raise TimeoutError('no answer received from the endpoint {}'.format(self.target_ip))
             pass;
         except Exception as e :
             logging.warning('got an exception in the discovery mechanism...');
             traceback.print_exc()
-            pass;
+            raise e;
 
         return AxUDPMessage.parse(self.magic, data);
 
@@ -81,6 +82,7 @@ class UDPHelper(object):
     @staticmethod
     def __transmit_message(s, bytes_array, dest, iface, magic, responses):
         try:
+            respondingDevices = 0;
             s.bind((Interfaces.get_local_ip_from_interface(iface), 0));
             s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1);
             logging.debug('sending discovery to {}'.format(dest));
@@ -91,9 +93,12 @@ class UDPHelper(object):
                 (buf, addr) = s.recvfrom(10100)
                 if(len(buf)):
                     UDPHelper.__parse_message(iface, magic, responses, buf, addr);
+                    respondingDevices +=1;
 
         except socket.timeout:
-            logging.info('no answer received from any endpoint');
+            if(respondingDevices == 0):
+                logging.info('no answer received from any endpoint');
+            pass;
         except TimeoutError:
             logging.debug('no answer received');
             pass;
