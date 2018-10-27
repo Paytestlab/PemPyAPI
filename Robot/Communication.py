@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
 import socket
-from socket import error as SocketError
-import errno
-import logging
+from socket import timeout as SocketTimeout;
+from socket import error as SocketError;
+import errno;
+import logging;
 
 class PEMSocket(object):
      
@@ -17,9 +18,7 @@ class PEMSocket(object):
         try:
             self.Connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.Connection.connect((self.IP, self.Port)) 
-            self.Connection.settimeout(2.5)
-            receive = self.Connection.recv(self.BUFFER_SIZE)
-            self.Connection.settimeout(10)
+            self.Connection.settimeout(10.0)
         except SocketError as e:
             logging.error("could not connect({}) to {}:{}. Socket already in use".format(str(e.errno), self.IP, self.Port))
             return False
@@ -27,13 +26,8 @@ class PEMSocket(object):
             logging.error("could not connect({}) to {}:{}".format(str(e.errno), self.IP, self.Port))
             return False;
 
-        try:
-            if("Smoothie" in receive.decode("utf-8")):
-                return True
-        except UnicodeDecodeError:
-            return False
-
-        return False
+        
+        return True
 
     def send(self, Message):
         EndMessage = Message + "\r\n"
@@ -48,11 +42,14 @@ class PEMSocket(object):
 
     def receive(self):
         try:
-            response = self.Connection.recv(self.BUFFER_SIZE).decode("utf-8")
+            response = self.Connection.recv(self.BUFFER_SIZE);
+            responseString = response.decode("utf-8");
+        except SocketTimeout as e:
+            raise TimeoutError("The robot did not respond in time");
         except SocketError as e:
             logging.warning("could not receive any data(" + str(e.errno) + ")")
             return ''
-        return response
+        return responseString;
 
     def receiveWithTimeout(self, Timeout):
         try:

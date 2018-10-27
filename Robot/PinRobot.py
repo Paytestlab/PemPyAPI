@@ -4,6 +4,7 @@ from Parsers.ParseXml import XmlParser;
 from Robot.Communication import PEMSocket;
 from Base.DeviceBase import DeviceBase;
 import logging
+from Exception.Exception import DeviceStateError, ConnectionError;
 
 class PinRobot(DeviceBase):
 
@@ -23,10 +24,19 @@ class PinRobot(DeviceBase):
     def InitializeConnection(self, IP, Port):
         self.socket = PEMSocket(IP, Port)
    
-        return self.socket.connect()
+        return self.connect()
 
     def connect(self):
-        return self.socket.connect();
+        try:
+
+            if(self.socket.connect() is True):
+                response = self.socket.receive();
+                logging.debug("received from robot {}".format(response.replace('\r\n', '')));
+                if("Smoothie command shell" in response):
+                    return True;
+        except TimeoutError:
+            pass;
+        return False;
 
     def close_connection(self):
         try:
@@ -37,13 +47,12 @@ class PinRobot(DeviceBase):
     def __ResponseEvaluate(self, response):
         logging.debug("received from robot {}".format(response.replace('\r\n', '')))
         Result = False
+        if(not response):
+            return False;
         if("ok" in response):
            Result = True
-        elif(response in "Smoothie"):
-           Result = self.__ResponseEvaluate(self.socket.receiveWithTimeout(2))
         elif("!!" in response):
-            Result = self.send_command("Reset")
-            Result |= self.send_command("Home")
+            raise DeviceStateError("", "Robot error:{}".format(response));
         else:
            return False
 
@@ -65,9 +74,16 @@ class PinRobot(DeviceBase):
 
            if(shouldPress):
               Result = self.__pressButton();
-           else:
+           elif(Result):
               self.__reduceZCurrent();
+        except TimeoutError:
+            logging.error("Robot did not respond in time performing the action {}".format(action));
+            pass;
+        except DeviceStateError as e:
+            logging.error("Robot is in an error state");
+            pass;
         except:
+            logging.error("an unknown exception happened...");
             pass
 
         return Result;

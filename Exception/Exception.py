@@ -28,3 +28,8 @@ class DestinationNotFoundError(Error):
     def __init__(self, expression, message):
         self.expression = expression
         self.message = message
+
+class DeviceStateError(Error):
+    def __init__(self, expression, message):
+        self.expression = expression;
+        self.message = message;

@@ -26,17 +26,18 @@ __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
-from Robot.PinRobot import PinRobot
-from Rest.RestfulThreaded import RESTfulThreadedServer
-from os.path import join
-from Parsers.ParseXmlRobotConfiguration import ParseXmlRobotConfiguration, RobotConfiguration
-from Exception.Exception import Error, ConnectionError, InputError, ParseError, DestinationNotFoundError
-import json
-import argparse
-from SQL.Statistics import Statistics
-import logging
-from AxHw.CardMultiplexer import CardMultiplexer
-from AxHw.CardMagstriper import CardMagstriper
+from Robot.PinRobot import PinRobot;
+from Rest.RestfulThreaded import RESTfulThreadedServer;
+from os.path import join;
+from Parsers.ParseXmlRobotConfiguration import ParseXmlRobotConfiguration, RobotConfiguration;
+from Exception.Exception import Error, ConnectionError, InputError, ParseError, DestinationNotFoundError, DeviceStateError;
+import json;
+import argparse;
+from SQL.Statistics import Statistics;
+import logging;
+import traceback;
+from AxHw.CardMultiplexer import CardMultiplexer;
+from AxHw.CardMagstriper import CardMagstriper;
 
 #----------------------------------------------------------------------------------------------------------------#
 
@@ -78,13 +79,17 @@ def main():
         error = 0
 
         for key, robotConfiguration in robot_conf_list.items():
-             robot = PinRobot(enable_statistics, empower)
+             try:
+                robot = PinRobot(enable_statistics, empower)
 
-             if(False is RobotInitialisation(robot, robotConfiguration)):
-                error += 1
-                continue
+                if(False is RobotInitialisation(robot, robotConfiguration)):
+                    error += 1
+                    continue
 
-             device_list.update({key: robot})
+                device_list.update({key: robot})
+             except DeviceStateError:
+                pass;
+
 
         for key, mux_configuration in mux_conf_list.items():
             mux = CardMultiplexer(mux_configuration.mac_address, enable_statistics)
@@ -105,15 +110,15 @@ def main():
             device_list.update({key: mag})
 
         if(not device_list):
-            logging.critical("Fatal error, device list is empty!")
-            raise Error
+            logging.critical("Fatal error, device list is empty!");
+            raise Error("", "Fatal error, device list is empty!");
 
         logging.info("Initialization success! Warnings: {}".format(error))
 
         StartRestServer(doPostWork, doGetWork, device_list, port)
 
     except Error as e:
-        print(e)
+        traceback.print_exc()
 
 #---------------------------------------------------------------------------------------------------------------#
 
@@ -176,7 +181,8 @@ def RobotInitialisation(robot : PinRobot, configuration):
             return False
 
         if (False is robot.send_command("HOME")):
-            logging.warning(configuration.Layout + ": robot calibration could not be executed, ignore...")
+            logging.warning(configuration.Layout + ": robot calibration could not be executed")
+            return False;
 
     finally:
         robot.close_connection()
@@ -231,15 +237,16 @@ def getRequest(jsonString):
 def doPostWork(jsonString, robotList):
     
     request = getRequest(jsonString)
+    try:
+        key = request['id']
 
-    key = request['id']
+        if(key not in robotList):
+            logging.error("robot {} not in list".format(key))
+            raise DestinationNotFoundError("" , key + ": robot not found")
 
-    if(key not in robotList):
-        logging.error("robot {} not in list".format(key))
-        raise DestinationNotFoundError("" , key + ": robot not found")
-
-    executeCommands(robotList[key], request['commands'], key)
-
+        executeCommands(robotList[key], request['commands'], key)
+    except KeyError as e:
+        raise ParseError("", str(e));
     return True
 
 #----------------------------------------------------------------------------------------------------------------#
