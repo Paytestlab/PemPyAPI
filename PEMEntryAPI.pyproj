@@ -127,15 +127,13 @@
     <Content Include="ConfigRest\Miura-010.xml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="ConfigRest\Quest-QT720.xml" />
     <Content Include="ConfigRest\Verifone-VX820.xml" />
     <Content Include="ConfigRest\Ingenico-IPP350.xml" />
     <Content Include="ConfigRest\Verifone-E355.xml" />
     <Content Include="ConfigRest\Yomani.xml" />
     <Content Include="ConfigRest\CardMultiplexer.xml" />
     <Content Include="ConfigRest\Yoximo.xml" />
-    <Content Include="Manifest.in">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="README.md" />
     <Content Include="Readme.rst">
       <SubType>Code</SubType>
