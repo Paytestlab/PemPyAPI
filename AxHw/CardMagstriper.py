@@ -94,8 +94,13 @@ class CardMagstriper(DeviceBase):
             if(self.mag_layout[action].Track1 is not None):
                 track_value = self.mag_layout[action].Track1;
                 track_bytes = str.encode(track_value);
-                for char in track_bytes:
-                    char = char - 0x20;
+                track_byte_array = bytearray(track_bytes);
+                i = 0;
+                while(i < len(track_byte_array)):
+                    track_byte_array[i] = track_byte_array[i] - 0x20;
+                    i = i + 1;
+                track_bytes = bytes(track_byte_array);
+              
                 Result = send_to.set_card_magstripe_track(AxUDPCardMagstriperCommand.SetTrack1, track_bytes);
 
             if(self.mag_layout[action].Track2 is not None):
