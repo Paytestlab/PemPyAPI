@@ -16,7 +16,7 @@ class HandleRestRequest(BaseHTTPRequestHandler):
         try:
             result = s.getProcess(s.processArg)
 
-            s.__sendResponse(HTTPStatus.Ok)
+            s.__sendResponse(HTTPStatus.OK)
             s.wfile.write(result.encode('utf-8'))
             s.wfile.write("\r\n".encode('utf-8'))
         except NotImplementedError:
@@ -37,7 +37,7 @@ class HandleRestRequest(BaseHTTPRequestHandler):
             payload = str(s.rfile.read(length), 'utf-8')
             s.postProcess(payload, s.processArg)
                 
-            s.__sendResponse(HTTPStatus.Ok)
+            s.__sendResponse(HTTPStatus.OK)
         except NotImplementedError:
             s.__sendResponse(HTTPStatus.NOT_IMPLEMENTED, "not implemented")
             pass
@@ -67,7 +67,7 @@ class HandleRestRequest(BaseHTTPRequestHandler):
         BaseHTTPRequestHandler.__init__(s, *args)
         
     def do_HEAD(s):
-        s.__sendResponse(HTTPStatus.Ok)
+        s.__sendResponse(HTTPStatus.OK)
 
     def do_POST(s):
         """Do some robot work"""
