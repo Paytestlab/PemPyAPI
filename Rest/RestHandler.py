@@ -2,26 +2,28 @@
 
 from http.server import BaseHTTPRequestHandler
 from Exception.Exception import NotImplementedError, ParseError, InputError, ConnectionError, DestinationNotFoundError, Error
+from http import HTTPStatus
 import logging
 
 class HandleRestRequest(BaseHTTPRequestHandler):
     def __sendResponse(s, code, message=None):
         s.send_response(code, message)
         s.send_header('Content-Type', 'application/json')
+        s.send_header("Connection", "close")
         s.end_headers()
 
     def __doGetWork(s):
         try:
             result = s.getProcess(s.processArg)
 
-            s.__sendResponse(200)
+            s.__sendResponse(HTTPStatus.Ok)
             s.wfile.write(result.encode('utf-8'))
             s.wfile.write("\r\n".encode('utf-8'))
         except NotImplementedError:
-            s.__sendResponse(501, "not implemented")
+            s.__sendResponse(HTTPStatus.NOT_IMPLEMENTED, "not implemented")
             pass
         except:
-            s.__sendResponse(405)
+            s.__sendResponse(HTTPStatus.METHOD_NOT_ALLOWED)
             pass
 
     def __doPOSTWork(s):
@@ -35,22 +37,24 @@ class HandleRestRequest(BaseHTTPRequestHandler):
             payload = str(s.rfile.read(length), 'utf-8')
             s.postProcess(payload, s.processArg)
                 
-            s.__sendResponse(200)
+            s.__sendResponse(HTTPStatus.Ok)
         except NotImplementedError:
-            s.__sendResponse(501, "not implemented")
+            s.__sendResponse(HTTPStatus.NOT_IMPLEMENTED, "not implemented")
             pass
         except (ConnectionError, DestinationNotFoundError) as error:
-            s.__sendResponse(503, error);
+            s.__sendResponse(HTTPStatus.SERVICE_UNAVAILABLE, error);
             pass
         except (ParseError) as error:
-            s.__sendResponse(400, error);
+            s.__sendResponse(HTTPStatus.BAD_REQUEST, error);
             pass
         except InputError as error:
-            s.__sendResponse(404, error);
+            s.__sendResponse(HTTPStatus.NOT_FOUND, error);
             pass;
         except Error as error:
-            s.__sendResponse(405, error);
+            s.__sendResponse(HTTPStatus.METHOD_NOT_ALLOWED, error);
             pass
+
+        
 
     def log_message(self, format, *args):
         logging.info(format, * args);
@@ -63,7 +67,7 @@ class HandleRestRequest(BaseHTTPRequestHandler):
         BaseHTTPRequestHandler.__init__(s, *args)
         
     def do_HEAD(s):
-        s.__sendResponse(200)
+        s.__sendResponse(HTTPStatus.Ok)
 
     def do_POST(s):
         """Do some robot work"""
