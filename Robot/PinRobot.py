@@ -18,7 +18,7 @@ class PinRobot(DeviceBase):
             logging.warning("Initialization failed, skip...")
             return False
         
-        logging.info("Initialization succesful...")
+        logging.info("Initialization successful...")
         return True
 
     def InitializeConnection(self, IP, Port):

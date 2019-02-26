@@ -215,7 +215,7 @@ def executeCommands(device, commands, key):
 
         for command in commands:
             if(True is device.send_command(command)):
-                logging.info("{}: execution of {} was succesful".format(key, command))
+                logging.info("{}: execution of {} was successful".format(key, command))
                 device.UpdateTable(key, command)
             else:
                 logging.warning("could not execute '{}' on {}. Abort further execution".format(command, key))

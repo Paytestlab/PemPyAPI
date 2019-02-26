@@ -58,7 +58,7 @@ class CardMultiplexer(DeviceBase):
             logging.warning("multiplexer initialization failed, skip...")
             return False;
 
-        logging.info("multiplexer initialization succesful...")
+        logging.info("multiplexer initialization successful...")
 
     def send_command(self, action):
         Result = False

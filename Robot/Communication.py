@@ -35,7 +35,7 @@ class PEMSocket(object):
         try:
             self.Connection.send(data)
         except SocketError as e:
-            logging.warning("sending of "+ str(len(Message)) + "bytes was not succesful")
+            logging.warning("sending of "+ str(len(Message)) + "bytes was not successful")
             return False
 
         return True
