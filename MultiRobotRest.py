@@ -184,6 +184,10 @@ def RobotInitialisation(robot : PinRobot, configuration):
             logging.warning(configuration.Layout + ": robot calibration could not be executed")
             return False;
 
+        if (False is robot.send_command("REMOVE CARD")):
+            logging.warning(configuration.Layout + ": card could not be removed")
+            return False;
+
     finally:
         robot.close_connection()
 

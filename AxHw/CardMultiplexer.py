@@ -46,19 +46,19 @@ class CardMultiplexer(DeviceBase):
         self.device = AxUDPCommandSenderManager(UDPMagics.CardMultiplexerMagic);
         deviceIsPresent = self.device.device_lookup(self.mac_address);
         if deviceIsPresent:
-            logging.info("CardMultiplexer ({}) is present".format(self.mac_address))
+            logging.info("multiplexer ({}) is present".format(self.mac_address))
         else:
-            logging.warning("CardMultiplexer ({}) is not present".format(self.mac_address))
+            logging.warning("multiplexer ({}) is not present".format(self.mac_address))
 
         return deviceIsPresent
 
     def initialize_device(self, filename):
         self.mux_layout = XmlParser.parseXmlMultiplexer(filename)
         if(self.mux_layout is None):
-            logging.warning("Initialization of multiplexer failed, skip...")
+            logging.warning("multiplexer initialization failed, skip...")
             return False;
 
-        logging.info("Initialization of multiplexer successful...")
+        logging.info("multiplexer initialization successful...")
 
     def send_command(self, action):
         Result = False
@@ -69,7 +69,6 @@ class CardMultiplexer(DeviceBase):
         
         except TimeoutError as e:
             logging.error("The remote host did not respond in time");
-            Result = False;
         except KeyError as e:
             pass;
         except AssertionError as e:

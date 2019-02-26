@@ -46,19 +46,19 @@ class CardMagstriper(DeviceBase):
         self.device = AxUDPCommandSenderManager(UDPMagics.CardMagstriperMagic);
         deviceIsPresent = self.device.device_lookup(self.mac_address)
         if deviceIsPresent:
-            logging.info("CardMagstriper ({}) is present".format(', '.join(hex(x) for x in self.mac_address)))
+            logging.info("magstriper ({}) is present".format(', '.join(hex(x) for x in self.mac_address)))
         else:
-            logging.warning("CardMagstriper ({}) is not present".format(', '.join(hex(x) for x in self.mac_address)))
+            logging.warning("magstriper ({}) is not present".format(', '.join(hex(x) for x in self.mac_address)))
 
         return deviceIsPresent
 
     def initialize_device(self, filename):
         self.mag_layout = XmlParser.parseXmlMagstriper(filename)
         if(self.mag_layout is None):
-            logging.warning("Initialization of magstriper failed, skip...")
+            logging.warning("magstriper initialization failed, skip...")
             return False;
 
-        logging.info("Initialization of magstriper successful...")
+        logging.info("magstriper initalization successful...")
         return True;
 
     def send_command(self, action):
