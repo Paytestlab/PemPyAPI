@@ -58,7 +58,7 @@ class CardMagstriper(DeviceBase):
             logging.warning("magstriper initialization failed, skip...")
             return False;
 
-        logging.info("magstriper initalization successful...")
+        logging.info("magstriper initalization succesful...")
         return True;
 
     def send_command(self, action):
