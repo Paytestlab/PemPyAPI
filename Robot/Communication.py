@@ -20,10 +20,10 @@ class PEMSocket(object):
             self.Connection.connect((self.IP, self.Port)) 
             self.Connection.settimeout(10.0)
         except SocketError as e:
-            logging.error("could not connect({}) to {}:{}. Socket already in use".format(str(e.errno), self.IP, self.Port))
+            logging.error("robot: could not connect({}) to {}:{}. Socket already in use".format(str(e.errno), self.IP, self.Port))
             return False
         except Exception as e:
-            logging.error("could not connect({}) to {}:{}".format(str(e.errno), self.IP, self.Port))
+            logging.error("robot: could not connect({}) to {}:{}".format(str(e.errno), self.IP, self.Port))
             return False;
 
         
@@ -35,7 +35,7 @@ class PEMSocket(object):
         try:
             self.Connection.send(data)
         except SocketError as e:
-            logging.warning("sending of "+ str(len(Message)) + "bytes was not successful")
+            logging.warning("robot: sending "+ str(len(Message)) + "bytes was not successful")
             return False
 
         return True
@@ -45,9 +45,9 @@ class PEMSocket(object):
             response = self.Connection.recv(self.BUFFER_SIZE);
             responseString = response.decode("utf-8");
         except SocketTimeout as e:
-            raise TimeoutError("The robot did not respond in time");
+            raise TimeoutError("robot: the device did not respond in time");
         except SocketError as e:
-            logging.warning("could not receive any data(" + str(e.errno) + ")")
+            logging.warning("robot: could not receive any data(" + str(e.errno) + ")")
             return ''
         return responseString;
 
@@ -57,7 +57,7 @@ class PEMSocket(object):
             response = self.Connection.recv(self.BUFFER_SIZE).decode("utf-8")
             self.Connection.settimeout(10)
         except SocketError as e:
-            logging.warning("could not receive any data(" + str(e.errno) + ")")
+            logging.warning("robot: could not receive any data(" + str(e.errno) + ")")
             return ''
 
         return response

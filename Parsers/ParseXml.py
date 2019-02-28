@@ -34,18 +34,18 @@ class XmlParser(object):
         else:
             return False
 
-    def parseXmlRobot(filename):
+    def parse_terminals(filename, id):
         try:
-            logging.info("Robot: Parse: " + filename)
+            logging.info("robot({}): parse {}".format(id, filename))
             DOMTree = xml.dom.minidom.parse(filename)
         except IOError as e:
-            logging.error("Robot: Parsing Error: " + filename)
+            logging.error("robot({}): parsing of {} returned an error".format(id, filename))
             return None
         
         collection = DOMTree.documentElement
         
         positions = collection.getElementsByTagName("Position")
-        terminalList = {}
+        terminal_list = {}
         for position in positions:
            Canonical = position.getElementsByTagName('CanonicalName')[0]
            Value = position.getElementsByTagName('Value')[0]
@@ -55,47 +55,43 @@ class XmlParser(object):
                isButton = XmlParser.str_to_bool(IsButtonNode.childNodes[0].data)
     
            terminal = Terminal(Canonical.childNodes[0].data, Value.childNodes[0].data, isButton)
-           terminalList.update({Canonical.childNodes[0].data:terminal})
+           terminal_list.update({Canonical.childNodes[0].data:terminal})
 
-        return terminalList
+        return terminal_list
 
-    def parseXmlMultiplexer(filename):
+    def parse_muxs(filename, id):
         try:
-            logging.info("Multiplexer: Parse: " + filename)
+            logging.info("mux({}): parse {}".format(id, filename));
             DOMTree = xml.dom.minidom.parse(filename)
         except IOError as e:
-            logging.error("Multiplexer: Parsing Error: " + filename)
+            logging.error("mux({}): parsing of {} returned an error".format(id, filename))
             return None
         
         collection = DOMTree.documentElement
         
         positions = collection.getElementsByTagName("Position")
-        terminalList = {}
+        mux_list = {}
         for position in positions:
            Canonical = position.getElementsByTagName('CanonicalName')[0]
            Value = position.getElementsByTagName('Value')[0]
-           isButton = False;
-           if(0 < len(position.getElementsByTagName('isButton'))):
-               IsButtonNode = position.getElementsByTagName('isButton')[0]
-               isButton = XmlParser.str_to_bool(IsButtonNode.childNodes[0].data)
     
-           terminal = Terminal(Canonical.childNodes[0].data, Value.childNodes[0].data, isButton)
-           terminalList.update({Canonical.childNodes[0].data:terminal})
+           mux = MultiplexerComand(Canonical.childNodes[0].data, Value.childNodes[0].data)
+           mux_list.update({Canonical.childNodes[0].data:mux})
 
-        return terminalList
+        return mux_list
 
-    def parseXmlMagstriper(XmlFilename):
+    def parse_magstripes(filename, id):
         try:
-            logging.info("Magstriper: Parse: " + XmlFilename)
-            DOMTree = xml.dom.minidom.parse(XmlFilename)
+            logging.info("mag({}): parse {}".format(id, filename));
+            DOMTree = xml.dom.minidom.parse(filename)
         except IOError as e:
-            logging.error("Magstriper: Parsing Error: " + XmlFilename)
+            logging.error("mag({}) parsing of {} returned an error".format(id, filename));
             return None
 
         collection = DOMTree.documentElement
 
         comands = collection.getElementsByTagName("Command")
-        comandList = {}
+        magstripe_list = {}
         for comand in comands:
            Canonical = comand.getElementsByTagName('CanonicalName')[0]
            Brand = comand.getElementsByTagName('Brand')[0]
@@ -123,10 +119,10 @@ class XmlParser(object):
            if Track3.childNodes:
                track3_data = Track3.childNodes[0].data;
 
-           magComand = MagstripeComand(canonical_data, brand_data, track1_data, track2_data, track3_data)
-           comandList.update({Canonical.childNodes[0].data: magComand})
+           magstripe = MagstripeComand(canonical_data, brand_data, track1_data, track2_data, track3_data)
+           magstripe_list.update({Canonical.childNodes[0].data: magstripe})
 
-        return comandList
+        return magstripe_list
         
 #def main():
 #    terminalList = parseXml("Yomani.xml")

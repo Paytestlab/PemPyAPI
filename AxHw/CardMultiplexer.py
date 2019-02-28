@@ -38,27 +38,30 @@ import traceback;
 
 class CardMultiplexer(DeviceBase):
 
-    def __init__(self, mac_address, enable_statistics=False):
-        DeviceBase.__init__(self, enable_statistics);
+    def __init__(self, id, mac_address, enable_statistics=False):
+        DeviceBase.__init__(self, id, enable_statistics);
         self.mac_address = bytearray.fromhex(mac_address);
+        logging.info("mux({}): initialization start...".format(self.id));
 
     def device_lookup(self):
         self.device = AxUDPCommandSenderManager(UDPMagics.CardMultiplexerMagic);
         deviceIsPresent = self.device.device_lookup(self.mac_address);
         if deviceIsPresent:
-            logging.info("multiplexer ({}) is present".format(self.mac_address))
+            logging.info("mux({}): device {} is present".format(self.id, self.get_mac_address()));
         else:
-            logging.warning("multiplexer ({}) is not present".format(self.mac_address))
+            logging.warning("mux({}): device {} is not present".format(self.id, self.get_mac_address()))
 
         return deviceIsPresent
 
     def initialize_device(self, filename):
-        self.mux_layout = XmlParser.parseXmlMultiplexer(filename)
+        self.mux_layout = XmlParser.parse_muxs(filename, self.id)
         if(self.mux_layout is None):
-            logging.warning("multiplexer initialization failed, skip...")
+            logging.warning("mux({}): initialization of {} failed, skip...".format(self.id, self.get_mac_address()));
             return False;
+        else:
+            logging.info("mux({}): initialization of {} successful...".format(self.id, self.get_mac_address()));
+            return True;
 
-        logging.info("multiplexer initialization successful...")
 
     def send_command(self, action):
         Result = False
@@ -66,18 +69,21 @@ class CardMultiplexer(DeviceBase):
            action_value = int(self.mux_layout[action].Value);
            send_to = self.device.get_sender_for_device(self.mac_address);
            Result = send_to.set_port(action_value);
-        
+           logging.info("mux({}): execution of {} was successful".format(self.id, action))
         except TimeoutError as e:
-            logging.error("The remote host did not respond in time");
+            logging.error("mux({}): device {} did not respond in time".format(self.id, self.get_mac_address()));
         except KeyError as e:
             pass;
         except AssertionError as e:
-            logging.error("Remote host returned an error");
+            logging.error("mux({}): device {} returned an error".format(self.id, self.get_mac_address()));
         except:
             traceback.print_exc()
-            logging.error("general error");
+            logging.error("mux({}): device {} returned a general error".format(self.id, self.get_mac_address()));
 
         return Result;
+
+    def get_mac_address(self):
+        return ''.join('{:02x}:'.format(x) for x in self.mac_address)[:-1];
 
         
 

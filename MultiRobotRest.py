@@ -80,9 +80,9 @@ def main():
 
         for key, robotConfiguration in robot_conf_list.items():
              try:
-                robot = PinRobot(enable_statistics, empower)
+                robot = PinRobot(key, enable_statistics, empower)
 
-                if(False is RobotInitialisation(robot, robotConfiguration)):
+                if(False is initialize_robot(key, robot, robotConfiguration)):
                     error += 1
                     continue
 
@@ -92,30 +92,30 @@ def main():
 
 
         for key, mux_configuration in mux_conf_list.items():
-            mux = CardMultiplexer(mux_configuration.mac_address, enable_statistics)
+            mux = CardMultiplexer(key, mux_configuration.mac_address, enable_statistics)
 
-            if(False is MuxInitialization(mux, mux_configuration)):
+            if(False is initialize_mux(key, mux, mux_configuration)):
                 error += 1
                 continue
 
             device_list.update({key: mux})
 
         for key, mag_configuration in mag_conf_list.items():
-            mag = CardMagstriper(mag_configuration.mac_address, enable_statistics)
+            mag = CardMagstriper(key, mag_configuration.mac_address, enable_statistics)
 
-            if(False is MagInitialization(mag, mag_configuration)):
+            if(False is initialize_mag(key, mag, mag_configuration)):
                 error += 1
                 continue
 
             device_list.update({key: mag})
 
         if(not device_list):
-            logging.critical("Fatal error, device list is empty!");
+            logging.critical("general: fatal error, device list is empty!");
             raise Error("", "Fatal error, device list is empty!");
 
-        logging.info("Initialization success! Warnings: {}".format(error))
+        logging.info("general: initialization success! warnings: {}".format(error))
 
-        StartRestServer(doPostWork, doGetWork, device_list, port)
+        start_rest_server(doPostWork, doGetWork, device_list, port)
 
     except Error as e:
         traceback.print_exc()
@@ -147,7 +147,7 @@ def EnableAndParseArguments():
 
 #------------------------------------------------------------------------------------------------------------------------#
 
-def MuxInitialization(mux : CardMultiplexer, configuration):
+def initialize_mux(key, mux : CardMultiplexer, configuration):
     if(False is mux.device_lookup()):
         return False
 
@@ -158,7 +158,7 @@ def MuxInitialization(mux : CardMultiplexer, configuration):
 
 #------------------------------------------------------------------------------------------------------------------------#
 
-def MagInitialization(mag : CardMagstriper, configuration):
+def initialize_mag(key, mag : CardMagstriper, configuration):
     if(False is mag.device_lookup()):
         return False
 
@@ -169,24 +169,25 @@ def MagInitialization(mag : CardMagstriper, configuration):
 
 #---------------------------------------------------------------------------------------------------------------#
 
-def RobotInitialisation(robot : PinRobot, configuration):
+def initialize_robot(key, robot : PinRobot, configuration):
     """Initializes the robot, and perfoms home"""
     try:
-        if(False is robot.InitializeTerminal(join(__path, configuration.Layout))):
-            logging.warning(configuration.Layout + ": Initialization of robot failed, skip...")
+        if(False is robot.initialize_device(join(__path, configuration.Layout))):
+            logging.warning("robot({}): Initialization of robot failed, skip...".format(key));
             return False
 
-        if(False is robot.InitializeConnection(configuration.IP, int(configuration.Port))):
-            logging.warning(configuration.Layout + ": robot not reachable, skip...")
+        if(False is robot.initialize_connection(configuration.IP, int(configuration.Port))):
+            logging.warning("robot({}): robot not reachable, skip...".format(key))
             return False
 
         if (False is robot.send_command("HOME")):
-            logging.warning(configuration.Layout + ": robot calibration could not be executed")
+            logging.warning("robot({}): robot calibration could not be executed".format(key))
             return False;
 
         if (False is robot.send_command("REMOVE CARD")):
-            logging.warning(configuration.Layout + ": card could not be removed")
+            logging.warning("robot({}): card could not be removed".format(key));
             return False;
+
 
     finally:
         robot.close_connection()
@@ -195,7 +196,7 @@ def RobotInitialisation(robot : PinRobot, configuration):
 
 #---------------------------------------------------------------------------------------------------------------#
 
-def StartRestServer(postWork, getWork, robotList, port):
+def start_rest_server(postWork, getWork, robotList, port):
     server = RESTfulThreadedServer(postWork, getWork, robotList, port)
     server.start()
     server.waitForThread()
@@ -203,22 +204,22 @@ def StartRestServer(postWork, getWork, robotList, port):
 #---------------------------------------------------------------------------------------------------------------#
 
 def executeCommands(device, commands, key):
-    """Execute a request, protected by a lock. Every request on a single robot 
+    """
+    Execute a request, protected by a lock. Every request on a single robot 
     must be processed till the end before the next may be processed
     """
     try:
         device.mutex.acquire()
 
         if(False is device.connect()):
-            logging.error("robot '{}' is unreachable".format(key))
+            logging.error("device '{}' is unreachable".format(key))
             raise ConnectionError("", "could not connect to the robot: " + key)
 
         for command in commands:
             if(True is device.send_command(command)):
-                logging.info("{}: execution of {} was successful".format(key, command))
-                device.UpdateTable(key, command)
+                device.UpdateTable(command)
             else:
-                logging.warning("could not execute '{}' on {}. Abort further execution".format(command, key))
+                logging.warning("device could not execute '{}' on {}. Abort further execution".format(command, key))
                 raise InputError("", key + ": could not execute: " + command)
 
     finally:

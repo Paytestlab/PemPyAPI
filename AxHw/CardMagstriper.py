@@ -38,27 +38,29 @@ __license__ = "MIT"
 
 class CardMagstriper(DeviceBase):
 
-    def __init__(self, mac_address, enable_statistics=False):
-        DeviceBase.__init__(self,enable_statistics);
+    def __init__(self, id, mac_address, enable_statistics=False):
+        DeviceBase.__init__(self, id, enable_statistics);
         self.mac_address = bytearray.fromhex(mac_address);
+        logging.info("mag({}): initialization start...".format(self.id));
 
     def device_lookup(self):
         self.device = AxUDPCommandSenderManager(UDPMagics.CardMagstriperMagic);
-        deviceIsPresent = self.device.device_lookup(self.mac_address)
+        deviceIsPresent = self.device.device_lookup(self.mac_address);
         if deviceIsPresent:
-            logging.info("magstriper ({}) is present".format(', '.join(hex(x) for x in self.mac_address)))
+            logging.info("mag({}): device {} is present".format(self.id, self.get_mac_address()));
         else:
-            logging.warning("magstriper ({}) is not present".format(', '.join(hex(x) for x in self.mac_address)))
+            logging.warning("mag({}): device ({}) is not present".format(self.id, self.get_mac_address()));
 
         return deviceIsPresent
 
     def initialize_device(self, filename):
-        self.mag_layout = XmlParser.parseXmlMagstriper(filename)
+
+        self.mag_layout = XmlParser.parse_magstripes(filename, self.id);
         if(self.mag_layout is None):
-            logging.warning("magstriper initialization failed, skip...")
+            logging.warning("mag({}): initialization of {} failed, skip...".format(self.id, self.get_mac_address()));
             return False;
 
-        logging.info("magstriper initalization successful...")
+        logging.info("mag({}): initialization of {} successful...".format(self.id, self.get_mac_address()));
         return True;
 
     def send_command(self, action):
@@ -69,18 +71,18 @@ class CardMagstriper(DeviceBase):
                 send_to = self.device.get_sender_for_device(self.mac_address);
                 Result = send_to.send_tracks();
            
-
+            logging.info("mag({}): execution of {} was successful".format(self.id, action))
         except TimeoutError as e:
-            logging.error("The remote host did not respond in time");
+            logging.error("mag({}): device {} did not respond in time".format(self.id, self.get_mac_address()));
             Result = False;
             pass;
         except KeyError as e:
             Result = False;
         except AssertionError as e:
-            logging.error("Remote host returned an error");
+            logging.error("mag({}): device {} returned an error".format(self.id, self.get_mac_address()));
             Result = False;
         except:
-            logging.error("general error");
+            logging.error("mag({}): device {} returned a general error".format(self.id, self.get_mac_address()));
             Result = False;
 
         return Result;
@@ -114,3 +116,6 @@ class CardMagstriper(DeviceBase):
             Result = False;
 
         return Result;
+
+    def get_mac_address(self):
+        return ''.join('{:02x}:'.format(x) for x in self.mac_address)[:-1];

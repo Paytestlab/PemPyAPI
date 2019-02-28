@@ -8,20 +8,21 @@ from Exception.Exception import DeviceStateError, ConnectionError;
 
 class PinRobot(DeviceBase):
 
-    def __init__(self, enable_statistics=False, empower_card=False):
-        DeviceBase.__init__(self, enable_statistics);
+    def __init__(self, id, enable_statistics=False, empower_card=False):
+        DeviceBase.__init__(self, id, enable_statistics);
         self.empower_card = empower_card;
+        logging.info("robot({}): initialization start...".format(self.id));
 
-    def InitializeTerminal(self, filename):
-        self.terminalList = XmlParser.parseXmlMultiplexer(filename)
+    def initialize_device(self, filename):
+        self.terminalList = XmlParser.parse_terminals(filename, self.id)
         if(self.terminalList is None):
-            logging.warning("Initialization failed, skip...")
+            logging.warning("robot({}): initialization failed, skip...".format(self.id));
             return False
         
-        logging.info("Initialization successful...")
+        logging.info("robot({}): initialization successful...".format(self.id));
         return True
 
-    def InitializeConnection(self, IP, Port):
+    def initialize_connection(self, IP, Port):
         self.socket = PEMSocket(IP, Port)
    
         return self.connect()
@@ -31,7 +32,7 @@ class PinRobot(DeviceBase):
 
             if(self.socket.connect() is True):
                 response = self.socket.receive();
-                logging.debug("received from robot {}".format(response.replace('\r\n', '')));
+                logging.debug("robot({}): received {}".format(self.id, response.replace('\r\n', '')));
                 if("Smoothie command shell" in response):
                     return True;
         except TimeoutError:
@@ -45,7 +46,7 @@ class PinRobot(DeviceBase):
             pass;
 
     def __ResponseEvaluate(self, response):
-        logging.debug("received from robot {}".format(response.replace('\r\n', '')))
+        logging.debug("robot({}): received {}".format(self.id, response.replace('\r\n', '')))
         Result = False
         if(not response):
             return False;
@@ -66,7 +67,7 @@ class PinRobot(DeviceBase):
                self.__increaseZCurrent();
                              
            actionValue = self.terminalList[action].Value;
-           logging.debug("send to robot({}):".format(actionValue.replace('\r\n', ' ')))
+           logging.debug("robot({}): send to robot({}):".format(self.id, actionValue.replace('\r\n', ' ')))
            self.socket.send(actionValue);
                          
            Result = self.__ResponseEvaluate(self.socket.receive());
@@ -76,20 +77,22 @@ class PinRobot(DeviceBase):
               Result = self.__pressButton();
            elif(Result):
               self.__reduceZCurrent();
+
+           logging.info("robot({}): execution of {} was successful".format(self.id, action))
         except TimeoutError:
-            logging.error("Robot did not respond in time performing the action {}".format(action));
+            logging.error("robot({}): while performing the action {}, the device did not respond in time".format(self.id, action));
             pass;
         except DeviceStateError as e:
-            logging.error("Robot is in an error state");
+            logging.error("robot({}): device is in an error state".format(self.id));
             pass;
         except:
-            logging.error("an unknown exception happened...");
+            logging.error("robot({}): unknown exception happened...".format(self.id));
             pass
 
         return Result;
 
     def SendString(self, command):
-        logging.debug("send to robot({}):".format(command.replace('\r\n', ' ')))
+        logging.debug("robot({}): sending ({}):".format(self.id, command.replace('\r\n', ' ')))
         self.socket.send(command)
 
         return self.__ResponseEvaluate(self.socket.receive())

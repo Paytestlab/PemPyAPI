@@ -76,7 +76,7 @@ class UDPHelper(object):
         info.Minor = msg.data[1];
         info.iface = iface;
         info.magic = magic;
-        logging.debug('received IP:{} with Mac:[{}]'.format(info.RemoteIpAddress, ', '.join(hex(x) for x in info.MacAddress)));
+        logging.debug('received ip:{} from mac:{}'.format(info.RemoteIpAddress, ''.join('{:02x}:'.format(x) for x in info.MacAddress)[:-1]));
         responses.append(info);
 
     @staticmethod
@@ -85,7 +85,7 @@ class UDPHelper(object):
             respondingDevices = 0;
             s.bind((Interfaces.get_local_ip_from_interface(iface), 0));
             s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1);
-            logging.debug('sending discovery to {}'.format(dest));
+            logging.debug('broadcasting to {}'.format(dest));
             s.sendto(bytes_array, dest);
             
             s.settimeout(UDPHelper.TIMEOUT);
@@ -97,7 +97,7 @@ class UDPHelper(object):
 
         except socket.timeout:
             if(respondingDevices == 0):
-                logging.info('no answer received from any endpoint');
+                logging.debug('no answer received from any endpoint in the broadcast {}'.format(dest));
             pass;
         except TimeoutError:
             logging.debug('no answer received');
