@@ -33,7 +33,7 @@ class ParseXmlRobotConfiguration(object):
             logging.info("parsing {} for devices... ".format(XmlFilename))
             DOMTree = xml.dom.minidom.parse(XmlFilename)
         except IOError as e:
-            logging.error("paring error: " + XmlFilename)
+            logging.error("parsing error: " + XmlFilename)
             return None
         
         collection = DOMTree.documentElement

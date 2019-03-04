@@ -116,6 +116,7 @@
     </Content>
     <Content Include="ConfigRest\CardMagstriper.xml" />
     <Content Include="ConfigRest\ICP.xml" />
+    <Content Include="ConfigRest\Ingenico-ICT250.xml" />
     <Content Include="ConfigRest\VeriFone-MX915.xml" />
     <Content Include="ConfigRest\VeriFone-MX925.xml" />
     <Content Include="ConfigRest\Verifone-P400.xml" />

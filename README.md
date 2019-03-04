@@ -18,6 +18,7 @@ For the use of the Rest API please use the *MultiRobotRest.py*
 | --------------- |:------:|:------:|:--------------|
 | ICP			  | 2.8 cm | 3.7 cm | 70 mm         |
 | Ingenico Desk3500 | 2.5 cm | 4.0 cm | 60 mm       |
+| Ingenico ICT250 | 2.8 cm | 3.7 cm | 70 mm       |
 | Ingenico IPP350 | 3.0 cm | 2.0 cm | 60/100 mm     |
 | Ingenico IPP320 | 3.0 cm | 2.0 cm | 60/100 mm     |
 | Ingenico IWL250 | 2.8 cm | 3.4 cm | 60 mm         |
