@@ -21,6 +21,7 @@ For the use of the Rest API please use the *MultiRobotRest.py*
 | Ingenico ICT250 | 2.8 cm | 3.7 cm | 70 mm       |
 | Ingenico IPP350 | 3.0 cm | 2.0 cm | 60/100 mm     |
 | Ingenico IPP320 | 3.0 cm | 2.0 cm | 60/100 mm     |
+| Ingenico iUC180B | 3.0 cm | 6.0 cm | 60/70 mm     |
 | Ingenico IWL250 | 2.8 cm | 3.4 cm | 60 mm         |
 | Ingenico Move5000 | 2.4 cm | 2.0 cm | 60 mm		|
 | Miura-010       | 3.2 cm | 1.9 cm | 60/100 mm     |
