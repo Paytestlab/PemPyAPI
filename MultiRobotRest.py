@@ -160,8 +160,7 @@ def EnableAndParseArguments():
 
 def initialize_mux(key, mux : DeviceBase, configuration):
     if(False is mux.device_lookup()):
-        #return False;
-        mux.log_debug("no device found");
+        return False;
 
     if(False is mux.initialize_device(join(__path, configuration.Layout))):
         return False;

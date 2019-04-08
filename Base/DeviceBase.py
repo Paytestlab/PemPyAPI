@@ -39,7 +39,6 @@ class DeviceBase(object):
         self.xml_parse = xml_parser;
         if(enable_statistics is True):
             self.statistics = Statistics();
-            
         else:
             self.statistics = None;
         self.id = id;
