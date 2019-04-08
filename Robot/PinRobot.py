@@ -8,23 +8,13 @@ from Exception.Exception import DeviceStateError, ConnectionError;
 
 class PinRobot(DeviceBase):
 
+    tag = "robot";
     def __init__(self, id, enable_statistics=False, empower_card=False):
-        DeviceBase.__init__(self, id, enable_statistics);
+        super().__init__(id, XmlParser.parse_terminals, enable_statistics);
         self.empower_card = empower_card;
-        logging.info("robot({}): initialization start...".format(self.id));
-
-    def initialize_device(self, filename):
-        self.terminalList = XmlParser.parse_terminals(filename, self.id)
-        if(self.terminalList is None):
-            logging.warning("robot({}): initialization failed, skip...".format(self.id));
-            return False
-        
-        logging.info("robot({}): initialization successful...".format(self.id));
-        return True
 
     def initialize_connection(self, IP, Port):
         self.socket = PEMSocket(IP, Port)
-   
         return self.connect()
 
     def connect(self):
@@ -63,15 +53,15 @@ class PinRobot(DeviceBase):
         Result = False
         try:
 
-           if(not self.terminalList[action].IsButton):
+           if(not self.layout[action].IsButton):
                self.__increaseZCurrent();
                              
-           actionValue = self.terminalList[action].Value;
+           actionValue = self.layout[action].Value;
            logging.debug("robot({}): send to robot({}):".format(self.id, actionValue.replace('\r\n', ' ')))
            self.socket.send(actionValue);
                          
            Result = self.__ResponseEvaluate(self.socket.receive());
-           shouldPress = Result and self.terminalList[action].IsButton;
+           shouldPress = Result and self.layout[action].IsButton;
 
            if(shouldPress):
               Result = self.__pressButton();

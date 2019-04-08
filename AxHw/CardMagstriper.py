@@ -23,11 +23,6 @@
 """Thread safe card magstripe interface."""
 from UDPMessage.AxUDPCardMagstriperCommand import AxUDPCardMagstriperCommand
 from Parsers.ParseXml import XmlParser
-import threading
-import SQL.Statistics
-import logging
-from UDPMessage.AxUDPCommandSender import AxUDPCommandSender;
-from UDPMessage.AxUDPCommandSenderManager import AxUDPCommandSenderManager;
 from Exception.Exception import Error
 from Base.DeviceBase import DeviceBase;
 from UDPMessage.UDPMagics import UDPMagics;
@@ -38,31 +33,13 @@ __license__ = "MIT"
 
 class CardMagstriper(DeviceBase):
 
+    tag = "mag";
+    magic = UDPMagics.CardMagstriperMagic;
+    
     def __init__(self, id, mac_address, enable_statistics=False):
-        DeviceBase.__init__(self, id, enable_statistics);
+        super().__init__(id, XmlParser.parse_magstripes, enable_statistics);
         self.mac_address = bytearray.fromhex(mac_address);
-        logging.info("mag({}): initialization start...".format(self.id));
-
-    def device_lookup(self):
-        self.device = AxUDPCommandSenderManager(UDPMagics.CardMagstriperMagic);
-        deviceIsPresent = self.device.device_lookup(self.mac_address);
-        if deviceIsPresent:
-            logging.info("mag({}): device {} is present".format(self.id, self.get_mac_address()));
-        else:
-            logging.warning("mag({}): device ({}) is not present".format(self.id, self.get_mac_address()));
-
-        return deviceIsPresent
-
-    def initialize_device(self, filename):
-
-        self.mag_layout = XmlParser.parse_magstripes(filename, self.id);
-        if(self.mag_layout is None):
-            logging.warning("mag({}): initialization of {} failed, skip...".format(self.id, self.get_mac_address()));
-            return False;
-
-        logging.info("mag({}): initialization of {} successful...".format(self.id, self.get_mac_address()));
-        return True;
-
+   
     def send_command(self, action):
         Result = False;
 
@@ -71,30 +48,29 @@ class CardMagstriper(DeviceBase):
                 send_to = self.device.get_sender_for_device(self.mac_address);
                 Result = send_to.send_tracks();
            
-            logging.info("mag({}): execution of {} was successful".format(self.id, action))
+            self.log_info("execution of {} was successful".format(action))
         except TimeoutError as e:
-            logging.error("mag({}): device {} did not respond in time".format(self.id, self.get_mac_address()));
+            self.log_error("device {} did not respond in time".format(self.get_mac_address()));
             Result = False;
             pass;
         except KeyError as e:
             Result = False;
         except AssertionError as e:
-            logging.error("mag({}): device {} returned an error".format(self.id, self.get_mac_address()));
+            self.log_error("device {} returned an error".format(self.get_mac_address()));
             Result = False;
         except:
-            logging.error("mag({}): device {} returned a general error".format(self.id, self.get_mac_address()));
+            self.log_error("device {} returned a general error".format(self.get_mac_address()));
             Result = False;
 
         return Result;
-
 
     def set_tracks(self, action):
         Result = False;
         try:
             send_to = self.device.get_sender_for_device(self.mac_address);
 
-            if(self.mag_layout[action].Track1 is not None):
-                track_value = self.mag_layout[action].Track1;
+            if(self.layout[action].Track1 is not None):
+                track_value = self.layout[action].Track1;
                 
                 #special use case for track1. Reduce all characters for 0x20;
                 track_byte_array = [(x - 0x20) for x in bytearray(str.encode(track_value))];
@@ -102,13 +78,13 @@ class CardMagstriper(DeviceBase):
                 track_bytes = bytes(track_byte_array);
                 Result = send_to.set_card_magstripe_track(AxUDPCardMagstriperCommand.SetTrack1, track_bytes);
 
-            if(self.mag_layout[action].Track2 is not None):
-                track_value = self.mag_layout[action].Track2;
+            if(self.layout[action].Track2 is not None):
+                track_value = self.layout[action].Track2;
                 track_bytes = str.encode(track_value);
                 Result = send_to.set_card_magstripe_track(AxUDPCardMagstriperCommand.SetTrack2, track_bytes);
 
-            if(self.mag_layout[action].Track3 is not None):
-                track_value = self.mag_layout[action].Track3;
+            if(self.layout[action].Track3 is not None):
+                track_value = self.layout[action].Track3;
                 track_bytes = str.encode(track_value);
                 Result = send_to.set_card_magstripe_track(AxUDPCardMagstriperCommand.SetTrack3, track_bytes);
 

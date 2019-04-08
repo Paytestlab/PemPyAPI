@@ -30,11 +30,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AxHw\CardMagstriper.py" />
+    <Compile Include="AxHw\CtlMultiplexer.py" />
     <Compile Include="AxHw\CardMultiplexer.py" />
     <Compile Include="AxHw\InfoMessage.py" />
     <Compile Include="AxHw\Interfaces.py" />
     <Compile Include="AxHw\Test.py" />
     <Compile Include="AxHw\__init__.py" />
+    <Compile Include="Base\MultiplexerBase.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Base\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -115,6 +119,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="ConfigRest\CardMagstriper.xml" />
+    <Content Include="ConfigRest\ContactlessMultiplexer.xml" />
     <Content Include="ConfigRest\ICP.xml" />
     <Content Include="ConfigRest\Ingenico-ICT250.xml" />
     <Content Include="ConfigRest\Ingenico-iUC180B.xml" />

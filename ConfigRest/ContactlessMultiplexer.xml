@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <Position>
+    <CanonicalName>DISABLE</CanonicalName>
+    <Value>0</Value>
+  </Position>
+  <Position>
+    <CanonicalName>SELECT PORT 1</CanonicalName>
+    <Value>1</Value>
+  </Position>
+  <Position>
+    <CanonicalName>SELECT PORT 2</CanonicalName>
+    <Value>2</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 3</CanonicalName>
+    <Value>3</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 4</CanonicalName>
+    <Value>4</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 5</CanonicalName>
+    <Value>5</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 6</CanonicalName>
+    <Value>6</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 7</CanonicalName>
+    <Value>7</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 8</CanonicalName>
+    <Value>8</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 9</CanonicalName>
+    <Value>9</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 10</CanonicalName>
+    <Value>10</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 11</CanonicalName>
+    <Value>11</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 12</CanonicalName>
+    <Value>12</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 13</CanonicalName>
+    <Value>13</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 14</CanonicalName>
+    <Value>14</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 15</CanonicalName>
+    <Value>15</Value>
+  </Position>
+
+  <Position>
+    <CanonicalName>SELECT PORT 16</CanonicalName>
+    <Value>16</Value>
+  </Position>
+</Settings>
+
+
+
+

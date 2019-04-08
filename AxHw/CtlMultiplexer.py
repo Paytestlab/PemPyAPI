@@ -18,19 +18,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-"""Thread safe card multiplexer interface."""
+"""Thread safe contactless multiplexer interface."""
 __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
-
-from Base.MultiplexerBase import BaseMultiplexer;
+from AxHw.CardMultiplexer import CardMultiplexer;
 from UDPMessage.UDPMagics import UDPMagics;
 
-class CardMultiplexer(BaseMultiplexer):
+class CtlMultiplexer(CardMultiplexer):
 
-    tag = "mux";
-    magic = UDPMagics.CardMultiplexerMagic;
+    tag = "ctlmux";
+    magic = UDPMagics.ContactlessMultiplexerMagic;
+    
+    
+
         
 
 

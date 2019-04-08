@@ -4,30 +4,30 @@ from xml.dom.minidom import parse
 import xml.dom.minidom
 import logging
 
-class Terminal(object):
 
+class BaseCommand(object):
+    def __init__(self, CanonicalName, Value = None):
+        self.CanonicalName = CanonicalName;
+        self.Value = Value;
+
+class Terminal(BaseCommand):
     def __init__(self, CanonicalName, Value, IsButton):
-        self.CanonicalName = CanonicalName
-        self.Value = Value
+        super().__init__(CanonicalName, Value);
         self.IsButton = IsButton
 
-class MultiplexerComand(object):
-
+class MultiplexerCommand(BaseCommand):
     def __init__(self, CanonicalName, Value):
-        self.CanonicalName = CanonicalName
-        self.Value = Value
+        super().__init__(CanonicalName, Value);
 
-class MagstripeComand(object):
-
+class MagstripeCommand(BaseCommand):
     def __init__(self, CanonicalName, Brand, Track1, Track2, Track3):
-        self.CanonicalName = CanonicalName
+        super().__init__(CanonicalName);
         self.Brand = Brand
         self.Track1 = Track1
         self.Track2 = Track2
         self.Track3 = Track3
         
 class XmlParser(object):
-
     def str_to_bool(isButton):
         if (isButton is '1'):
             return True
@@ -68,18 +68,17 @@ class XmlParser(object):
             return None
         
         collection = DOMTree.documentElement
-        
         positions = collection.getElementsByTagName("Position")
         mux_list = {}
         for position in positions:
            Canonical = position.getElementsByTagName('CanonicalName')[0]
            Value = position.getElementsByTagName('Value')[0]
     
-           mux = MultiplexerComand(Canonical.childNodes[0].data, Value.childNodes[0].data)
+           mux = MultiplexerCommand(Canonical.childNodes[0].data, Value.childNodes[0].data)
            mux_list.update({Canonical.childNodes[0].data:mux})
 
         return mux_list
-
+   
     def parse_magstripes(filename, id):
         try:
             logging.info("mag({}): parse {}".format(id, filename));
@@ -119,7 +118,7 @@ class XmlParser(object):
            if Track3.childNodes:
                track3_data = Track3.childNodes[0].data;
 
-           magstripe = MagstripeComand(canonical_data, brand_data, track1_data, track2_data, track3_data)
+           magstripe = MagstripeCommand(canonical_data, brand_data, track1_data, track2_data, track3_data)
            magstripe_list.update({Canonical.childNodes[0].data: magstripe})
 
         return magstripe_list
