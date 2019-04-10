@@ -122,3 +122,6 @@ class PinRobot(DeviceBase):
             return self.SendString(reduceCurrent)
         else:
             return True;
+
+    def get_mac_address(self):
+        return self.id;
