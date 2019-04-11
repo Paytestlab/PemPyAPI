@@ -51,6 +51,9 @@
     <Compile Include="Rest\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Robot\BasicRobotCommands.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Robot\Communication.py" />
     <Compile Include="Base\DeviceBase.py">
       <SubType>Code</SubType>

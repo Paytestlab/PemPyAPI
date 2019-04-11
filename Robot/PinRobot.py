@@ -5,6 +5,7 @@ from Robot.Communication import PEMSocket;
 from Base.DeviceBase import DeviceBase;
 import logging
 from Exception.Exception import DeviceStateError, ConnectionError;
+from Robot.BasicRobotCommands import BasicRobotCommands;
 
 class PinRobot(DeviceBase):
 
@@ -92,36 +93,27 @@ class PinRobot(DeviceBase):
 
     def __pressButton(self):
         """press button function"""
-       
-        #There are 2 possibilities to control the speed of the button press:
-        #1. Remove the "G4 S1.1" and listen to Smoothie responses in the function SendString.
-        #2. Try to reduce the value in the command S1.1. The value 1.1 is in seconds. The lower the value (in seconds), the faster the button will be pressed.
-        pressButtonCommands = [
-            "M42", 
-            "G4 P30", 
-            "M43", 
-            "G4 P800"
-            ]
-
-        fullCommand =  "\r\n".join(pressButtonCommands) + "\r\n";
-           
-        return self.SendString(fullCommand)
+        return self.SendString(BasicRobotCommands.key_press)
 
     def __increaseZCurrent(self):
         """Increases the current for Z Axis if enabled"""
         if(self.empower_card is True):
-            increaseCurrent = "M907 Z1.3\r\n"
-            return self.SendString(increaseCurrent)
+            return self.SendString(BasicRobotCommands.increase_current)
         else:
             return True;
 
     def __reduceZCurrent(self):
         """Decreases the current for Z Axis"""
         if(self.empower_card is True):
-            reduceCurrent = "M907 Z0.5\r\n"
-            return self.SendString(reduceCurrent)
+            return self.SendString(BasicRobotCommands.reduce_current)
         else:
             return True;
 
     def get_mac_address(self):
         return self.id;
+
+    def remove_card(self):
+        return self.SendString(BasicRobotCommands.remove_card);
+
+    def home(self):
+        return self.SendString(BasicRobotCommands.home);

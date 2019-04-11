@@ -180,11 +180,11 @@ def initialize_robot(key, robot : PinRobot, configuration):
             robot.log_warning("robot not reachable, skip...");
             return False
 
-        if (False is robot.send_command("HOME")):
+        if (False is robot.home()):
             robot.log_warning("robot calibration could not be executed");
             return False;
 
-        if (False is robot.send_command("REMOVE CARD")):
+        if (False is robot.remove_card()):
             robot.log_warning("card could not be removed");
             return False;
 

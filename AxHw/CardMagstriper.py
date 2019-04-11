@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-"""Thread safe card magstripe interface."""
+
 from UDPMessage.AxUDPCardMagstriperCommand import AxUDPCardMagstriperCommand
 from Parsers.ParseXml import XmlParser
 from Exception.Exception import Error
@@ -32,7 +32,7 @@ __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
 class CardMagstriper(DeviceBase):
-
+    """Thread safe card magstripe interface."""
     tag = "mag";
     magic = UDPMagics.CardMagstriperMagic;
     
