@@ -20,12 +20,11 @@ class PEMSocket(object):
             self.Connection.connect((self.IP, self.Port)) 
             self.Connection.settimeout(10.0)
         except SocketError as e:
-            logging.error("robot: could not connect({}) to {}:{}. Socket already in use".format(str(e.errno), self.IP, self.Port))
+            logging.error("robot: could not connect({}) to {}:{}. socket already in use".format(str(e.errno), self.IP, self.Port))
             return False
         except Exception as e:
             logging.error("robot: could not connect({}) to {}:{}".format(str(e.errno), self.IP, self.Port))
             return False;
-
         
         return True
 

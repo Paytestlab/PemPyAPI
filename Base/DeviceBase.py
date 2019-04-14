@@ -24,6 +24,7 @@ import threading
 from SQL.Statistics import Statistics;
 from UDPMessage.AxUDPCommandSenderManager import AxUDPCommandSenderManager;
 import logging
+from Parsers.BaseLayout import BaseLayout;
 
 __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
@@ -33,9 +34,9 @@ class DeviceBase(object):
     
     tag = "invalid";
 
-    def __init__(self, id, xml_parser, enable_statistics=False):
+    def __init__(self, id, layout_type, enable_statistics=False):
         self.mutex = threading.Lock()
-        self.xml_parse = xml_parser;
+        self.layout_type = layout_type;
         if(enable_statistics is True):
             self.statistics = Statistics();
         else:
@@ -58,8 +59,10 @@ class DeviceBase(object):
        return deviceIsPresent;
 
     def initialize_device(self, filename):
-        self.layout = self.xml_parse(filename, self.id);
-        if(self.layout is None):
+        self.layout : BaseLayout = self.layout_type(filename, self.id);
+        self.layout.populate();
+        
+        if(not self.layout.is_initialized):
             self.log_warning("initialization of {} failed, skip...".format(self.get_mac_address()));
             return False;
 

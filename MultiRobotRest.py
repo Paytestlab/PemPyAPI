@@ -26,16 +26,16 @@ __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
-from Robot.PinRobot import PinRobot;
-from Rest.RestfulThreaded import RESTfulThreadedServer;
 from os.path import join;
-from Parsers.ParseXmlRobotConfiguration import ParseXmlRobotConfiguration, RobotConfiguration;
-from Exception.Exception import Error, ConnectionError, InputError, ParseError, DestinationNotFoundError, DeviceStateError;
 import json;
 import argparse;
-from SQL.Statistics import Statistics;
 import logging;
 import traceback;
+from Rest.RestfulThreaded import RESTfulThreadedServer;
+from Parsers.ParseXmlRobotConfiguration import ParseXmlRobotConfiguration, RobotConfiguration;
+from Exception.Exception import Error, ConnectionError, InputError, ParseError, DestinationNotFoundError, DeviceStateError;
+from SQL.Statistics import Statistics;
+from Robot.PinRobot import PinRobot;
 from AxHw.CardMultiplexer import CardMultiplexer;
 from AxHw.CardMagstriper import CardMagstriper;
 from AxHw.CtlMultiplexer import CtlMultiplexer;
@@ -160,7 +160,8 @@ def EnableAndParseArguments():
 
 def initialize_mux(key, mux : DeviceBase, configuration):
     if(False is mux.device_lookup()):
-        return False;
+        #return False;
+        print('fake');
 
     if(False is mux.initialize_device(join(__path, configuration.Layout))):
         return False;

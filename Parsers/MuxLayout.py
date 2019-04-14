@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # Copyright (c) 2019 Matija Mazalin
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,24 +20,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-"""Thread safe contactless multiplexer interface."""
+from xml.dom.minidom import parse;
+import logging;
+from Parsers.BaseLayout import BaseLayout;
+from Parsers.LayoutCommands.LayoutCommands import MultiplexerCommand;
+
 __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
-from Base.MultiplexerBase import BaseMultiplexer
-from UDPMessage.UDPMagics import UDPMagics;
+class MuxLayout(BaseLayout):
 
-class CtlMultiplexer(BaseMultiplexer):
+    def populate(self):
+        collection = self.__initialize__();
 
-    tag = "ctlmux";
-    magic = UDPMagics.ContactlessMultiplexerMagic;
+        if(collection is None):
+                raise ValueError();
+
+        positions = collection.getElementsByTagName("Position")
+        for position in positions:
+           Canonical = position.getElementsByTagName('CanonicalName')[0]
+           Value = position.getElementsByTagName('Value')[0]
     
-    
-
-        
-
-
-
-
-
+           mux = MultiplexerCommand(Canonical.childNodes[0].data, Value.childNodes[0].data)
+           self.list.update({Canonical.childNodes[0].data:mux})

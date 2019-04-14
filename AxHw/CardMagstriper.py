@@ -22,10 +22,10 @@
 
 
 from UDPMessage.AxUDPCardMagstriperCommand import AxUDPCardMagstriperCommand
-from Parsers.ParseXml import XmlParser
 from Exception.Exception import Error
 from Base.DeviceBase import DeviceBase;
 from UDPMessage.UDPMagics import UDPMagics;
+from Parsers.MagLayout import MagLayout;
 
 __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
@@ -37,7 +37,7 @@ class CardMagstriper(DeviceBase):
     magic = UDPMagics.CardMagstriperMagic;
     
     def __init__(self, id, mac_address, enable_statistics=False):
-        super().__init__(id, XmlParser.parse_magstripes, enable_statistics);
+        super().__init__(id, MagLayout, enable_statistics);
         self.mac_address = bytearray.fromhex(mac_address);
    
     def send_command(self, action):

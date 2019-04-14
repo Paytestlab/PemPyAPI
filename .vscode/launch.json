@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: StartupFile (MultiRobotRest.py)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/MultiRobotRest.py"
+        },
+        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",

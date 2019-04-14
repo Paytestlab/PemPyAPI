@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # Copyright (c) 2019 Matija Mazalin
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,24 +20,35 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-"""Thread safe contactless multiplexer interface."""
+from Parsers.BaseLayout import BaseLayout
+from xml.dom.minidom import parse
+import logging
+from Parsers.LayoutCommands.LayoutCommands import RobotCommand;
+
 __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
-from Base.MultiplexerBase import BaseMultiplexer
-from UDPMessage.UDPMagics import UDPMagics;
+class RobotLayout(BaseLayout):
 
-class CtlMultiplexer(BaseMultiplexer):
+    def populate(self):
+        collection = self.__initialize__();
 
-    tag = "ctlmux";
-    magic = UDPMagics.ContactlessMultiplexerMagic;
+        if(collection is None):
+            raise ValueError();
+
+        positions = collection.getElementsByTagName("Position")
+        self.__list = {}
+        for position in positions:
+           Canonical = position.getElementsByTagName('CanonicalName')[0]
+           Value = position.getElementsByTagName('Value')[0]
+           isButton = False;
+           if(0 < len(position.getElementsByTagName('isButton'))):
+               IsButtonNode = position.getElementsByTagName('isButton')[0]
+               isButton = XmlParser.str_to_bool(IsButtonNode.childNodes[0].data)
     
-    
+           robot_command = RobotCommand(Canonical.childNodes[0].data, Value.childNodes[0].data, isButton)
+           self.__list.update({Canonical.childNodes[0].data:robot_command})
 
+    
         
-
-
-
-
-

@@ -1,17 +1,18 @@
 #!/usr/bin/python3
 
-from Parsers.ParseXml import XmlParser;
+
 from Robot.Communication import PEMSocket;
 from Base.DeviceBase import DeviceBase;
 import logging
 from Exception.Exception import DeviceStateError, ConnectionError;
 from Robot.BasicRobotCommands import BasicRobotCommands;
+from Parsers.RobotLayout import RobotLayout;
 
 class PinRobot(DeviceBase):
 
     tag = "robot";
     def __init__(self, id, enable_statistics=False, empower_card=False):
-        super().__init__(id, XmlParser.parse_terminals, enable_statistics);
+        super().__init__(id, RobotLayout, enable_statistics);
         self.empower_card = empower_card;
 
     def initialize_connection(self, IP, Port):

@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # Copyright (c) 2019 Matija Mazalin
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,24 +20,50 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-"""Thread safe contactless multiplexer interface."""
+
 __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
-from Base.MultiplexerBase import BaseMultiplexer
-from UDPMessage.UDPMagics import UDPMagics;
+from xml.dom.minidom import parse
+import xml.dom.minidom
+import logging
 
-class CtlMultiplexer(BaseMultiplexer):
 
-    tag = "ctlmux";
-    magic = UDPMagics.ContactlessMultiplexerMagic;
+class BaseLayout(object):
+
+    def __init__(self, filename, id):
+        self.filename = filename;
+        self.id = id;
+        self.list = {};
+
+    def str_to_bool(isButton):
+        if (isButton is '1'):
+            return True
+        else:
+            return False
+
+    def populate(self):
+        raise NotImplementedError();    
     
-    
 
-        
+    def __initialize__(self):
+        try:
+            logging.info("robot({}): parse {}".format(self.id, self.filename))
+            DOMTree = xml.dom.minidom.parse(self.filename);
+            return DOMTree.documentElement;
 
+        except IOError as e:
+            logging.error("robot({}): parsing of {} returned an error".format(self.id, self.filename))
+            return None;
 
+    @property
+    def is_initialized(self):
+        if(self.list):
+            return True;
+        else:
+            return False;
 
-
-
+    @property
+    def get_action(self, key):
+        return self.list[key].Value;

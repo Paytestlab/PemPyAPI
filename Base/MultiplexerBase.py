@@ -24,10 +24,10 @@ __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
 
-from Parsers.ParseXml import XmlParser
 from Exception.Exception import Error
 from Base.DeviceBase import DeviceBase;
 from UDPMessage.UDPMagics import UDPMagics;
+from Parsers.MuxLayout import MuxLayout;
 import traceback;
 
 
@@ -37,13 +37,13 @@ class BaseMultiplexer(DeviceBase):
     magic = UDPMagics.Invalid;
 
     def __init__(self, id, mac_address, enable_statistics=False):
-        super().__init__(id, XmlParser.parse_muxs, enable_statistics);
+        super().__init__(id, MuxLayout, enable_statistics);
         self.mac_address = bytearray.fromhex(mac_address);
   
     def send_command(self, action):
         Result = False
         try:
-           action_value = int(self.layout[action].Value);
+           action_value = int(self.layout.get_action(action));
            send_to = self.device.get_sender_for_device(self.mac_address);
            Result = send_to.set_port(action_value);
            self.log_info("execution of {} was successful".format(action))
