@@ -105,6 +105,12 @@
   </Position>
 
   <Position>
+    <CanonicalName>PAUSE</CanonicalName>
+    <Value>G4 S2</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <Position>
     <CanonicalName>HOME</CanonicalName>
     <Value>G28</Value>
     <isButton>0</isButton>

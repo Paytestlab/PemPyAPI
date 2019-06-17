@@ -98,6 +98,12 @@
     <isButton>0</isButton>
   </Position>
 
+    <Position>
+    <CanonicalName>PAUSE</CanonicalName>
+    <Value>G4 S2</Value>
+    <isButton>0</isButton>
+  </Position>
+
   <Position>
     <CanonicalName>RESET</CanonicalName>
     <Value>M999</Value>
