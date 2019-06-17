@@ -46,7 +46,7 @@ class DeviceBase(object):
 
     def UpdateTable(self, action):
         if(self.statistics is not None):
-            self.statistics.insert(self.id, action, self.terminalList[action].Value);
+            self.statistics.insert(self.id, action, self.layout[action].Value);
 
     def device_lookup(self):
        self.device = AxUDPCommandSenderManager(self.magic);
