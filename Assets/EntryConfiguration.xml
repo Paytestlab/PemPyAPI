@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <DeviceConfiguration>
-  <!--<Robot id="Robot-1">
-    <IpAddress>10.30.10.132</IpAddress>
-    <IpPort>23</IpPort>
+  <Robot id="Robot">
+    <IpAddress>127.0.0.1</IpAddress>
+    <IpPort>8005</IpPort>
     <Layout>Yomani.xml</Layout>
-  </Robot>-->
+  </Robot>
+  <ContactlessMultiplexer id="CtlMultiplexer-1">
+    <MacAddress>1407E0000395</MacAddress>
+    <Layout>ContactlessMultiplexer.xml</Layout>
+  </ContactlessMultiplexer>
   <!--<Robot id="Robot-2">
     <IpAddress>10.30.10.132</IpAddress>
     <IpPort>23</IpPort>
@@ -19,12 +23,12 @@
     <MacAddress>1407E0000395</MacAddress>
     <Layout>CardMultiplexer.xml</Layout>
   </CardMultiplexer>-->
-  <ContactlessMultiplexer id="CtlMultiplexer-1">
+  <!-- <ContactlessMultiplexer id="CtlMultiplexer-1">
     <MacAddress>1407E0000395</MacAddress>
     <Layout>ContactlessMultiplexer.xml</Layout>
   </ContactlessMultiplexer>
   <CardMagstriper id="mag-1">
     <MacAddress>1407E00007FC</MacAddress>
     <Layout>CardMagstriper.xml</Layout>
-  </CardMagstriper>
+  </CardMagstriper> -->
 </DeviceConfiguration>
