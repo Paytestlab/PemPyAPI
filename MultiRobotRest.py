@@ -66,9 +66,11 @@ def main():
     port = int(args.port)
         
     enable_statistics=args.enable_statistics
-    empower = args.empower_card
 
     SetLoggingLevel(args)
+    
+    if(args.empower_card):
+        logging.warning("card empowering is not supported anymore");
 
     print(__intro__)
 
@@ -82,7 +84,7 @@ def main():
 
         for key, robotConfiguration in robot_conf_list.items():
              try:
-                robot = PinRobot(key, enable_statistics, empower)
+                robot = PinRobot(key, enable_statistics)
 
                 if(False is initialize_robot(key, robot, robotConfiguration)):
                     error += 1
@@ -152,7 +154,7 @@ def EnableAndParseArguments():
     parser.add_argument("--enable-statistics", nargs='?', const=True, default=False, help="enable tracking of the button press to the local DB", required=False)
     parser.add_argument("-v", "--verbose", nargs='?', const=True, default=False, help="increase trace verbosity to the INFO level", required=False)
     parser.add_argument("-d", "--debug", nargs='?', const=True, default=False, help="increase trace verbosity to the DEBUG level", required=False)
-    parser.add_argument("--empower-card", nargs='?', const=True, default=False, help="increase the current on the card for the terminals with tighter card reader", required=False)
+    parser.add_argument("--empower-card", nargs='?', const=True, default=False, help="deprecated", required=False)
 
     return parser.parse_args()
 

@@ -12,9 +12,8 @@ class PinRobot(DeviceBase):
 
     robotCommands = BasicRobotCommands();
     tag = "robot";
-    def __init__(self, id, enable_statistics=False, empower_card=False):
+    def __init__(self, id, enable_statistics=False):
         super().__init__(id, RobotLayout, enable_statistics);
-        self.empower_card = empower_card;
         self.robotCommands = BasicRobotCommands();
 
     def initialize_connection(self, IP, Port):
@@ -73,9 +72,9 @@ class PinRobot(DeviceBase):
         except DeviceStateError as e:
             logging.error("robot({}): device is in an error state".format(self.id));
             pass;
-         except:
-             logging.error("robot({}): unknown exception happened...".format(self.id));
-             pass
+        except:
+            logging.error("robot({}): unknown exception happened...".format(self.id));
+            pass
 
         return Result;
 
@@ -91,20 +90,6 @@ class PinRobot(DeviceBase):
     def __pressButton(self):
         """press button function"""
         return self.SendString(self.robotCommands.key_press)
-
-    def __increaseZCurrent(self):
-        """Increases the current for Z Axis if enabled"""
-        if(self.empower_card is True):
-            return self.SendString(self.robotCommands.increase_current)
-        else:
-            return True;
-
-    def __reduceZCurrent(self):
-        """Decreases the current for Z Axis"""
-        if(self.empower_card is True):
-            return self.SendString(self.robotCommands.reduce_current)
-        else:
-            return True;
 
     def get_mac_address(self):
         return self.id;
