@@ -37,7 +37,7 @@ class BaseLayout(object):
         self.id = id;
         self.list = {};
 
-    def str_to_bool(isButton):
+    def str_to_bool(self, isButton):
         if (isButton is '1'):
             return True
         else:
@@ -64,6 +64,5 @@ class BaseLayout(object):
         else:
             return False;
 
-    @property
     def get_action(self, key):
         return self.list[key].Value;

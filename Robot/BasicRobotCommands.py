@@ -52,7 +52,7 @@ class BasicRobotCommands(object):
     
     @property
     def remove_card(self):
-        return self.format_command(self.__remove_card);
+        return self._format_command(self.__remove_card);
         
     @property
     def home(self):

@@ -10,10 +10,12 @@ from Parsers.RobotLayout import RobotLayout;
 
 class PinRobot(DeviceBase):
 
+    robotCommands = BasicRobotCommands();
     tag = "robot";
     def __init__(self, id, enable_statistics=False, empower_card=False):
         super().__init__(id, RobotLayout, enable_statistics);
         self.empower_card = empower_card;
+        self.robotCommands = BasicRobotCommands();
 
     def initialize_connection(self, IP, Port):
         self.socket = PEMSocket(IP, Port)
@@ -54,21 +56,15 @@ class PinRobot(DeviceBase):
     def send_command(self, action):
         Result = False
         try:
-
-           if(not self.layout[action].IsButton):
-               self.__increaseZCurrent();
-                             
-           actionValue = self.layout[action].Value;
+           actionValue = self.layout.get_action(action);
            logging.debug("robot({}): send to robot({}):".format(self.id, actionValue.replace('\r\n', ' ')))
            self.socket.send(actionValue);
                          
            Result = self.__ResponseEvaluate(self.socket.receive());
-           shouldPress = Result and self.layout[action].IsButton;
+           shouldPress = Result and self.layout.is_button(action);
 
            if(shouldPress):
               Result = self.__pressButton();
-           elif(Result):
-              self.__reduceZCurrent();
 
            logging.info("robot({}): execution of {} was successful".format(self.id, action))
         except TimeoutError:
@@ -77,9 +73,9 @@ class PinRobot(DeviceBase):
         except DeviceStateError as e:
             logging.error("robot({}): device is in an error state".format(self.id));
             pass;
-        except:
-            logging.error("robot({}): unknown exception happened...".format(self.id));
-            pass
+         except:
+             logging.error("robot({}): unknown exception happened...".format(self.id));
+             pass
 
         return Result;
 
@@ -94,19 +90,19 @@ class PinRobot(DeviceBase):
 
     def __pressButton(self):
         """press button function"""
-        return self.SendString(BasicRobotCommands.key_press)
+        return self.SendString(self.robotCommands.key_press)
 
     def __increaseZCurrent(self):
         """Increases the current for Z Axis if enabled"""
         if(self.empower_card is True):
-            return self.SendString(BasicRobotCommands.increase_current)
+            return self.SendString(self.robotCommands.increase_current)
         else:
             return True;
 
     def __reduceZCurrent(self):
         """Decreases the current for Z Axis"""
         if(self.empower_card is True):
-            return self.SendString(BasicRobotCommands.reduce_current)
+            return self.SendString(self.robotCommands.reduce_current)
         else:
             return True;
 
@@ -114,7 +110,7 @@ class PinRobot(DeviceBase):
         return self.id;
 
     def remove_card(self):
-        return self.SendString(BasicRobotCommands.remove_card);
+        return self.SendString(self.robotCommands.remove_card);
 
     def home(self):
-        return self.SendString(BasicRobotCommands.home);
+        return self.SendString(self.robotCommands.home);

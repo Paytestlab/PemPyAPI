@@ -33,7 +33,6 @@ __license__ = "MIT"
 class DeviceBase(object):
     
     tag = "invalid";
-
     def __init__(self, id, layout_type, enable_statistics=False):
         self.mutex = threading.Lock()
         self.layout_type = layout_type;
@@ -59,7 +58,7 @@ class DeviceBase(object):
        return deviceIsPresent;
 
     def initialize_device(self, filename):
-        self.layout : BaseLayout = self.layout_type(filename, self.id);
+        self.layout = self.layout_type(filename, self.id);
         self.layout.populate();
         
         if(not self.layout.is_initialized):

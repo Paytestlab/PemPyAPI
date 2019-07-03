@@ -38,17 +38,22 @@ class RobotLayout(BaseLayout):
             raise ValueError();
 
         positions = collection.getElementsByTagName("Position")
-        self.__list = {}
         for position in positions:
            Canonical = position.getElementsByTagName('CanonicalName')[0]
            Value = position.getElementsByTagName('Value')[0]
            isButton = False;
            if(0 < len(position.getElementsByTagName('isButton'))):
                IsButtonNode = position.getElementsByTagName('isButton')[0]
-               isButton = XmlParser.str_to_bool(IsButtonNode.childNodes[0].data)
+               isButton = self.str_to_bool(IsButtonNode.childNodes[0].data)
     
            robot_command = RobotCommand(Canonical.childNodes[0].data, Value.childNodes[0].data, isButton)
-           self.__list.update({Canonical.childNodes[0].data:robot_command})
+           self.list.update({Canonical.childNodes[0].data:robot_command})
+
+    def is_button(self, key):
+        if(self.list):
+            return self.list[key].IsButton;
+        else:
+            return None;
 
     
         

@@ -8,7 +8,8 @@
             "name": "Python: StartupFile (MultiRobotRest.py)",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/MultiRobotRest.py"
+            "program": "${workspaceFolder}/MultiRobotRest.py",
+            "args": ["-d"]
         },
         {
             "name": "Python: Current File",
