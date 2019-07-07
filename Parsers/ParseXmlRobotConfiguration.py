@@ -30,7 +30,6 @@ class CtlMuxConfiguration(BaseConfiguration):
         self.mac_address = mac_address
 
 class MagConfiguration(BaseConfiguration):
-
     def __init__(self, Id, mac_address, layout):
         super().__init__(Id, layout);
         self.mac_address = mac_address
@@ -103,8 +102,8 @@ class ParseXmlRobotConfiguration(object):
     def __parse_simulator_xml(self, collection):
         sims = collection.getElementsByTagName("Simulator")
         for sim in sims:
-            id = ctl_mux.getAttribute('id')
-            Layout = ctl_mux.getElementsByTagName('Layout')[0];
+            id = sim.getAttribute('id')
+            Layout = sim.getElementsByTagName('Layout')[0];
             sim_configuration = SimConfiguration(id, Layout.childNodes[0].data);
             self.__sim_list.update({id:sim_configuration});
 
@@ -126,5 +125,5 @@ class ParseXmlRobotConfiguration(object):
     
     @property
     def simulators(self):
-        return sim_list;
+        return self.__sim_list;
 

@@ -39,6 +39,7 @@ from Robot.PinRobot import PinRobot;
 from AxHw.CardMultiplexer import CardMultiplexer;
 from AxHw.CardMagstriper import CardMagstriper;
 from AxHw.CtlMultiplexer import CtlMultiplexer;
+from AxHw.DeviceSimulator import DeviceSimulator;
 from Base.DeviceBase import DeviceBase;
 
 #----------------------------------------------------------------------------------------------------------------#
@@ -77,7 +78,6 @@ def main():
     print("Initialising...")
 
     try:
-        #(robot_conf_list, mux_conf_list, mag_conf_list, ctl_mux_conf_list) = ParseXmlRobotConfiguration.parseXml(config)
         configuration = ParseXmlRobotConfiguration(configPath);
 
         device_list = {}
@@ -123,6 +123,18 @@ def main():
 
            device_list.update({key: ctl_mux})
 
+        for key, simConfiguration in configuration.simulators.items():
+            try:
+  
+                simulator = DeviceSimulator(key, enable_statistics)
+                if(False is simulator.initialize_device(join(__path, simConfiguration.Layout))):
+                    error += 1
+                    continue
+
+                device_list.update({key: robot})
+            except DeviceStateError:
+                pass;
+
         if(not device_list):
             logging.critical("general: fatal error, device list is empty!");
             raise Error("", "Fatal error, device list is empty!");
@@ -163,8 +175,7 @@ def EnableAndParseArguments():
 
 def initialize_mux(key, mux : DeviceBase, configuration):
     if(False is mux.device_lookup()):
-        #return False;
-        print('fake');
+        return False;
 
     if(False is mux.initialize_device(join(__path, configuration.Layout))):
         return False;

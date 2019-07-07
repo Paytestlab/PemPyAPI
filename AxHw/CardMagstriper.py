@@ -42,7 +42,6 @@ class CardMagstriper(DeviceBase):
    
     def send_command(self, action):
         Result = False;
-
         try:
             if(self.set_tracks(action)):
                 send_to = self.device.get_sender_for_device(self.mac_address);
