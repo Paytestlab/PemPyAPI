@@ -69,8 +69,8 @@ class CardMagstriper(DeviceBase):
         try:
             send_to = self.device.get_sender_for_device(self.mac_address);
 
-            if(self.layout[action].Track1 is not None):
-                track_value = self.layout[action].Track1;
+            if(self.layout.get_track1(action) is not None):
+                track_value = self.layout.get_track1(action);
                 
                 #special use case for track1. Reduce all characters for 0x20;
                 track_byte_array = [(x - 0x20) for x in bytearray(str.encode(track_value))];
@@ -78,13 +78,13 @@ class CardMagstriper(DeviceBase):
                 track_bytes = bytes(track_byte_array);
                 Result = send_to.set_card_magstripe_track(AxUDPCardMagstriperCommand.SetTrack1, track_bytes);
 
-            if(self.layout[action].Track2 is not None):
-                track_value = self.layout[action].Track2;
+            if(self.layout.get_track2(action) is not None):
+                track_value = self.layout.get_track2(action);
                 track_bytes = str.encode(track_value);
                 Result = send_to.set_card_magstripe_track(AxUDPCardMagstriperCommand.SetTrack2, track_bytes);
 
-            if(self.layout[action].Track3 is not None):
-                track_value = self.layout[action].Track3;
+            if(self.layout.get_track3(action) is not None):
+                track_value = self.layout.get_track3(action)
                 track_bytes = str.encode(track_value);
                 Result = send_to.set_card_magstripe_track(AxUDPCardMagstriperCommand.SetTrack3, track_bytes);
 

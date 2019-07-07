@@ -68,4 +68,22 @@ class MagLayout(BaseLayout):
 
             magstripe = MagstripeCommand(canonical_data, brand_data, track1_data, track2_data, track3_data)
             self.list.update({Canonical.childNodes[0].data: magstripe})
+        
+        def get_track1(self, key):
+            if(self.list):
+                return self.list[key].Track1;
+            else:
+                return None;
+
+        def get_track2(self, key):
+            if(self.list):
+                return self.list[key].Track2;
+            else:
+                return None;
+
+        def get_track3(self, key):
+            if(self.list):
+                return self.list[key].Track3;
+            else:
+                return None;
 

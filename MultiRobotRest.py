@@ -62,7 +62,7 @@ def main():
 
     args = EnableAndParseArguments()
   
-    config = args.config
+    configPath = args.config
     port = int(args.port)
         
     enable_statistics=args.enable_statistics
@@ -77,12 +77,13 @@ def main():
     print("Initialising...")
 
     try:
-        (robot_conf_list, mux_conf_list, mag_conf_list, ctl_mux_conf_list) = ParseXmlRobotConfiguration.parseXml(config)
+        #(robot_conf_list, mux_conf_list, mag_conf_list, ctl_mux_conf_list) = ParseXmlRobotConfiguration.parseXml(config)
+        configuration = ParseXmlRobotConfiguration(configPath);
 
         device_list = {}
         error = 0
 
-        for key, robotConfiguration in robot_conf_list.items():
+        for key, robotConfiguration in configuration.robots.items():
              try:
                 robot = PinRobot(key, enable_statistics)
 
@@ -95,7 +96,7 @@ def main():
                 pass;
 
 
-        for key, mux_configuration in mux_conf_list.items():
+        for key, mux_configuration in configuration.multiplexers.items():
             mux = CardMultiplexer(key, mux_configuration.mac_address, enable_statistics)
 
             if(False is initialize_mux(key, mux, mux_configuration)):
@@ -104,7 +105,7 @@ def main():
 
             device_list.update({key: mux})
 
-        for key, mag_configuration in mag_conf_list.items():
+        for key, mag_configuration in configuration.magstripers.items():
             mag = CardMagstriper(key, mag_configuration.mac_address, enable_statistics)
 
             if(False is initialize_mux(key, mag, mag_configuration)):
@@ -113,7 +114,7 @@ def main():
 
             device_list.update({key: mag})
 
-        for key, ctl_mux_configuration in ctl_mux_conf_list.items():
+        for key, ctl_mux_configuration in configuration.contactless_multiplexers.items():
            ctl_mux = CtlMultiplexer(key, ctl_mux_configuration.mac_address, enable_statistics)
            
            if(False is initialize_mux(key, ctl_mux, ctl_mux_configuration)):

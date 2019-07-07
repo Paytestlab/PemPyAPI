@@ -49,12 +49,12 @@ class BaseLayout(object):
 
     def __initialize__(self):
         try:
-            logging.info("robot({}): parse {}".format(self.id, self.filename))
+            logging.info("device({}): parse {}".format(self.id, self.filename))
             DOMTree = xml.dom.minidom.parse(self.filename);
             return DOMTree.documentElement;
 
         except IOError as e:
-            logging.error("robot({}): parsing of {} returned an error".format(self.id, self.filename))
+            logging.error("device({}): parsing of {} returned an error".format(self.id, self.filename))
             return None;
 
     @property
