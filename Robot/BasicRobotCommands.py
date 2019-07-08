@@ -31,7 +31,11 @@ class BasicRobotCommands(object):
     __remove_card = "G0 Z50";
     __home = "G28";
 
+<<<<<<< HEAD
     def _format_command(self, command):
+=======
+    def __format_command(self, command):
+>>>>>>> master
         return "{}\r\n".format(command); 
 
     @property
@@ -40,6 +44,7 @@ class BasicRobotCommands(object):
 
     @property
     def increase_current(self):
+<<<<<<< HEAD
         return self._format_command(self.__increase_current);
 
     @property
@@ -57,5 +62,24 @@ class BasicRobotCommands(object):
     @property
     def home(self):
         return self._format_command(self.__home);
+=======
+        return self.__format_command(self.__increase_current);
+
+    @property
+    def reduce_current(self):
+        return self.__format_command(self.__reduce_current);
+
+    @property
+    def insert_card(self):
+        return self.__format_command(self.__insert_card);
+    
+    @property
+    def remove_card(self):
+        return self.format_command(self.__remove_card);
+        
+    @property
+    def home(self):
+        return self.__format_command(self.__home);
+>>>>>>> master
 
 

@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
+<<<<<<< HEAD
             "name": "Python: StartupFile (MultiRobotRest.py)",
             "type": "python",
             "request": "launch",
@@ -13,9 +14,13 @@
         },
         {
             "name": "Python: Current File",
+=======
+            "name": "Python: Multi File",
+>>>>>>> master
             "type": "python",
             "request": "launch",
-            "program": "${file}"
+            "args": ["--enable-statistics"],
+            "program": "${workspaceFolder}/MultiRobotRest.py"
         },
         {
             "name": "Python: Attach",
