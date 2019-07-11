@@ -9,6 +9,8 @@ from Exception.Exception import DeviceStateError, ConnectionError;
 class PinRobot(DeviceBase):
 
     tag = "robot";
+    socket = None;
+
     def __init__(self, id, enable_statistics=False, empower_card=False):
         super().__init__(id, XmlParser.parse_terminals, enable_statistics);
         self.empower_card = empower_card;
@@ -31,7 +33,8 @@ class PinRobot(DeviceBase):
 
     def close_connection(self):
         try:
-            self.socket.close() 
+            if(None is not self.socket):
+                self.socket.close();
         except OSError:
             pass;
 
