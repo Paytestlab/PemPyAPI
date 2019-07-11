@@ -4,7 +4,7 @@
 from Robot.Communication import PEMSocket;
 from Base.DeviceBase import DeviceBase;
 import logging
-from Exception.Exception import DeviceStateError, ConnectionError;
+from Exception.Exception import PemDeviceStateError, PemConnectionError, PemTimeoutError;
 from Robot.BasicRobotCommands import BasicRobotCommands;
 from Parsers.RobotLayout import RobotLayout;
 
@@ -28,74 +28,78 @@ class PinRobot(DeviceBase):
                 logging.debug("robot({}): received {}".format(self.id, response.replace('\r\n', '')));
                 if("Smoothie command shell" in response):
                     return True;
-        except TimeoutError:
+        except PemConnectionError:
             pass;
         return False;
 
     def close_connection(self):
         try:
-            self.socket.close() 
+            if(self.socket):
+                self.socket.close();
         except OSError:
             pass;
 
-    def __ResponseEvaluate(self, response):
-        logging.debug("robot({}): received {}".format(self.id, response.replace('\r\n', '')))
-        Result = False
-        if(not response):
-            return False;
-        if("ok" in response):
-           Result = True
-        elif("!!" in response):
-            raise DeviceStateError("", "Robot error:{}".format(response));
-        else:
-           return False
-
-        return Result
-
-    def send_command(self, action):
-        Result = False
+    def send_command(self, key):
+        result = False
         try:
-           actionValue = self.layout.get_action(action);
-           logging.debug("robot({}): send to robot({}):".format(self.id, actionValue.replace('\r\n', ' ')))
-           self.socket.send(actionValue);
-                         
-           Result = self.__ResponseEvaluate(self.socket.receive());
-           shouldPress = Result and self.layout.is_button(action);
+           if(self.layout.is_button(key)):
+               result = self.__send_key_press(key);
+           else:
+               result = self.__send_action(key);
 
-           if(shouldPress):
-              Result = self.__pressButton();
-
-           logging.info("robot({}): execution of {} was successful".format(self.id, action))
-        except TimeoutError:
-            logging.error("robot({}): while performing the action {}, the device did not respond in time".format(self.id, action));
+           logging.info("robot({}): execution of {} was successful".format(self.id, key))
+        except PemTimeoutError:
+            logging.error("robot({}): while performing the action {}, the device did not respond in time".format(self.id, key));
             pass;
-        except DeviceStateError as e:
+        except PemDeviceStateError:
             logging.error("robot({}): device is in an error state".format(self.id));
             pass;
         except:
             logging.error("robot({}): unknown exception happened...".format(self.id));
+            result = False;
             pass
 
-        return Result;
+        return result;
 
-    def SendString(self, command):
-        logging.debug("robot({}): sending ({}):".format(self.id, command.replace('\r\n', ' ')))
-        self.socket.send(command)
+    def __send_key_press(self, key):
+        if(self.__send_action(key)):
+            return self.__press_button();
+        else:
+            return False;
 
-        return self.__ResponseEvaluate(self.socket.receive())
+    def __send_action(self, key):
+        action = self.layout.get_action(key);
+        return self.__send_to_robot(action);
 
-    def ReceiveResponse(self):
-        self.__ResponseEvaluate(self.socket.receive())
-
-    def __pressButton(self):
+    def __press_button(self):
         """press button function"""
-        return self.SendString(self.robotCommands.key_press)
+        return self.__send_to_robot(self.robotCommands.key_press)
 
     def get_mac_address(self):
         return self.id;
 
     def remove_card(self):
-        return self.SendString(self.robotCommands.remove_card);
+        return self.__send_to_robot(self.robotCommands.remove_card);
 
     def home(self):
-        return self.SendString(self.robotCommands.home);
+        return self.__send_to_robot(self.robotCommands.home);
+
+    def __send_to_robot(self, command):
+        logging.debug("robot({}): send to robot ({}):".format(self.id, command.replace('\r\n', ' ')))
+        self.socket.send(command)
+
+        return self.__response_evaluate(self.socket.receive())
+
+    def __response_evaluate(self, response):
+        logging.debug("robot({}): received {}".format(self.id, response.replace('\r\n', '')))
+        Result = False
+        if(not response):
+            return False;
+        elif("ok" in response):
+           Result = True
+        elif("!!" in response):
+            raise PemDeviceStateError("", "Robot error:{}".format(response));
+        else:
+           return False
+
+        return Result

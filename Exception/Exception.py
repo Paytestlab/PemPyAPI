@@ -3,33 +3,37 @@
 class Error(Exception):
     pass
 
-class InputError(Error):
+class PemInputError(Error):
     def __init__(self, expression, message):
         self.expression = expression
         self.message = message
 
-class ParseError(Error):
+class PemParseError(Error):
     def __init__(self, expression, message):
         self.expression = expression
         self.message = message
 
-
-class ConnectionError(Error):
+class PemTimeoutError(Error):
     def __init__(self, expression, message):
         self.expression = expression
         self.message = message
 
-class NotImplementedError(Error):
+class PemConnectionError(Error):
     def __init__(self, expression, message):
         self.expression = expression
         self.message = message
 
-class DestinationNotFoundError(Error):
+class PemNotImplementedError(Error):
     def __init__(self, expression, message):
         self.expression = expression
         self.message = message
 
-class DeviceStateError(Error):
+class PemDestinationNotFoundError(Error):
+    def __init__(self, expression, message):
+        self.expression = expression
+        self.message = message
+
+class PemDeviceStateError(Error):
     def __init__(self, expression, message):
         self.expression = expression;
         self.message = message;

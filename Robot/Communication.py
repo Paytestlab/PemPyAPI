@@ -3,6 +3,7 @@
 import socket
 from socket import timeout as SocketTimeout;
 from socket import error as SocketError;
+from Exception.Exception import PemDeviceStateError, PemConnectionError, PemTimeoutError;
 import errno;
 import logging;
 
@@ -21,10 +22,10 @@ class PEMSocket(object):
             self.Connection.settimeout(10.0)
         except SocketError as e:
             logging.error("robot: could not connect({}) to {}:{}. socket already in use".format(str(e.errno), self.IP, self.Port))
-            return False
+            raise PemConnectionError("robot", "could not connect");
         except Exception as e:
             logging.error("robot: could not connect({}) to {}:{}".format(str(e.errno), self.IP, self.Port))
-            return False;
+            raise PemConnectionError("robot", "could not connect");
         
         return True
 
@@ -44,22 +45,12 @@ class PEMSocket(object):
             response = self.Connection.recv(self.BUFFER_SIZE);
             responseString = response.decode("utf-8");
         except SocketTimeout as e:
-            raise TimeoutError("robot: the device did not respond in time");
+            raise PemTimeoutError("", "Robot: the device did not respond in time");
         except SocketError as e:
             logging.warning("robot: could not receive any data(" + str(e.errno) + ")")
-            return ''
+            raise PemDeviceStateError("", "Robot error:{}".format(response));
         return responseString;
-
-    def receiveWithTimeout(self, Timeout):
-        try:
-            self.Connection.settimeout(Timeout)
-            response = self.Connection.recv(self.BUFFER_SIZE).decode("utf-8")
-            self.Connection.settimeout(10)
-        except SocketError as e:
-            logging.warning("robot: could not receive any data(" + str(e.errno) + ")")
-            return ''
-
-        return response
+  
 
     def close(self):
         self.Connection.shutdown(socket.SHUT_RDWR);

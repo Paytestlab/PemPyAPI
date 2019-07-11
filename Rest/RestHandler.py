@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from http.server import BaseHTTPRequestHandler
-from Exception.Exception import NotImplementedError, ParseError, InputError, ConnectionError, DestinationNotFoundError, Error
+from Exception.Exception import PemNotImplementedError, PemParseError, PemInputError, PemConnectionError, PemDestinationNotFoundError, Error
 from http import HTTPStatus
 import logging
 
@@ -19,7 +19,7 @@ class HandleRestRequest(BaseHTTPRequestHandler):
             s.__sendResponse(HTTPStatus.OK)
             s.wfile.write(result.encode('utf-8'))
             s.wfile.write("\r\n".encode('utf-8'))
-        except NotImplementedError:
+        except PemNotImplementedError:
             s.__sendResponse(HTTPStatus.NOT_IMPLEMENTED, "not implemented")
             pass
         except:
@@ -32,22 +32,22 @@ class HandleRestRequest(BaseHTTPRequestHandler):
 
         try:
             if("application/json" not in ctype):
-                raise ParseError
+                raise PemParseError
 
             payload = str(s.rfile.read(length), 'utf-8')
             s.postProcess(payload, s.processArg)
                 
             s.__sendResponse(HTTPStatus.OK)
-        except NotImplementedError:
+        except PemNotImplementedError:
             s.__sendResponse(HTTPStatus.NOT_IMPLEMENTED, "not implemented")
             pass
-        except (ConnectionError, DestinationNotFoundError) as error:
+        except (PemConnectionError, PemDestinationNotFoundError) as error:
             s.__sendResponse(HTTPStatus.SERVICE_UNAVAILABLE, error);
             pass
-        except (ParseError) as error:
+        except (PemParseError) as error:
             s.__sendResponse(HTTPStatus.BAD_REQUEST, error);
             pass
-        except InputError as error:
+        except PemInputError as error:
             s.__sendResponse(HTTPStatus.NOT_FOUND, error);
             pass;
         except Error as error:

@@ -33,7 +33,7 @@ import logging;
 import traceback;
 from Rest.RestfulThreaded import RESTfulThreadedServer;
 from Parsers.ParseXmlRobotConfiguration import ParseXmlRobotConfiguration, RobotConfiguration;
-from Exception.Exception import Error, ConnectionError, InputError, ParseError, DestinationNotFoundError, DeviceStateError;
+from Exception.Exception import Error, PemConnectionError, PemInputError, PemParseError, PemDestinationNotFoundError, PemDeviceStateError;
 from SQL.Statistics import Statistics;
 from Robot.PinRobot import PinRobot;
 from AxHw.CardMultiplexer import CardMultiplexer;
@@ -92,7 +92,7 @@ def main():
                     continue
 
                 device_list.update({key: robot})
-             except DeviceStateError:
+             except PemDeviceStateError:
                 pass;
 
 
@@ -132,7 +132,7 @@ def main():
                     continue
 
                 device_list.update({key: robot})
-            except DeviceStateError:
+            except PemDeviceStateError:
                 pass;
 
         if(not device_list):
@@ -228,14 +228,14 @@ def executeCommands(device : DeviceBase, commands, key):
 
         if(False is device.connect()):
             device.log_error("device is unreachable")
-            raise ConnectionError("", "could not connect to the device: " + key)
+            raise PemConnectionError("", "could not connect to the device: " + key)
 
         for command in commands:
             if(True is device.send_command(command)):
                 device.UpdateTable(command)
             else:
                 device.log_warning("device could not execute '{}'. Abort further execution".format(command))
-                raise InputError("", key + ": could not execute: " + command)
+                raise PemInputError("", key + ": could not execute: " + command)
 
     finally:
         device.close_connection()
@@ -248,7 +248,7 @@ def getRequest(jsonString):
         request = json.loads(jsonString)
     except json.JSONDecodeError:
         logging.error("json could not be loaded:\n" + jsonString)
-        raise ParseError("", "json could not be parsed")
+        raise PemParseError("", "json could not be parsed")
 
     return request
 
@@ -262,11 +262,11 @@ def doPostWork(jsonString, robotList):
 
         if(key not in robotList):
             logging.error("robot {} not in list".format(key))
-            raise DestinationNotFoundError("" , key + ": robot not found")
+            raise PemDestinationNotFoundError("" , key + ": robot not found")
 
         executeCommands(robotList[key], request['commands'], key)
     except KeyError as e:
-        raise ParseError("", str(e));
+        raise PemParseError("", str(e));
     return True
 
 #----------------------------------------------------------------------------------------------------------------#
