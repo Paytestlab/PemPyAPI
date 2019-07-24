@@ -131,7 +131,7 @@ def main():
                     error += 1
                     continue
 
-                device_list.update({key: robot})
+                device_list.update({key: simulator})
             except PemDeviceStateError:
                 pass;
 
