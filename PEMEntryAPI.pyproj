@@ -157,7 +157,6 @@
     <Folder Include="AxHw\" />
     <Folder Include="ConfigRest\" />
     <Folder Include="Assets\" />
-    <Folder Include="C:\Users\Matija\source\repos\PemPyAPI\AxHw\" />
     <Folder Include="Exception\" />
     <Folder Include="Base\" />
     <Folder Include="UDPMessage\" />
