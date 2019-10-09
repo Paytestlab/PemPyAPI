@@ -44,7 +44,7 @@ class CardMagstriper(DeviceBase):
         Result = False;
 
         try:
-            if(self.set_tracks(action)):
+            if(self.do_action(action)):
                 send_to = self.device.get_sender_for_device(self.mac_address);
                 Result = send_to.send_tracks();
            
@@ -64,29 +64,43 @@ class CardMagstriper(DeviceBase):
 
         return Result;
 
-    def set_tracks(self, action):
+    def do_action(self, action):
+        if type(action) is dict:
+            if action["action"] != "trackset":
+                return False
+            
+            tracks = []
+            for track in ["track1", "track2", "track3"]:
+                track = action[track] if track in action else None
+                tracks.append(track if track else None) # remove empty "" values
+
+            return self.set_tracks(tracks)
+
+        elif type(action) is str and action in self.layout:
+            layout = self.layout[action]
+            return self.set_tracks([layout.Track1, layout.Track2, layout.Track3])
+
+        else:
+            return False
+
+    def set_tracks(self, layout):
         Result = False;
+        track_pointers = [AxUDPCardMagstriperCommand.SetTrack1, AxUDPCardMagstriperCommand.SetTrack2, AxUDPCardMagstriperCommand.SetTrack3]
+
         try:
             send_to = self.device.get_sender_for_device(self.mac_address);
 
-            if(self.layout[action].Track1 is not None):
-                track_value = self.layout[action].Track1;
-                
+            for track_pointer, track_value in zip(track_pointers, layout):
+                if track_value is None:
+                    continue
+
+                track_bytes = str.encode(track_value)
+
                 #special use case for track1. Reduce all characters for 0x20;
-                track_byte_array = [(x - 0x20) for x in bytearray(str.encode(track_value))];
+                if track_pointer is AxUDPCardMagstriperCommand.SetTrack1:
+                    track_bytes = bytes([(x - 0x20) for x in bytearray(track_bytes)])
 
-                track_bytes = bytes(track_byte_array);
-                Result = send_to.set_card_magstripe_track(AxUDPCardMagstriperCommand.SetTrack1, track_bytes);
-
-            if(self.layout[action].Track2 is not None):
-                track_value = self.layout[action].Track2;
-                track_bytes = str.encode(track_value);
-                Result = send_to.set_card_magstripe_track(AxUDPCardMagstriperCommand.SetTrack2, track_bytes);
-
-            if(self.layout[action].Track3 is not None):
-                track_value = self.layout[action].Track3;
-                track_bytes = str.encode(track_value);
-                Result = send_to.set_card_magstripe_track(AxUDPCardMagstriperCommand.SetTrack3, track_bytes);
+                Result = send_to.set_card_magstripe_track(track_pointer, track_bytes)
 
         except Error: 
             Result = False;

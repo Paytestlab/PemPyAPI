@@ -32,6 +32,7 @@ from os.path import join;
 from Parsers.ParseXmlRobotConfiguration import ParseXmlRobotConfiguration, RobotConfiguration;
 from Exception.Exception import Error, ConnectionError, InputError, ParseError, DestinationNotFoundError, DeviceStateError;
 import json;
+import re
 import argparse;
 from SQL.Statistics import Statistics;
 import logging;
@@ -226,9 +227,23 @@ def executeCommands(device : DeviceBase, commands, key):
         device.close_connection()
         device.mutex.release()
 
+
+#-----------------------------------------------------------------------------------------------------------------#
+
+def fixJsonString(jsonString):
+    execute_match = re.search(r"\"execute: *(\{[^\}]+\}) *(\")", jsonString)
+    if execute_match:
+        json_1 = jsonString[:execute_match.start(0)]
+        json_2 = jsonString[execute_match.start(1):execute_match.end(1)]
+        json_3 = jsonString[execute_match.end(2):]
+        return fixJsonString(json_1 + json_2 + json_3)
+    else:
+        return jsonString
+
 #-----------------------------------------------------------------------------------------------------------------#
 
 def getRequest(jsonString):
+    jsonString = fixJsonString(jsonString)
     try:
         request = json.loads(jsonString)
     except json.JSONDecodeError:
