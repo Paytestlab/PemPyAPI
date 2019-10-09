@@ -221,7 +221,7 @@ def executeCommands(device : DeviceBase, commands, key):
                 device.UpdateTable(command)
             else:
                 device.log_warning("device could not execute '{}'. Abort further execution".format(command))
-                raise InputError("", key + ": could not execute: " + command)
+                raise InputError("", "{}: could not execute: {}".format(key, command))
 
     finally:
         device.close_connection()
