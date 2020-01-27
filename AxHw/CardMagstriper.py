@@ -44,7 +44,7 @@ class CardMagstriper(DeviceBase):
         Result = False;
 
         try:
-            if(self.do_action(action)):
+            if(self.do_action(action) is False):
                 send_to = self.device.get_sender_for_device(self.mac_address);
                 Result = send_to.send_tracks();
            
