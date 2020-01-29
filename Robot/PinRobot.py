@@ -55,7 +55,6 @@ class PinRobot(DeviceBase):
     def send_command(self, action):
         Result = False
         try:
-
            if(not self.layout[action].IsButton):
                self.__increaseZCurrent();
                              
@@ -63,11 +62,12 @@ class PinRobot(DeviceBase):
            logging.debug("robot({}): send to robot({}):".format(self.id, actionValue.replace('\r\n', ' ')))
            self.socket.send(actionValue);
                          
-           Result = self.__ResponseEvaluate(self.socket.receive());
-           shouldPress = Result and self.layout[action].IsButton;
+           shouldPress = self.layout[action].IsButton;
 
            if(shouldPress):
-              Result = self.__pressButton();
+              Result = self.__ResponseEvaluate(self.socket.receive());
+              if(Result):
+                 Result = self.__pressButton();
            elif(Result):
               self.__reduceZCurrent();
 
