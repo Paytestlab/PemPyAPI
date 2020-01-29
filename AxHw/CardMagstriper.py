@@ -41,7 +41,7 @@ class CardMagstriper(DeviceBase):
         self.mac_address = bytearray.fromhex(mac_address);
    
     def send_command(self, action):
-        Result = False;
+        Result = True;
 
         try:
             if(self.do_action(action) is False):

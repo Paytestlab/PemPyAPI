@@ -53,7 +53,7 @@ class PinRobot(DeviceBase):
         return Result
 
     def send_command(self, action):
-        Result = False
+        result = False
         try:
            if(not self.layout[action].IsButton):
                self.__increaseZCurrent();
@@ -62,14 +62,13 @@ class PinRobot(DeviceBase):
            logging.debug("robot({}): send to robot({}):".format(self.id, actionValue.replace('\r\n', ' ')))
            self.socket.send(actionValue);
                          
-           shouldPress = self.layout[action].IsButton;
+           result = self.__ResponseEvaluate(self.socket.receive());
+           shouldPress = result and self.layout[action].IsButton;
 
            if(shouldPress):
-              Result = self.__ResponseEvaluate(self.socket.receive());
-              if(Result):
-                 Result = self.__pressButton();
-           elif(Result):
-              self.__reduceZCurrent();
+               result = self.__pressButton();
+           elif(result):
+               self.__reduceZCurrent();
 
            logging.info("robot({}): execution of {} was successful".format(self.id, action))
         except TimeoutError:
@@ -82,7 +81,7 @@ class PinRobot(DeviceBase):
             logging.error("robot({}): unknown exception happened...".format(self.id));
             pass
 
-        return Result;
+        return result;
 
     def SendString(self, command):
         logging.debug("robot({}): sending ({}):".format(self.id, command.replace('\r\n', ' ')))

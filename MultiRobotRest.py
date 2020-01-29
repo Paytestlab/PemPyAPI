@@ -41,6 +41,7 @@ from AxHw.CardMultiplexer import CardMultiplexer;
 from AxHw.CardMagstriper import CardMagstriper;
 from AxHw.CtlMultiplexer import CtlMultiplexer;
 from Base.DeviceBase import DeviceBase;
+from threading import Thread;
 
 #----------------------------------------------------------------------------------------------------------------#
 
@@ -252,22 +253,42 @@ def getRequest(jsonString):
 
     return request
 
-#----------------------------------------------------------------------------------------------------------------#   
 
-def doPostWork(jsonString, robotList):
-    
-    request = getRequest(jsonString)
-    try:
-        key = request['id']
+def doWork(commandObject, robotList):
+     try:
+        key = commandObject['id']
 
         if(key not in robotList):
             logging.error("robot {} not in list".format(key))
             raise DestinationNotFoundError("" , key + ": robot not found")
 
-        executeCommands(robotList[key], request['commands'], key)
+        executeCommands(robotList[key], commandObject['commands'], key)
+     except KeyError as e:
+        return 1;
+     return 0
+
+#----------------------------------------------------------------------------------------------------------------#   
+
+def doPostWork(jsonString, robotList):
+    
+    requests = getRequest(jsonString)
+    threadlist = [];
+    try:
+      for request in requests['devices']:
+        t = Thread(target=doWork, args=(request, robotList))
+        threadlist.append(t);
+
+      for thread in threadlist:
+          thread.start();
+
+      for thread in threadlist:
+          thread.join();
+      
     except KeyError as e:
-        raise ParseError("", str(e));
-    return True
+        raise InputError("", "{}: could not execute: {}".format("the command"));
+
+
+        
 
 #----------------------------------------------------------------------------------------------------------------#
         

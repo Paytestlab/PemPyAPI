@@ -14,7 +14,7 @@
     <Name>PEMEntryAPI</Name>
     <RootNamespace>HelloWorld2</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-d --enable-statistics</CommandLineArguments>
+    <CommandLineArguments>-d</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
     <InterpreterArguments>
