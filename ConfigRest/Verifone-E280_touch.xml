@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <!-- Keyboard positions -->
+  <Position>
+    <CanonicalName>BOTTOM LEFT</CanonicalName>
+    <Value>G0 X4 Y3</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>BOTTOM RIGHT</CanonicalName>
+    <Value>G0 X48 Y3</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>TOP LEFT</CanonicalName>
+    <Value>G0 X4 Y72</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>TOP RIGHT</CanonicalName>
+    <Value>G0 X48 Y72</Value>
+    <isButton>1</isButton>
+  </Position>
+
+  <!-- Card Insert -->
+  <Position>
+    <CanonicalName>INSERT CARD</CanonicalName>
+    <Value>G28 Z0</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <!-- Card Eject -->
+  <Position>
+    <CanonicalName>REMOVE CARD</CanonicalName>
+    <Value>G0 Z50</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <Position>
+    <CanonicalName>SLEEP</CanonicalName>
+    <Value>M18</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <Position>
+    <CanonicalName>RESET</CanonicalName>
+    <Value>M999</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <Position>
+    <CanonicalName>HOME</CanonicalName>
+    <Value>G28</Value>
+    <isButton>0</isButton>
+  </Position>
+
+
+  <Position>
+    <CanonicalName>HOME PARTIAL</CanonicalName>
+    <Value>G28 X0 Y0</Value>
+    <isButton>0</isButton>
+  </Position>
+
+</Settings>
+
+
+

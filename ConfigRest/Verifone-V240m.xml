@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <!-- Keyboard positions -->
+  <Position>
+    <CanonicalName>PRESS 0</CanonicalName>
+    <Value>G0 X23 Y4</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS 1</CanonicalName>
+    <Value>G0 X8 Y30</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS 2</CanonicalName>
+    <Value>G0 X23 Y30</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS 3</CanonicalName>
+    <Value>G0 X39 Y30</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS 4</CanonicalName>
+    <Value>G0 X8 Y21</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS 5</CanonicalName>
+    <Value>G0 X23 Y21</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS 6</CanonicalName>
+    <Value>G0 X39 Y21</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS 7</CanonicalName>
+    <Value>G0 X8 Y12</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS 8</CanonicalName>
+    <Value>G0 X23 Y12</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS 9</CanonicalName>
+    <Value>G0 X39 Y12</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS *</CanonicalName>
+    <Value>G0 X8 Y4</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS #</CanonicalName>
+    <Value>G0 X39 Y4</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS STOP</CanonicalName>
+    <Value>G0 X54 Y30</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS CLEAR</CanonicalName>
+    <Value>G0 X54 Y21</Value>
+    <isButton>1</isButton>
+  </Position>
+  <Position>
+    <CanonicalName>PRESS OK</CanonicalName>
+    <Value>G0 X54 Y9</Value>
+    <isButton>1</isButton>
+  </Position>
+
+  <!-- Card Insert -->
+  <Position>
+    <CanonicalName>INSERT CARD</CanonicalName>
+    <Value>G28 Z0</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <!-- Card Eject -->
+  <Position>
+    <CanonicalName>REMOVE CARD</CanonicalName>
+    <Value>G0 Z50</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <Position>
+    <CanonicalName>SLEEP</CanonicalName>
+    <Value>M18</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <Position>
+    <CanonicalName>RESET</CanonicalName>
+    <Value>M999</Value>
+    <isButton>0</isButton>
+  </Position>
+
+  <Position>
+    <CanonicalName>HOME</CanonicalName>
+    <Value>G28</Value>
+    <isButton>0</isButton>
+  </Position>
+
+
+  <Position>
+    <CanonicalName>HOME PARTIAL</CanonicalName>
+    <Value>G28 X0 Y0</Value>
+    <isButton>0</isButton>
+  </Position>
+
+</Settings>
+
+
+
