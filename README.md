@@ -28,11 +28,13 @@ For the use of the Rest API please use the *MultiRobotRest.py*
 | Paytec Davinci  | 2.8 cm | 3.7 cm | 60/100 mm     |
 | Paytec DavinciVending  | 2.4 cm | 5.0 cm | 60 mm  |
 | Quest-QT720     | 2.5 cm | 4.5 cm | 60/100 mm     |
+| Verifone E280   | 2.5 cm | 5.6 cm | 60 mm		    |
 | Verifone E355   | 3.2 cm | 3.0 cm | 60/100 mm     |
 | Verifone MX915  | 2.9 cm | 1.2 cm | 60/100 mm     |
 | Verifone MX925  | 3.1 cm | 1.8 cm | 60/100 mm     |
 | Verifone P400   | 3.0 cm | 3.1 cm | 60/100 mm     |
 | Verifone VX820  | 3.2 cm | 1.7 cm | 60/100 mm     |
+| Verifone V240m  | 2.0 cm | 1.0 cm | 60/100 mm     |
 | Worldline Yomani| 1.3 cm | 2.8 cm | 100 mm        |
 | Worldline Yoximo| 3.2 cm | 3.3 cm | 60/100 mm     |
 
