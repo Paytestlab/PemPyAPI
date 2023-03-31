@@ -2,7 +2,7 @@
 
 from enum import IntEnum;
 
-class AxUDPCardMagstriperCommand(IntEnum):
+class CardMagstriperCommand(IntEnum):
     
     """
     Get device information of type \ref InfoMessage.

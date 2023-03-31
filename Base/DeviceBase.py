@@ -23,7 +23,7 @@
 
 import threading
 from SQL.Statistics import Statistics;
-from UDPMessage.AxUDPCommandSenderManager import AxUDPCommandSenderManager;
+from Message.CommandSenderManager import CommandSenderManager;
 import logging
 
 __author__ = "Matija Mazalin"
@@ -49,7 +49,7 @@ class DeviceBase(object):
             self.statistics.insert(self.id, action, self.layout[action].Value);
 
     def device_lookup(self):
-       self.device = AxUDPCommandSenderManager(self.magic);
+       self.device = CommandSenderManager(self.magic);
        deviceIsPresent = self.device.device_lookup(self.mac_address);
        if deviceIsPresent:
            self.log_info("device {} is present".format(self.get_mac_address()));

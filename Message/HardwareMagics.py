@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
-import sys;
-
-class UDPMagics(object):
+class HardwareMagics(object):
 
     """Magic bytes which precede all UDP datagrams being sent and received."""
 

@@ -14,11 +14,12 @@
     <Name>PEMEntryAPI</Name>
     <RootNamespace>HelloWorld2</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-d --enable-statistics</CommandLineArguments>
+    <CommandLineArguments>-d</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
     <InterpreterArguments>
     </InterpreterArguments>
+    <TestFramework>Pytest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,7 +34,7 @@
     <Compile Include="AxHw\CtlMultiplexer.py" />
     <Compile Include="AxHw\CardMultiplexer.py" />
     <Compile Include="AxHw\InfoMessage.py" />
-    <Compile Include="AxHw\Interfaces.py" />
+    <Compile Include="Message\UDP\Interfaces.py" />
     <Compile Include="AxHw\Test.py" />
     <Compile Include="AxHw\__init__.py" />
     <Compile Include="Base\MultiplexerBase.py">
@@ -45,6 +46,11 @@
     <Compile Include="Exception\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Message\Base\BaseHelper.py" />
+    <Compile Include="Message\Base\__init__.py" />
+    <Compile Include="Message\Serial\SerialBroadcast.py" />
+    <Compile Include="Message\Serial\SerialHelper.py" />
+    <Compile Include="Message\UDP\UDPBroadcast.py" />
     <Compile Include="Parsers\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -61,16 +67,17 @@
     <Compile Include="Exception\Exception.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UDPMessage\AxUDPCardMagstriperCommand.py" />
-    <Compile Include="UDPMessage\AxUDPCardMultiplexerCommand.py" />
-    <Compile Include="UDPMessage\AxUDPCommand.py" />
-    <Compile Include="UDPMessage\AxUDPCommandError.py" />
-    <Compile Include="UDPMessage\AxUDPCommandSender.py" />
-    <Compile Include="UDPMessage\AxUDPCommandSenderManager.py" />
-    <Compile Include="UDPMessage\AxUDPMagstriperTrackOption.py" />
-    <Compile Include="UDPMessage\AxUDPMessage.py" />
-    <Compile Include="UDPMessage\UDPHelper.py" />
-    <Compile Include="UDPMessage\UDPMagics.py" />
+    <Compile Include="Message\Serial\__init__.py" />
+    <Compile Include="Message\CardMagstriperCommand.py" />
+    <Compile Include="Message\CardMultiplexerCommand.py" />
+    <Compile Include="Message\Command.py" />
+    <Compile Include="Message\CommandError.py" />
+    <Compile Include="Message\CommandSender.py" />
+    <Compile Include="Message\CommandSenderManager.py" />
+    <Compile Include="Message\MagstriperTrackOption.py" />
+    <Compile Include="Message\HardwareMessage.py" />
+    <Compile Include="Message\UDP\UDPHelper.py" />
+    <Compile Include="Message\HardwareMagics.py" />
     <Compile Include="Parsers\ParseXml.py">
       <SubType>Code</SubType>
     </Compile>
@@ -101,7 +108,8 @@
     <Compile Include="SQL\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UDPMessage\__init__.py">
+    <Compile Include="Message\UDP\__init__.py" />
+    <Compile Include="Message\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UnitTests\sqWorkerTest.py">
@@ -159,7 +167,10 @@
     <Folder Include="Assets\" />
     <Folder Include="Exception\" />
     <Folder Include="Base\" />
-    <Folder Include="UDPMessage\" />
+    <Folder Include="Message\Base\" />
+    <Folder Include="Message\UDP\" />
+    <Folder Include="Message\Serial\" />
+    <Folder Include="Message\" />
     <Folder Include="SQL\" />
     <Folder Include="Rest\" />
     <Folder Include="Parsers\" />

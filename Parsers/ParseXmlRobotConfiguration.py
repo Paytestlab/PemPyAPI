@@ -27,9 +27,10 @@ class CtlMuxConfiguration(BaseConfiguration):
 
 class MagConfiguration(BaseConfiguration):
 
-    def __init__(self, Id, mac_address, layout):
+    def __init__(self, Id, mac_address, layout, serial_port):
         super().__init__(Id, layout);
         self.mac_address = mac_address
+        self.port = serial_port
 
 class ParseXmlRobotConfiguration(object):
 
@@ -69,8 +70,9 @@ class ParseXmlRobotConfiguration(object):
         for mag in mags:
             id = mag.getAttribute('id')
             mac_address = mag.getElementsByTagName('MacAddress')[0]
-            Layout = mag.getElementsByTagName('Layout')[0]
-            mag_configuration = MagConfiguration(id, mac_address.childNodes[0].data, Layout.childNodes[0].data)
+            layout = mag.getElementsByTagName('Layout')[0]
+            serial_port = mag.getElementsByTagName('SerialPort')[0]
+            mag_configuration = MagConfiguration(id, mac_address.childNodes[0].data, layout.childNodes[0].data, serial_port.childNodes[0].data)
             mag_list.update({id:mag_configuration})
 
         ctl_muxs = collection.getElementsByTagName("ContactlessMultiplexer")

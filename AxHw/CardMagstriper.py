@@ -21,11 +21,11 @@
 # THE SOFTWARE.
 
 """Thread safe card magstripe interface."""
-from UDPMessage.AxUDPCardMagstriperCommand import AxUDPCardMagstriperCommand
+from Message.CardMagstriperCommand import CardMagstriperCommand
 from Parsers.ParseXml import XmlParser
 from Exception.Exception import Error
 from Base.DeviceBase import DeviceBase;
-from UDPMessage.UDPMagics import UDPMagics;
+from Message.HardwareMagics import HardwareMagics;
 
 __author__ = "Matija Mazalin"
 __email__ = "matija.mazalin@abrantix.com"
@@ -34,7 +34,7 @@ __license__ = "MIT"
 class CardMagstriper(DeviceBase):
 
     tag = "mag";
-    magic = UDPMagics.CardMagstriperMagic;
+    magic = HardwareMagics.CardMagstriperMagic;
     
     def __init__(self, id, mac_address, enable_statistics=False):
         super().__init__(id, XmlParser.parse_magstripes, enable_statistics);
@@ -85,7 +85,7 @@ class CardMagstriper(DeviceBase):
 
     def set_tracks(self, layout):
         Result = False;
-        track_pointers = [AxUDPCardMagstriperCommand.SetTrack1, AxUDPCardMagstriperCommand.SetTrack2, AxUDPCardMagstriperCommand.SetTrack3]
+        track_pointers = [CardMagstriperCommand.SetTrack1, CardMagstriperCommand.SetTrack2, CardMagstriperCommand.SetTrack3]
 
         try:
             send_to = self.device.get_sender_for_device(self.mac_address);
@@ -97,7 +97,7 @@ class CardMagstriper(DeviceBase):
                 track_bytes = str.encode(track_value)
 
                 #special use case for track1. Reduce all characters for 0x20;
-                if track_pointer is AxUDPCardMagstriperCommand.SetTrack1:
+                if track_pointer is CardMagstriperCommand.SetTrack1:
                     track_bytes = bytes([(x - 0x20) for x in bytearray(track_bytes)])
 
                 Result = send_to.set_card_magstripe_track(track_pointer, track_bytes)

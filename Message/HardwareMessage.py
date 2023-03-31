@@ -2,7 +2,7 @@
 
 import sys;
 
-class AxUDPMessage(object):
+class HardwareMessage(object):
     """Message struct"""
 
     command = 0;
@@ -26,13 +26,13 @@ class AxUDPMessage(object):
         if(sys.getsizeof(payload) < 12):
             raise BufferError("Length must be at least 12 bytes");
 
-        command_type = (payload[9] << 8) + payload[8]; 
-        data_length = (payload[11] << 8) + payload[10];
+        command_type = (payload[9] << 8) | payload[8]; 
+        data_length = (payload[11] << 8) | payload[10];
 
         if((payload[:8] == bytearray(expectedMagic)) is False):
             raise RuntimeError();
 
-        msg = AxUDPMessage(expectedMagic);
+        msg = HardwareMessage(expectedMagic);
 
         msg.command = command_type;
 
