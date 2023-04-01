@@ -40,7 +40,8 @@ class CommandSenderManager(object):
     def device_lookup(self, mac_address):
         if(self.device_exists(mac_address)):
             return True;
-        elif(False is self.__device_add_broadcast(mac_address)):
+        #elif(False is self.__device_add_broadcast(mac_address)):
+        else:
             return self.__device_add_serial(mac_address);
                  
     def device_exists(self, mac_address):

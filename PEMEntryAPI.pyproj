@@ -6,7 +6,7 @@
     <ProjectGuid>fa1a5650-e0b3-47ed-815f-f820d3ccea67</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>MultiRobotRest.py</StartupFile>
+    <StartupFile>MagstripeStandalone.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -14,7 +14,7 @@
     <Name>PEMEntryAPI</Name>
     <RootNamespace>HelloWorld2</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-d</CommandLineArguments>
+    <CommandLineArguments>-d -m 1407EFFFFFFF -cmd "SELECT CARD 2"</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <IsWindowsApplication>False</IsWindowsApplication>
     <InterpreterArguments>
@@ -34,6 +34,13 @@
     <Compile Include="AxHw\CtlMultiplexer.py" />
     <Compile Include="AxHw\CardMultiplexer.py" />
     <Compile Include="AxHw\InfoMessage.py" />
+    <Compile Include="Configuration\MagConfiguration.py" />
+    <Compile Include="Configuration\CtlMuxConfiguration.py" />
+    <Compile Include="Configuration\RobotConfiguration.py" />
+    <Compile Include="Configuration\MuxConfiguration.py" />
+    <Compile Include="Configuration\BaseConfiguration.py" />
+    <Compile Include="Configuration\__init__.py" />
+    <Compile Include="MagstripeStandalone.py" />
     <Compile Include="Message\UDP\Interfaces.py" />
     <Compile Include="AxHw\Test.py" />
     <Compile Include="AxHw\__init__.py" />
@@ -171,6 +178,7 @@
     <Folder Include="Message\UDP\" />
     <Folder Include="Message\Serial\" />
     <Folder Include="Message\" />
+    <Folder Include="Configuration\" />
     <Folder Include="SQL\" />
     <Folder Include="Rest\" />
     <Folder Include="Parsers\" />
