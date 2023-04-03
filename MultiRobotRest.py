@@ -45,16 +45,16 @@ from Base.DeviceBase import DeviceBase;
 #----------------------------------------------------------------------------------------------------------------#
 
 __major__ = 1
-__minor__ = 5
+__minor__ = 6
 __service__ = 0
-__build__ = 51
+__build__ = 52
 __path = "ConfigRest"
 
 __intro__= (
     "AX Robot Integration Layer\n"
     "Version {}.{}.{}.{}\n" 
     "Copyright (C) {} - {} Abrantix AG\n"
-    "{}".format(__major__, __minor__, __service__, __build__, 2015, 2018, "#" * 50)
+    "{}".format(__major__, __minor__, __service__, __build__, 2015, 2023, "#" * 50)
     )
 
 #----------------------------------------------------------------------------------------------------------------#

@@ -25,12 +25,12 @@ __license__ = "MIT"
 
 
 from Base.MultiplexerBase import BaseMultiplexer;
-from UDPMessage.UDPMagics import UDPMagics;
+from Message.HardwareMagics import HardwareMagics;
 
 class CardMultiplexer(BaseMultiplexer):
 
     tag = "mux";
-    magic = UDPMagics.CardMultiplexerMagic;
+    magic = HardwareMagics.CardMultiplexerMagic;
         
 
 

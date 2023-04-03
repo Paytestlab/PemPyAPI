@@ -3,7 +3,7 @@
 from enum import IntEnum;
 
 
-class AxUDPCardMultiplexerCommand(IntEnum):
+class CardMultiplexerCommand(IntEnum):
     
     """
     Get device information of type \ref InfoMessage.
@@ -19,7 +19,7 @@ class AxUDPCardMultiplexerCommand(IntEnum):
     
     """
     Error message received from device. 
-    See message data for given \ref AxUDPCommandError
+    See message data for given \ref CommandError
     """
     ERROR = 3,
 

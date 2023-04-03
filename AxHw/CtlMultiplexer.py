@@ -24,12 +24,13 @@ __email__ = "matija.mazalin@abrantix.com"
 __license__ = "MIT"
 
 from AxHw.CardMultiplexer import CardMultiplexer;
-from UDPMessage.UDPMagics import UDPMagics;
+from Message.HardwareMagics import HardwareMagics;
+
 
 class CtlMultiplexer(CardMultiplexer):
 
     tag = "ctlmux";
-    magic = UDPMagics.ContactlessMultiplexerMagic;
+    magic = HardwareMagics.ContactlessMultiplexerMagic;
     
     
 

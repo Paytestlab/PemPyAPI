@@ -27,14 +27,14 @@ __license__ = "MIT"
 from Parsers.ParseXml import XmlParser
 from Exception.Exception import Error
 from Base.DeviceBase import DeviceBase;
-from UDPMessage.UDPMagics import UDPMagics;
+from Message.HardwareMagics import HardwareMagics;
 import traceback;
 
 
 class BaseMultiplexer(DeviceBase):
 
     tag = "invalid";
-    magic = UDPMagics.Invalid;
+    magic = HardwareMagics.Invalid;
 
     def __init__(self, id, mac_address, enable_statistics=False):
         super().__init__(id, XmlParser.parse_muxs, enable_statistics);

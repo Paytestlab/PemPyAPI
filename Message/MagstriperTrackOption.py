@@ -2,7 +2,7 @@
 
 from enum import IntEnum;
 
-class AxUDPMagstripeCardEmulatorTrackOption():
+class MagstripeCardEmulatorTrackOption():
     """
     Possible track options
     Must be aligned with axCardMux firmware

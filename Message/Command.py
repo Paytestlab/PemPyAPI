@@ -2,7 +2,7 @@
 
 from enum import IntEnum;
 
-class AxUDPCommand(IntEnum):
+class Command(IntEnum):
     
     """
     Get device information of type \ref InfoMessage.
@@ -18,6 +18,6 @@ class AxUDPCommand(IntEnum):
 
     """
     Error message received from device. 
-    See message data for given \ref AxUDPCommandError
+    See message data for given \ref CommandError
     """
     ERROR = 3,

@@ -3,33 +3,11 @@
 from xml.dom.minidom import parse
 import xml.dom.minidom
 import logging
+from Configuration.MuxConfiguration import MuxConfiguration;
+from Configuration.CtlMuxConfiguration import CtlMuxConfiguration;
+from Configuration.RobotConfiguration import RobotConfiguration;
+from Configuration.MagConfiguration import MagConfiguration;
 
-class BaseConfiguration(object):
-    def __init__(self, id, layout):
-        self.Id = id;
-        self.Layout = layout
-
-class RobotConfiguration(BaseConfiguration):
-    def __init__(self, Id, Ip, Port, layout):
-        super().__init__(Id, layout);
-        self.IP = Ip
-        self.Port = Port
-
-class MuxConfiguration(BaseConfiguration):
-    def __init__(self, Id, mac_address, layout):
-        super().__init__(Id, layout);
-        self.mac_address = mac_address
-
-class CtlMuxConfiguration(BaseConfiguration):
-    def __init__(self, Id, mac_address, layout):
-        super().__init__(Id, layout);
-        self.mac_address = mac_address
-
-class MagConfiguration(BaseConfiguration):
-
-    def __init__(self, Id, mac_address, layout):
-        super().__init__(Id, layout);
-        self.mac_address = mac_address
 
 class ParseXmlRobotConfiguration(object):
 
@@ -69,8 +47,9 @@ class ParseXmlRobotConfiguration(object):
         for mag in mags:
             id = mag.getAttribute('id')
             mac_address = mag.getElementsByTagName('MacAddress')[0]
-            Layout = mag.getElementsByTagName('Layout')[0]
-            mag_configuration = MagConfiguration(id, mac_address.childNodes[0].data, Layout.childNodes[0].data)
+            layout = mag.getElementsByTagName('Layout')[0]
+            serial_port = mag.getElementsByTagName('SerialPort')[0]
+            mag_configuration = MagConfiguration(id, mac_address.childNodes[0].data, layout.childNodes[0].data, serial_port.childNodes[0].data)
             mag_list.update({id:mag_configuration})
 
         ctl_muxs = collection.getElementsByTagName("ContactlessMultiplexer")
