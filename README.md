@@ -1,5 +1,8 @@
 # PemPyAPI
 
+> [!CAUTION]
+> This API has been discontinued and is no longer being maintained.
+
 A little help to control the Pin entry robot.  
 
 Please select the apropriate XML file from the folder ConfigurationRest.
